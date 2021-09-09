@@ -9,6 +9,7 @@ use App\Models\Contracts\Retirable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {
@@ -18,7 +19,8 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
         Concerns\Competable,
         Concerns\Deactivatable,
         Concerns\Retirable,
-        Concerns\Unguarded;
+        Concerns\Unguarded,
+        HasRelationships;
 
     /**
      * The "booted" method of the model.
@@ -47,6 +49,39 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
     protected $casts = [
         'status' => TitleStatus::class,
     ];
+
+    /**
+     * Undocumented function.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany(TitleHistory::class);
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function champions()
+    {
+        return $this->hasManyDeep(
+            [Champion::class],
+            ['championable', Champion::class],
+        );
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function champion()
+    {
+        return $this->morphOne(Champion::class, 'championable')->latestOfMany('won_at');
+    }
 
     /**
      * Determine if the model can be retired.

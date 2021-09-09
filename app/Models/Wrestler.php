@@ -54,6 +54,14 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, Stabl
     ];
 
     /**
+     * Get all of the titles held by the wrestler.
+     */
+    public function titles()
+    {
+        return $this->morphToMany(Title::class, 'championable');
+    }
+
+    /**
      * Update the status for the wrestler.
      *
      * @return $this

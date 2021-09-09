@@ -493,6 +493,14 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
     }
 
     /**
+     * Get all of the titles held by the tag team.
+     */
+    public function titles()
+    {
+        return $this->morphToMany(Title::class, 'championable');
+    }
+
+    /**
      * Update the status for the tag team.
      *
      * @return $this

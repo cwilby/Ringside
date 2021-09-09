@@ -5,6 +5,9 @@ namespace Tests\Feature\Http\Controllers\Titles;
 use App\Enums\Role;
 use App\Http\Controllers\Titles\TitlesController;
 use App\Models\Title;
+use App\Models\TitleHistory;
+use App\Models\Wrestler;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -65,6 +68,48 @@ class TitlesControllerTest extends TestCase
             ->get(action([TitlesController::class, 'show'], $title))
             ->assertViewIs('titles.show')
             ->assertViewHas('title', $title);
+    }
+
+    /**
+     * @test
+     */
+    public function a_history_list_for_a_title_can_be_viewed_for_title_show_page()
+    {
+        $wrestlerA = Wrestler::factory()->create();
+        $wrestlerB = Wrestler::factory()->create();
+        $wrestlerC = Wrestler::factory()->create();
+
+        $title = Title::factory()
+            ->has(
+                TitleHistory::factory()
+                    ->count(3)
+                    ->state(new Sequence(
+                        [
+                            'championable_id' => $wrestlerA->id,
+                            'championable_type' => get_class($wrestlerA),
+                            'won_at' => '2021-01-01', 'lost_at' => '2021-03-01',
+                        ],
+                        [
+                            'championable_id' => $wrestlerB->id,
+                            'championable_type' => get_class($wrestlerB),
+                            'won_at' => '2021-03-01',
+                            'lost_at' => '2021-06-01',
+                        ],
+                        [
+                            'championable_id' => $wrestlerC->id,
+                            'championable_type' => get_class($wrestlerC),
+                            'won_at' => '2021-06-01',
+                            'lost_at' => null,
+                        ],
+                    )),
+                'history'
+            )
+            ->create();
+        dd($title->champions);
+
+        $this
+            ->actAs(Role::ADMINISTRATOR)
+            ->get(action([TitlesController::class, 'show'], $title));
     }
 
     /**
