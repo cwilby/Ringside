@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\TitleHistory;
+use App\Models\TitleChampion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TitleHistoryFactory extends Factory
+class TitleChampionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = TitleHistory::class;
+    protected $model = TitleChampion::class;
 
     /**
      * Define the model's default state.

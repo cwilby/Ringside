@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTitleHistoriesTable extends Migration
+class CreateTitleChampionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTitleHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('title_histories', function (Blueprint $table) {
+        Schema::create('title_champions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('title_id')->constrained();
             $table->morphs('championable');
@@ -30,6 +30,6 @@ class CreateTitleHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('title_histories');
+        Schema::dropIfExists('title_champions');
     }
 }

@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controllers\Titles;
 use App\Enums\Role;
 use App\Http\Controllers\Titles\TitlesController;
 use App\Models\Title;
-use App\Models\TitleHistory;
+use App\Models\TitleChampion;
 use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -80,14 +80,16 @@ class TitlesControllerTest extends TestCase
         $wrestlerC = Wrestler::factory()->create();
 
         $title = Title::factory()
-            ->has(
-                TitleHistory::factory()
+            ->hasAttached(
+                TitleChampion::factory()
                     ->count(3)
-                    ->state(new Sequence(
+                    // ->state(new Sequence(
+                    ->sequence(
                         [
                             'championable_id' => $wrestlerA->id,
                             'championable_type' => get_class($wrestlerA),
-                            'won_at' => '2021-01-01', 'lost_at' => '2021-03-01',
+                            'won_at' => '2021-01-01',
+                            'lost_at' => '2021-03-01',
                         ],
                         [
                             'championable_id' => $wrestlerB->id,
@@ -101,8 +103,8 @@ class TitlesControllerTest extends TestCase
                             'won_at' => '2021-06-01',
                             'lost_at' => null,
                         ],
-                    )),
-                'history'
+                    ),
+                'champions'
             )
             ->create();
         dd($title->champions);

@@ -6,6 +6,7 @@ use App\Enums\TitleStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
+use App\Models\TitleChampion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,8 +20,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
         Concerns\Competable,
         Concerns\Deactivatable,
         Concerns\Retirable,
-        Concerns\Unguarded,
-        HasRelationships;
+        Concerns\Unguarded;
 
     /**
      * The "booted" method of the model.
@@ -53,24 +53,11 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
     /**
      * Undocumented function.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function history()
-    {
-        return $this->hasMany(TitleHistory::class);
-    }
-
-    /**
-     * Undocumented function.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphedByMany
      */
     public function champions()
     {
-        return $this->hasManyDeep(
-            [Champion::class],
-            ['championable', Champion::class],
-        );
+        return $this->morphedByMany(TitleChampion::class, 'championable');
     }
 
     /**
@@ -80,7 +67,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      */
     public function champion()
     {
-        return $this->morphOne(Champion::class, 'championable')->latestOfMany('won_at');
+        return $this->morphOne(TitleChampion::class, 'championable')->latestOfMany('won_at');
     }
 
     /**
