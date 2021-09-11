@@ -57,7 +57,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      */
     public function championships()
     {
-        return $this->hasMany(TitleChampionship::class);
+        return $this->hasMany(TitleChampionship::class)->oldest('won_at');
     }
 
     /**

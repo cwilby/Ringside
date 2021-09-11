@@ -46,6 +46,9 @@
                         </div>
                     </div>
                 </x-portlet>
+                @foreach ($title->championships as $championship)
+                    {{ $championship->holder->name }}
+                @endforeach
             </div>
         </div>
     </x-content>

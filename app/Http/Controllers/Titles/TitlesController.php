@@ -68,6 +68,8 @@ class TitlesController extends Controller
     {
         $this->authorize('view', Title::class);
 
+        $title->load('championships');
+
         return view('titles.show', compact('title'));
     }
 

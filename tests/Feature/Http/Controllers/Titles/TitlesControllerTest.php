@@ -78,34 +78,36 @@ class TitlesControllerTest extends TestCase
     public function a_history_list_for_a_title_can_be_viewed_for_title_show_page()
     {
         $title = Title::factory()
-        ->has(
-            TitleChampionship::factory()
-                ->wonOn('2021-01-01')
-                ->lostOn('2021-03-01')
-                ->for(Wrestler::factory(), 'holder'),
-            'championships'
-        )
-        ->has(
-            TitleChampionship::factory()
-                ->wonOn('2021-03-01')
-                ->lostOn('2021-06-01')
-                ->for(Manager::factory(), 'holder'),
-            'championships'
-        )
-        ->has(
-            TitleChampionship::factory()
-                ->wonOn('2021-06-01')
-                ->lostOn(null)
-                ->for(Wrestler::factory(), 'holder'),
-            'championships'
-        )
-        ->create();
+            ->has(
+                TitleChampionship::factory()
+                    ->wonOn('2021-03-01')
+                    ->lostOn('2021-06-01')
+                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 3']), 'holder'),
+                'championships'
+            )
+            ->has(
+                TitleChampionship::factory()
+                    ->wonOn('2021-06-01')
+                    ->lostOn(null)
+                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 1']), 'holder'),
+                'championships'
+            )
+            ->has(
+                TitleChampionship::factory()
+                    ->wonOn('2021-01-01')
+                    ->lostOn('2021-03-01')
+                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 2']), 'holder'),
+                'championships'
+            )
+            ->create();
 
         $response = $this
             ->actAs(Role::ADMINISTRATOR)
             ->get(action([TitlesController::class, 'show'], $title));
 
-        $this->assertSeeInOrder
+        $response->assertSeeTextInOrder([
+            'Example Wrestler 2', 'Example Wrestler 3', 'Example Wrestler 1',
+        ]);
     }
 
     /**
