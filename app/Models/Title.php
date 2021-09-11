@@ -14,13 +14,13 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {
-    use SoftDeletes,
-        HasFactory,
-        Concerns\Activatable,
+    use Concerns\Activatable,
         Concerns\Competable,
         Concerns\Deactivatable,
         Concerns\Retirable,
-        Concerns\Unguarded;
+        Concerns\Unguarded,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * The "booted" method of the model.
@@ -55,19 +55,19 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphedByMany
      */
-    public function champions()
+    public function championships()
     {
-        return $this->morphedByMany(TitleChampion::class, 'championable');
+        return $this->hasMany(TitleChampionship::class);
     }
 
     /**
      * Undocumented function.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function champion()
     {
-        return $this->morphOne(TitleChampion::class, 'championable')->latestOfMany('won_at');
+        return $this->hasOne(TitleChampionship::class)->latestOfMany('won_at')->whereNull('lost_at');
     }
 
     /**

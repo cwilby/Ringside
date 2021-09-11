@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTitleChampionsTable extends Migration
+class CreateTitleChampionshipsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTitleChampionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('title_champions', function (Blueprint $table) {
+        Schema::create('title_championships', function (Blueprint $table) {
             $table->id();
             $table->foreignId('title_id')->constrained();
-            $table->morphs('championable');
+            $table->morphs('holder');
             $table->datetime('won_at');
             $table->datetime('lost_at')->nullable();
             $table->timestamps();
@@ -30,6 +30,6 @@ class CreateTitleChampionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('title_champions');
+        Schema::dropIfExists('title_championships');
     }
 }
