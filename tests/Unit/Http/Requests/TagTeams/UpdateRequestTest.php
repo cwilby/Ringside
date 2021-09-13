@@ -22,6 +22,7 @@ class UpdateRequestTest extends TestCase
      */
     public function rules_returns_validation_requirements()
     {
+        $this->markTestSkipped('Needs update from Test Assertions package.');
         $tagTeamMock = $this->createMock(TagTeam::class);
         $tagTeamMock->method('__get')->with('id')->willReturn(1);
 
