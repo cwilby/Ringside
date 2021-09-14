@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Activation;
+use App\Models\Retirement;
+use App\Models\Title;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Tests\Factories\ActivationFactory;
-use Tests\Factories\RetirementFactory;
-use Tests\Factories\TitleFactory;
 
 class TitlesTableSeeder extends Seeder
 {
@@ -42,7 +42,7 @@ class TitlesTableSeeder extends Seeder
 
             $activation = Activation::factory()->started($start);
 
-            TitleFactory::new()
+            Title::factory()
                 ->active($activation)
                 ->create(['name' => 'Title '.$eNum]);
 
@@ -64,7 +64,7 @@ class TitlesTableSeeder extends Seeder
             $activation = $activation->ended($end);
         }
 
-        TitleFactory::new()
+        Title::factory()
             ->active($activation)
             ->create(['name' => 'Title '.$eNum]);
 
@@ -81,7 +81,7 @@ class TitlesTableSeeder extends Seeder
 
             $activation = Activation::factory()->started($start)->ended($end);
             $retirement = Retirement::factory()->started($end);
-            TitleFactory::new()
+            Title::factory()
                 ->retired($activation, $retirement)
                 ->create(['name' => 'Title '.$eNum]);
 
@@ -91,8 +91,8 @@ class TitlesTableSeeder extends Seeder
         /*
          * We need to create 1 title for the the future activation.
          */
-        TitleFactory::new()
-            ->futureActivation()
+        Title::factory()
+            ->withFutureActivation()
             ->create(['name' => 'Title '.$eNum]);
 
         $eNum++;
@@ -101,7 +101,7 @@ class TitlesTableSeeder extends Seeder
          * We need to create 1 title that does not have an activation date.
          * This title should be marked as being unactivated.
          */
-        TitleFactory::new()
+        Title::factory()
             ->unactivated()
             ->create(['name' => 'Title '.$eNum]);
     }
