@@ -44,7 +44,8 @@ class TitleChampionshipFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title_id' => Title::factory(),
+            'match_id' => Match::factory(),
         ];
     }
 }

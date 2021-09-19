@@ -16,7 +16,8 @@ class CreateTitleChampionshipsTable extends Migration
         Schema::create('title_championships', function (Blueprint $table) {
             $table->id();
             $table->foreignId('title_id')->constrained();
-            $table->morphs('holder');
+            $table->foreignId('match_id')->constrained();
+            $table->morphs('newChampion');
             $table->datetime('won_at');
             $table->datetime('lost_at')->nullable();
             $table->timestamps();

@@ -33,7 +33,17 @@ class TitleChampionship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function holder()
+    public function newChampion()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function previousChampion()
     {
         return $this->morphTo();
     }

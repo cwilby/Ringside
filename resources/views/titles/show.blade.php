@@ -46,9 +46,34 @@
                         </div>
                     </div>
                 </x-portlet>
-                @foreach ($title->championships as $championship)
-                    {{ $championship->holder->name }}
-                @endforeach
+            </div>
+            <div class="flex-row-fluid ml-lg-8">
+                <div class="row">
+                    <x-portlet title="Championships" headBorder="false">
+                        <x-data-table :collection="$title->championships">
+                            <thead>
+                                <th>New Champion</th>
+                                <th>Previous Champion</th>
+                                <th>Event Name</th>
+                                <th>Event Date</th>
+                            </thead>
+                            <tbody>
+                                @forelse($title->championships as $championship)
+                                    <tr>
+                                        <td>{{ $championship->newChampion->name }}</td>
+                                        <td>{{ $championship->previousChampion->name }}</td>
+                                        <td>{{ $championship->match->event->name() }}</td>
+                                        <td>{{ $championship->match->event->date->toDateString() }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4">No matching records found</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </x-datatable>
+                    </x-portlet>
+                </div>
             </div>
         </div>
     </x-content>
