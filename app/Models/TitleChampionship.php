@@ -33,7 +33,7 @@ class TitleChampionship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function newChampion()
+    public function champion()
     {
         return $this->morphTo();
     }
@@ -45,6 +45,6 @@ class TitleChampionship extends Model
      */
     public function previousChampion()
     {
-        return $this->morphTo();
+        return $this->whereNotNull('lost_at')->sortByDesc('won_at')->morphTo();
     }
 }

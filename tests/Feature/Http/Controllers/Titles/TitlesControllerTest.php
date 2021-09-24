@@ -4,12 +4,9 @@ namespace Tests\Feature\Http\Controllers\Titles;
 
 use App\Enums\Role;
 use App\Http\Controllers\Titles\TitlesController;
-use App\Models\Manager;
 use App\Models\Title;
-use App\Models\TitleChampion;
 use App\Models\TitleChampionship;
 use App\Models\Wrestler;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -82,21 +79,21 @@ class TitlesControllerTest extends TestCase
                 TitleChampionship::factory()
                     ->wonOn('2021-03-01')
                     ->lostOn('2021-06-01')
-                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 3']), 'holder'),
+                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 3']), 'champion'),
                 'championships'
             )
             ->has(
                 TitleChampionship::factory()
                     ->wonOn('2021-06-01')
                     ->lostOn(null)
-                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 1']), 'holder'),
+                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 1']), 'champion'),
                 'championships'
             )
             ->has(
                 TitleChampionship::factory()
                     ->wonOn('2021-01-01')
                     ->lostOn('2021-03-01')
-                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 2']), 'holder'),
+                    ->for(Wrestler::factory()->state(['name' => 'Example Wrestler 2']), 'champion'),
                 'championships'
             )
             ->create();
@@ -105,7 +102,7 @@ class TitlesControllerTest extends TestCase
             ->actAs(Role::ADMINISTRATOR)
             ->get(action([TitlesController::class, 'show'], $title));
 
-        $response->assertSeeTextInOrder([
+        $response->assertSeeInOrder([
             'Example Wrestler 2', 'Example Wrestler 3', 'Example Wrestler 1',
         ]);
     }

@@ -60,9 +60,15 @@
                             <tbody>
                                 @forelse($title->championships as $championship)
                                     <tr>
-                                        <td>{{ $championship->newChampion->name }}</td>
-                                        <td>{{ $championship->previousChampion->name }}</td>
-                                        <td>{{ $championship->match->event->name() }}</td>
+                                        <td>{{ $championship->champion->name }}</td>
+                                        <td>
+                                            @isset($championship->previousChampion)
+                                                {{ $championship->previousChampion->name }}
+                                            @else
+                                                'First Champion'
+                                            @endisset
+                                        </td>
+                                        <td>{{ $championship->match->event->name }}</td>
                                         <td>{{ $championship->match->event->date->toDateString() }}</td>
                                     </tr>
                                 @empty

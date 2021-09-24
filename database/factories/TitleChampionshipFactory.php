@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\EventMatch;
+use App\Models\Title;
 use App\Models\TitleChampionship;
+use App\Models\Wrestler;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TitleChampionshipFactory extends Factory
@@ -43,9 +46,13 @@ class TitleChampionshipFactory extends Factory
      */
     public function definition()
     {
+        $wrestler = Wrestler::factory()->create();
+
         return [
             'title_id' => Title::factory(),
-            'match_id' => Match::factory(),
+            'event_match_id' => EventMatch::factory(),
+            'champion_id' => $wrestler->id,
+            'champion_type' => get_class($wrestler),
         ];
     }
 }

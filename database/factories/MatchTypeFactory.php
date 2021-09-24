@@ -2,19 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Event;
-use App\Models\EventMatch;
 use App\Models\MatchType;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-class EventMatchFactory extends Factory
+class MatchTypeFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = EventMatch::class;
+    protected $model = MatchType::class;
 
     /**
      * Define the model's default state.
@@ -23,10 +22,11 @@ class EventMatchFactory extends Factory
      */
     public function definition()
     {
+        $matchType = $this->faker->word();
+
         return [
-            'event_id' => Event::factory(),
-            'match_type_id' => MatchType::factory(),
-            'preview' => null,
+            'name' => $matchType,
+            'slug' => Str::slug($matchType),
         ];
     }
 }
