@@ -6,11 +6,9 @@ use App\Enums\TitleStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
-use App\Models\TitleChampion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {
@@ -65,9 +63,9 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function champion()
+    public function currentChampion()
     {
-        return $this->hasOne(TitleChampionship::class)->latestOfMany('won_at')->whereNull('lost_at');
+        return $this->hasOne(TitleChampionship::class, 'champion')->whereNotNull('lost_at');
     }
 
     /**

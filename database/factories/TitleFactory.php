@@ -6,6 +6,7 @@ use App\Enums\TitleStatus;
 use App\Models\Activation;
 use App\Models\Retirement;
 use App\Models\Title;
+use App\Models\TitleChampionship;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -103,5 +104,10 @@ class TitleFactory extends Factory
         })->afterCreating(function (Title $title) {
             $title->updateStatus()->save();
         });
+    }
+
+    public function withChampion($championFactory)
+    {
+        return $this->has(TitleChampionship::factory()->hasAttached($championFactory, [], 'champion'), 'championships');
     }
 }

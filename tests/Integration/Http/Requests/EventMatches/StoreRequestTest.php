@@ -3,7 +3,10 @@
 namespace Tests\Integration\Http\Requests\EventMatches;
 
 use App\Http\Requests\EventMatches\StoreRequest;
+use App\Models\Title;
+use App\Models\TitleChampionship;
 use App\Models\User;
+use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\EventMatchRequestDataFactory;
@@ -217,5 +220,25 @@ class StoreRequestTest extends TestCase
                 'preview' => null,
             ]))
             ->assertPassesValidation();
+    }
+
+    /**
+     * @test
+     */
+    public function title_with_champion_must_be_included_in_competitors_for_title_match()
+    {
+        $title = Title::factory()
+            ->withChampion(Wrestler::factory())
+            ->create();
+        // dd($title->championships);
+        dd($title->currentChampion);
+        [$wrestlerB, $wrestlerC] = Wrestler::factory()->count(2)->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'title' => [$title->id],
+                'competitors' => [$wrestlerB->id, $wrestlerC->id],
+            ]))
+            ->assertFailsValidation(['competitors']);
     }
 }

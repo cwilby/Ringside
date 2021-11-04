@@ -6,6 +6,7 @@ use App\Models\EventMatch;
 use App\Models\Title;
 use App\Models\TitleChampionship;
 use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TitleChampionshipFactory extends Factory
@@ -53,6 +54,7 @@ class TitleChampionshipFactory extends Factory
             'event_match_id' => EventMatch::factory(),
             'champion_id' => $wrestler->id,
             'champion_type' => get_class($wrestler),
+            'won_at' => Carbon::yesterday(),
         ];
     }
 }
