@@ -65,7 +65,7 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      */
     public function currentChampion()
     {
-        return $this->hasOne(TitleChampionship::class, 'champion')->whereNotNull('lost_at');
+        return $this->morphOneThrough(TitleChampionship::class, 'champion')->whereNotNull('lost_at');
     }
 
     /**

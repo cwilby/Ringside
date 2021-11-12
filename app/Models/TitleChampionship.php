@@ -31,11 +31,11 @@ class TitleChampionship extends Model
     /**
      * Undocumented function.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function champion()
+    public function allTitleChampions()
     {
-        return $this->morphTo();
+        return $this->mergedRelationWithModel('all_title_champions');
     }
 
     /**
@@ -43,8 +43,18 @@ class TitleChampionship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function previousChampion()
+    public function wrestler()
     {
-        return $this->whereNotNull('lost_at')->sortByDesc('won_at')->morphTo();
+        return $this->morphedByMany(Wrestler::class, 'champion', 'title_championships', 'title_id');
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function tagTeam()
+    {
+        return $this->morphedByMany(TagTeam::class, 'champion', 'title_championships', 'title_id');
     }
 }

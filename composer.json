@@ -18,6 +18,7 @@
         "livewire/livewire": "^2.0",
         "mad-web/laravel-enum": "^2.0",
         "staudenmeir/eloquent-has-many-deep": "^1.7",
+        "staudenmeir/laravel-merged-relations": "^1.0",
         "vlucas/phpdotenv": "^5.2"
     },
     "require-dev": {
