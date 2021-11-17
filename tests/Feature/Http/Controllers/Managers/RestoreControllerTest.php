@@ -6,7 +6,6 @@ use App\Enums\Role;
 use App\Http\Controllers\Managers\ManagersController;
 use App\Http\Controllers\Managers\RestoreController;
 use App\Models\Manager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -17,8 +16,6 @@ use Tests\TestCase;
  */
 class RestoreControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     public Manager $manager;
 
     public function setUp(): void
@@ -34,7 +31,7 @@ class RestoreControllerTest extends TestCase
     public function invoke_restores_a_soft_deleted_manager_and_redirects()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([RestoreController::class], $this->manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
@@ -47,7 +44,7 @@ class RestoreControllerTest extends TestCase
     public function a_basic_user_cannot_restore_a_manager()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([RestoreController::class], $this->manager))
             ->assertForbidden();
     }

@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Managers\InjureController;
 use App\Http\Controllers\Managers\ManagersController;
 use App\Models\Manager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class InjureControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -29,13 +26,13 @@ class InjureControllerTest extends TestCase
         $manager = Manager::factory()->available()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([InjureController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->injuries);
-            $this->assertEquals(ManagerStatus::INJURED, $manager->status);
+            $this->assertEquals(ManagerStatus::injured(), $manager->status);
         });
     }
 
@@ -47,7 +44,7 @@ class InjureControllerTest extends TestCase
         $manager = Manager::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(route('managers.injure', $manager))
             ->assertForbidden();
     }
@@ -76,7 +73,7 @@ class InjureControllerTest extends TestCase
         $manager = Manager::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(route('managers.injure', $manager));
     }
 

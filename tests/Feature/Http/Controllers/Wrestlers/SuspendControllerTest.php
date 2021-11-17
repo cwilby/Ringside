@@ -10,7 +10,6 @@ use App\Http\Controllers\Wrestlers\SuspendController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -21,8 +20,6 @@ use Tests\TestCase;
  */
 class SuspendControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -31,13 +28,13 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->bookable()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([SuspendController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertCount(1, $wrestler->suspensions);
-            $this->assertEquals(WrestlerStatus::SUSPENDED, $wrestler->status);
+            $this->assertEquals(WrestlerStatus::suspended(), $wrestler->status);
         });
     }
 
@@ -49,13 +46,13 @@ class SuspendControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
 
-        $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
+        $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([SuspendController::class], $wrestler));
 
-        $this->assertEquals(TagTeamStatus::UNBOOKABLE, $tagTeam->fresh()->status);
+        $this->assertEquals(TagTeamStatus::UNbookable(), $tagTeam->fresh()->status);
     }
 
     /**
@@ -66,7 +63,7 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([SuspendController::class], $wrestler))
             ->assertForbidden();
     }
@@ -95,7 +92,7 @@ class SuspendControllerTest extends TestCase
         $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([SuspendController::class], $wrestler));
     }
 

@@ -10,7 +10,6 @@ use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Stables\DeactivateController;
 use App\Http\Controllers\Stables\StablesController;
 use App\Models\Stable;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -21,8 +20,6 @@ use Tests\TestCase;
  */
 class DeactivateControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -31,20 +28,20 @@ class DeactivateControllerTest extends TestCase
         $stable = Stable::factory()->active()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([DeactivateController::class], $stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
         tap($stable->fresh(), function ($stable) {
             $this->assertNotNull($stable->activations->last()->ended_at);
-            $this->assertEquals(StableStatus::INACTIVE, $stable->status);
+            $this->assertEquals(StableStatus::inactive(), $stable->status);
 
             foreach ($stable->currentWrestlers as $wrestler) {
-                $this->assertEquals(WrestlerStatus::RELEASED, $wrestler->status);
+                $this->assertEquals(WrestlerStatus::released(), $wrestler->status);
             }
 
             foreach ($stable->currentTagTeams as $tagTeam) {
-                $this->assertEquals(TagTeamStatus::RELEASED, $tagTeam->status);
+                $this->assertEquals(TagTeamStatus::released(), $tagTeam->status);
             }
         });
     }
@@ -57,7 +54,7 @@ class DeactivateControllerTest extends TestCase
         $stable = Stable::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([DeactivateController::class], $stable))
             ->assertForbidden();
     }
@@ -86,7 +83,7 @@ class DeactivateControllerTest extends TestCase
         $stable = Stable::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([DeactivateController::class], $stable));
     }
 

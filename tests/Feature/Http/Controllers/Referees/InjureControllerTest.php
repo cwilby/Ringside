@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeInjuredException;
 use App\Http\Controllers\Referees\InjureController;
 use App\Http\Controllers\Referees\RefereesController;
 use App\Models\Referee;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class InjureControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -29,13 +26,13 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->bookable()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([InjureController::class], $referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertCount(1, $referee->injuries);
-            $this->assertEquals(RefereeStatus::INJURED, $referee->status);
+            $this->assertEquals(RefereeStatus::injured(), $referee->status);
         });
     }
 
@@ -46,7 +43,7 @@ class InjureControllerTest extends TestCase
     {
         $referee = Referee::factory()->withFutureEmployment()->create();
 
-        $this->actAs(Role::BASIC)
+        $this->actAs(Role::basic())
             ->patch(action([InjureController::class], $referee))
             ->assertForbidden();
     }
@@ -73,7 +70,7 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->unemployed()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([InjureController::class], $referee));
     }
 
@@ -88,7 +85,7 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->suspended()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([InjureController::class], $referee));
     }
 
@@ -103,7 +100,7 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->released()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([InjureController::class], $referee));
     }
 
@@ -118,7 +115,7 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->withFutureEmployment()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([InjureController::class], $referee));
     }
 
@@ -133,7 +130,7 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->retired()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([InjureController::class], $referee));
     }
 
@@ -149,7 +146,7 @@ class InjureControllerTest extends TestCase
         $referee = Referee::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([InjureController::class], $referee));
     }
 

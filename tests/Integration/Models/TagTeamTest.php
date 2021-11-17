@@ -2,8 +2,8 @@
 
 namespace Tests\Integration\Models;
 
+use App\Enums\TagTeamStatus;
 use App\Models\TagTeam;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -11,8 +11,7 @@ use Tests\TestCase;
  */
 class TagTeamTest extends TestCase
 {
-    use RefreshDatabase,
-        Concerns\EmployableContractTests,
+    use Concerns\EmployableContractTests,
         Concerns\RetirableContractTests,
         Concerns\StableMemberContractTests,
         Concerns\SuspendableContractTests;
@@ -80,9 +79,8 @@ class TagTeamTest extends TestCase
     public function a_tag_team_has_a_status()
     {
         $tagTeam = TagTeam::factory()->create();
-        $tagTeam->setRawAttributes(['status' => 'example'], true);
 
-        $this->assertEquals('example', $tagTeam->getRawOriginal('status'));
+        $this->assertInstanceOf(TagTeamStatus::class, $tagTeam->status);
     }
 
     /**

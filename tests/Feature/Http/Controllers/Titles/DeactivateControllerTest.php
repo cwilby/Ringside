@@ -7,7 +7,6 @@ use App\Enums\TitleStatus;
 use App\Exceptions\CannotBeDeactivatedException;
 use App\Http\Controllers\Titles\DeactivateController;
 use App\Models\Title;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -16,8 +15,6 @@ use Tests\TestCase;
  */
 class DeactivateControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -26,13 +23,13 @@ class DeactivateControllerTest extends TestCase
         $title = Title::factory()->active()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([DeactivateController::class], $title))
             ->assertRedirect(route('titles.index'));
 
         tap($title->fresh(), function ($title) {
             $this->assertNotNull($title->activations->last()->ended_at);
-            $this->assertEquals(TitleStatus::INACTIVE, $title->status);
+            $this->assertEquals(TitleStatus::inactive(), $title->status);
         });
     }
 
@@ -44,7 +41,7 @@ class DeactivateControllerTest extends TestCase
         $title = Title::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([DeactivateController::class], $title))
             ->assertForbidden();
     }
@@ -73,7 +70,7 @@ class DeactivateControllerTest extends TestCase
         $title = Title::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([DeactivateController::class], $title));
     }
 

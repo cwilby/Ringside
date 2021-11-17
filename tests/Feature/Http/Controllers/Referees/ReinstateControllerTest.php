@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Referees\RefereesController;
 use App\Http\Controllers\Referees\ReinstateController;
 use App\Models\Referee;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class ReinstateControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -31,13 +28,13 @@ class ReinstateControllerTest extends TestCase
         $this->assertNull($referee->currentSuspension->ended_at);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ReinstateController::class], $referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertNotNull($referee->suspensions->last()->ended_at);
-            $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
+            $this->assertEquals(RefereeStatus::bookable(), $referee->status);
         });
     }
 
@@ -46,7 +43,7 @@ class ReinstateControllerTest extends TestCase
      */
     public function a_basic_user_cannot_reinstate_a_referee()
     {
-        $this->actAs(Role::BASIC);
+        $this->actAs(Role::basic());
         $referee = Referee::factory()->create();
 
         $this->patch(action([ReinstateController::class], $referee))
@@ -76,7 +73,7 @@ class ReinstateControllerTest extends TestCase
         $referee = Referee::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ReinstateController::class], $referee));
     }
 

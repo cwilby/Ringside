@@ -7,7 +7,6 @@ use App\Http\Controllers\Events\EventsController;
 use App\Models\Event;
 use App\Models\Venue;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\EventRequestDataFactory;
 use Tests\TestCase;
 
@@ -17,8 +16,6 @@ use Tests\TestCase;
  */
 class EventControllerUpdateMethodTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -27,7 +24,7 @@ class EventControllerUpdateMethodTest extends TestCase
         $event = Event::factory()->scheduled()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([EventsController::class, 'edit'], $event))
             ->assertViewIs('events.edit')
             ->assertViewHas('event', $event);
@@ -41,7 +38,7 @@ class EventControllerUpdateMethodTest extends TestCase
         $event = Event::factory()->scheduled()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([EventsController::class, 'edit'], $event))
             ->assertSuccessful();
     }
@@ -54,7 +51,7 @@ class EventControllerUpdateMethodTest extends TestCase
         $event = Event::factory()->unscheduled()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([EventsController::class, 'edit'], $event))
             ->assertSuccessful();
     }
@@ -67,7 +64,7 @@ class EventControllerUpdateMethodTest extends TestCase
         $event = Event::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->get(action([EventsController::class, 'edit'], $event))
             ->assertForbidden();
     }
@@ -92,7 +89,7 @@ class EventControllerUpdateMethodTest extends TestCase
         $event = Event::factory()->past()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([EventsController::class, 'edit'], $event))
             ->assertForbidden();
     }
@@ -115,7 +112,7 @@ class EventControllerUpdateMethodTest extends TestCase
             ->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([EventsController::class, 'edit'], $event))
             ->put(
                 action([EventsController::class, 'update'], $event),
@@ -144,7 +141,7 @@ class EventControllerUpdateMethodTest extends TestCase
         $event = Event::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->from(action([EventsController::class, 'edit'], $event))
             ->put(
                 action([EventsController::class, 'update'], $event),
@@ -177,7 +174,7 @@ class EventControllerUpdateMethodTest extends TestCase
         $event = Event::factory()->past()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([EventsController::class, 'edit'], $event))
             ->put(
                 action([EventsController::class, 'update'], $event),

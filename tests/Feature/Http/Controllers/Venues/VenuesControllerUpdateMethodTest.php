@@ -5,7 +5,6 @@ namespace Tests\Feature\Http\Controllers\Venues;
 use App\Enums\Role;
 use App\Http\Controllers\Venues\VenuesController;
 use App\Models\Venue;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\VenueRequestDataFactory;
 use Tests\TestCase;
 
@@ -15,8 +14,6 @@ use Tests\TestCase;
  */
 class VenuesControllerUpdateMethodTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -25,7 +22,7 @@ class VenuesControllerUpdateMethodTest extends TestCase
         $venue = Venue::factory()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([VenuesController::class, 'edit'], $venue))
             ->assertViewIs('venues.edit')
             ->assertViewHas('venue', $venue);
@@ -39,7 +36,7 @@ class VenuesControllerUpdateMethodTest extends TestCase
         $venue = Venue::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->get(action([VenuesController::class, 'edit'], $venue))
             ->assertForbidden();
     }
@@ -71,7 +68,7 @@ class VenuesControllerUpdateMethodTest extends TestCase
         ]);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([VenuesController::class, 'edit'], $venue))
             ->put(action([VenuesController::class, 'update'], $venue), VenueRequestDataFactory::new()->create([
                 'name' => 'New Venue Name',
@@ -101,7 +98,7 @@ class VenuesControllerUpdateMethodTest extends TestCase
         $venue = Venue::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->from(action([VenuesController::class, 'edit'], $venue))
             ->put(action([VenuesController::class, 'update'], $venue), VenueRequestDataFactory::new()->create())
             ->assertForbidden();

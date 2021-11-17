@@ -6,7 +6,6 @@ use App\Enums\Role;
 use App\Http\Controllers\Stables\StablesController;
 use App\Models\Stable;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -17,15 +16,13 @@ use Tests\TestCase;
  */
 class StableControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
     public function index_returns_a_view()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([StablesController::class, 'index']))
             ->assertOk()
             ->assertViewIs('stables.index')
@@ -41,7 +38,7 @@ class StableControllerTest extends TestCase
     public function a_basic_user_cannot_view_stables_index_page()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->get(action([StablesController::class, 'index']))
             ->assertForbidden();
     }
@@ -64,7 +61,7 @@ class StableControllerTest extends TestCase
         $stable = Stable::factory()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([StablesController::class, 'show'], $stable))
             ->assertViewIs('stables.show')
             ->assertViewHas('stable', $stable);
@@ -75,7 +72,7 @@ class StableControllerTest extends TestCase
      */
     public function a_basic_user_can_view_their_stable_profile()
     {
-        $this->actAs(Role::BASIC);
+        $this->actAs(Role::basic());
         $stable = Stable::factory()->create(['user_id' => auth()->user()]);
 
         $this
@@ -92,7 +89,7 @@ class StableControllerTest extends TestCase
         $stable = Stable::factory()->create(['user_id' => $otherUser->id]);
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->get(action([StablesController::class, 'show'], $stable))
             ->assertForbidden();
     }
@@ -117,7 +114,7 @@ class StableControllerTest extends TestCase
         $stable = Stable::factory()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->delete(action([StablesController::class, 'destroy'], $stable))
             ->assertRedirect(action([StablesController::class, 'index']));
 
@@ -132,7 +129,7 @@ class StableControllerTest extends TestCase
         $stable = Stable::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->delete(action([StablesController::class, 'destroy'], $stable))
             ->assertForbidden();
     }

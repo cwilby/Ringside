@@ -2,8 +2,8 @@
 
 namespace Tests\Integration\Models;
 
+use App\Enums\WrestlerStatus;
 use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -11,8 +11,7 @@ use Tests\TestCase;
  */
 class WrestlerTest extends TestCase
 {
-    use RefreshDatabase,
-        Concerns\EmployableContractTests,
+    use Concerns\EmployableContractTests,
         Concerns\InjurableContractTests,
         Concerns\RetirableContractTests,
         Concerns\StableMemberContractTests,
@@ -124,9 +123,8 @@ class WrestlerTest extends TestCase
     public function a_wrestler_has_a_status()
     {
         $wrestler = Wrestler::factory()->create();
-        $wrestler->setRawAttributes(['status' => 'example'], true);
 
-        $this->assertEquals('example', $wrestler->getRawOriginal('status'));
+        $this->assertInstanceOf(WrestlerStatus::class, $wrestler->status);
     }
 
     /**

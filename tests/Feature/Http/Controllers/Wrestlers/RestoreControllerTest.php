@@ -6,7 +6,6 @@ use App\Enums\Role;
 use App\Http\Controllers\Wrestlers\RestoreController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -17,8 +16,6 @@ use Tests\TestCase;
  */
 class RestoreControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     public Wrestler $wrestler;
 
     public function setUp(): void
@@ -34,7 +31,7 @@ class RestoreControllerTest extends TestCase
     public function invoke_restores_a_deleted_wrestler_and_redirects()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([RestoreController::class], $this->wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
@@ -47,7 +44,7 @@ class RestoreControllerTest extends TestCase
     public function a_basic_user_cannot_restore_a_wrestler()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([RestoreController::class], $this->wrestler))
             ->assertForbidden();
     }

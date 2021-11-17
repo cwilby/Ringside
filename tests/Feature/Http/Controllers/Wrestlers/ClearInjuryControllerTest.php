@@ -9,7 +9,6 @@ use App\Http\Controllers\Wrestlers\ClearInjuryController;
 use App\Http\Controllers\Wrestlers\WrestlersController;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -20,8 +19,6 @@ use Tests\TestCase;
  */
 class ClearInjuryControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -32,13 +29,13 @@ class ClearInjuryControllerTest extends TestCase
         $this->assertNull($wrestler->injuries->last()->ended_at);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ClearInjuryController::class], $wrestler))
             ->assertRedirect(action([WrestlersController::class, 'index']));
 
         tap($wrestler->fresh(), function ($wrestler) {
             $this->assertNotNull($wrestler->injuries->last()->ended_at);
-            $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+            $this->assertEquals(WrestlerStatus::bookable(), $wrestler->status);
         });
     }
 
@@ -54,7 +51,7 @@ class ClearInjuryControllerTest extends TestCase
             ->bookable()
             ->create();
 
-        $this->actAs(Role::ADMINISTRATOR)
+        $this->actAs(Role::administrator())
             ->patch(route('wrestlers.clear-from-injury', $injuredWrestler));
 
         tap($injuredWrestler->fresh(), function ($wrestler) {
@@ -74,7 +71,7 @@ class ClearInjuryControllerTest extends TestCase
         $wrestler = Wrestler::factory()->injured()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([ClearInjuryController::class], $wrestler))
             ->assertForbidden();
     }
@@ -103,7 +100,7 @@ class ClearInjuryControllerTest extends TestCase
         $wrestler = Wrestler::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ClearInjuryController::class], $wrestler));
     }
 

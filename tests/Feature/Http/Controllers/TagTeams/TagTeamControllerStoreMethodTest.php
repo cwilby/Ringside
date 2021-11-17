@@ -7,7 +7,6 @@ use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\Employment;
 use App\Models\TagTeam;
 use App\Models\Wrestler;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\TagTeamRequestDataFactory;
 use Tests\TestCase;
 
@@ -19,15 +18,13 @@ use Tests\TestCase;
  */
 class TagTeamControllerStoreMethodTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
     public function create_returns_a_view()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([TagTeamsController::class, 'create']))
             ->assertViewIs('tagteams.create')
             ->assertViewHas('tagTeam', new TagTeam);
@@ -39,7 +36,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
     public function a_basic_user_cannot_view_the_form_for_creating_a_tag_team()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->get(action([TagTeamsController::class, 'create']))
             ->assertForbidden();
     }
@@ -60,7 +57,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
     public function store_creates_a_tag_team_and_redirects()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([TagTeamsController::class, 'create']))
             ->post(
                 action([TagTeamsController::class, 'store']),
@@ -93,7 +90,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             ->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([TagTeamsController::class, 'create']))
             ->post(
                 action([TagTeamsController::class, 'store']),
@@ -127,7 +124,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             ->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([TagTeamsController::class, 'create']))
             ->post(
                 action([TagTeamsController::class, 'store']),
@@ -160,7 +157,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             ->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([TagTeamsController::class, 'create']))
             ->post(
                 action([TagTeamsController::class, 'store']),
@@ -185,7 +182,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
     public function a_tag_team_cannot_have_a_signature_move_with_wrestlers_not_filled_in_request()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([TagTeamsController::class, 'create']))
             ->post(
                 action([TagTeamsController::class, 'store']),
@@ -203,7 +200,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
     public function a_basic_user_cannot_create_a_tag_team()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->from(action([TagTeamsController::class, 'create']))
             ->post(action([TagTeamsController::class, 'store']), TagTeamRequestDataFactory::new()->create())
             ->assertForbidden();

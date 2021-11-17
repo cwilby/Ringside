@@ -5,7 +5,6 @@ namespace Tests\Feature\Http\Controllers\Referees;
 use App\Enums\Role;
 use App\Http\Controllers\Referees\RefereesController;
 use App\Models\Referee;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\RefereeRequestDataFactory;
 use Tests\TestCase;
 
@@ -17,15 +16,13 @@ use Tests\TestCase;
  */
 class RefereeControllerStoreMethodTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
     public function create_returns_a_view()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([RefereesController::class, 'create']))
             ->assertViewIs('referees.create')
             ->assertViewHas('referee', new Referee);
@@ -37,7 +34,7 @@ class RefereeControllerStoreMethodTest extends TestCase
     public function a_basic_user_cannot_view_the_form_for_creating_a_referee()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->get(action([RefereesController::class, 'create']))
             ->assertForbidden();
     }
@@ -58,7 +55,7 @@ class RefereeControllerStoreMethodTest extends TestCase
     public function store_creates_a_referee_and_redirects()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([RefereesController::class, 'create']))
             ->post(action([RefereesController::class, 'store'], RefereeRequestDataFactory::new()->create([
                 'first_name' => 'James',
@@ -79,7 +76,7 @@ class RefereeControllerStoreMethodTest extends TestCase
     public function an_employment_is_not_created_for_the_referee_if_started_at_is_filled_in_request()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([RefereesController::class, 'create']))
             ->post(
                 action([RefereesController::class, 'index']),
@@ -99,7 +96,7 @@ class RefereeControllerStoreMethodTest extends TestCase
         $startedAt = now()->toDateTimeString();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([RefereesController::class, 'create']))
             ->post(
                 action([RefereesController::class, 'store']),
@@ -118,7 +115,7 @@ class RefereeControllerStoreMethodTest extends TestCase
     public function a_basic_user_cannot_create_a_referee()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->from(action([RefereesController::class, 'create']))
             ->post(action([RefereesController::class, 'store']), RefereeRequestDataFactory::new()->create())
             ->assertForbidden();

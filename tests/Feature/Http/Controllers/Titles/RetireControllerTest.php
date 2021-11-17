@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeRetiredException;
 use App\Http\Controllers\Titles\RetireController;
 use App\Http\Controllers\Titles\TitlesController;
 use App\Models\Title;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -17,8 +16,6 @@ use Tests\TestCase;
  */
 class RetireControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -27,13 +24,13 @@ class RetireControllerTest extends TestCase
         $title = Title::factory()->active()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([RetireController::class], $title))
             ->assertRedirect(action([TitlesController::class, 'index']));
 
         tap($title->fresh(), function ($title) {
             $this->assertCount(1, $title->retirements);
-            $this->assertEquals(TitleStatus::RETIRED, $title->status);
+            $this->assertEquals(TitleStatus::retired(), $title->status);
         });
     }
 
@@ -45,13 +42,13 @@ class RetireControllerTest extends TestCase
         $title = Title::factory()->inactive()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([RetireController::class], $title))
             ->assertRedirect(action([TitlesController::class, 'index']));
 
         tap($title->fresh(), function ($title) {
             $this->assertCount(1, $title->retirements);
-            $this->assertEquals(TitleStatus::RETIRED, $title->status);
+            $this->assertEquals(TitleStatus::retired(), $title->status);
         });
     }
 
@@ -63,7 +60,7 @@ class RetireControllerTest extends TestCase
         $title = Title::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([RetireController::class], $title))
             ->assertForbidden();
     }
@@ -92,7 +89,7 @@ class RetireControllerTest extends TestCase
         $title = Title::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([RetireController::class], $title));
     }
 

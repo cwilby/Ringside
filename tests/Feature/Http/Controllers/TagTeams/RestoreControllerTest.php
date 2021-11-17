@@ -6,7 +6,6 @@ use App\Enums\Role;
 use App\Http\Controllers\TagTeams\RestoreController;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -17,8 +16,6 @@ use Tests\TestCase;
  */
 class RestoreControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     public TagTeam $tagTeam;
 
     public function setUp(): void
@@ -34,7 +31,7 @@ class RestoreControllerTest extends TestCase
     public function invoke_restores_a_deleted_tag_team_and_redirects()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([RestoreController::class], $this->tagTeam))
             ->assertRedirect(action([TagTeamsController::class, 'index']));
 
@@ -47,7 +44,7 @@ class RestoreControllerTest extends TestCase
     public function a_basic_user_cannot_restore_a_tag_team()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([RestoreController::class], $this->tagTeam))
             ->assertForbidden();
     }

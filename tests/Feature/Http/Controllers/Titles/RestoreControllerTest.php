@@ -6,7 +6,6 @@ use App\Enums\Role;
 use App\Http\Controllers\Titles\RestoreController;
 use App\Http\Controllers\Titles\TitlesController;
 use App\Models\Title;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -15,8 +14,6 @@ use Tests\TestCase;
  */
 class RestoreControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     public Title $title;
 
     public function setUp(): void
@@ -32,7 +29,7 @@ class RestoreControllerTest extends TestCase
     public function invoke_restores_a_deleted_title_and_redirects()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([RestoreController::class], $this->title))
             ->assertRedirect(action([TitlesController::class, 'index']));
 
@@ -47,7 +44,7 @@ class RestoreControllerTest extends TestCase
     public function a_basic_user_cannot_restore_a_title()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([RestoreController::class], $this->title))
             ->assertForbidden();
     }

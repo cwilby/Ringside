@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Managers\ClearInjuryController;
 use App\Http\Controllers\Managers\ManagersController;
 use App\Models\Manager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class ClearInjuryControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -29,16 +26,16 @@ class ClearInjuryControllerTest extends TestCase
         $manager = Manager::factory()->injured()->create();
 
         $this->assertNull($manager->injuries->last()->ended_at);
-        $this->assertEquals(ManagerStatus::INJURED, $manager->status);
+        $this->assertEquals(ManagerStatus::injured(), $manager->status);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ClearInjuryController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertNotNull($manager->injuries->last()->ended_at);
-            $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
+            $this->assertEquals(ManagerStatus::available(), $manager->status);
         });
     }
 
@@ -49,7 +46,7 @@ class ClearInjuryControllerTest extends TestCase
     {
         $manager = Manager::factory()->injured()->create();
 
-        $this->actAs(Role::BASIC)
+        $this->actAs(Role::basic())
             ->patch(action([ClearInjuryController::class], $manager))
             ->assertForbidden();
     }
@@ -77,7 +74,7 @@ class ClearInjuryControllerTest extends TestCase
         $manager = Manager::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ClearInjuryController::class], $manager));
     }
 

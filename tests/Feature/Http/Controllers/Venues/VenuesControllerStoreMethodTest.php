@@ -5,7 +5,6 @@ namespace Tests\Feature\Http\Controllers\Venues;
 use App\Enums\Role;
 use App\Http\Controllers\Venues\VenuesController;
 use App\Models\Venue;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\VenueRequestDataFactory;
 use Tests\TestCase;
 
@@ -15,15 +14,13 @@ use Tests\TestCase;
  */
 class VenuesControllerStoreMethodTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
     public function create_returns_a_view()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->get(action([VenuesController::class, 'create']))
             ->assertViewIs('venues.create')
             ->assertViewHas('venue', new Venue);
@@ -35,7 +32,7 @@ class VenuesControllerStoreMethodTest extends TestCase
     public function a_basic_user_cannot_view_the_form_for_creating_a_venue()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->get(action([VenuesController::class, 'create']))
             ->assertForbidden();
     }
@@ -56,7 +53,7 @@ class VenuesControllerStoreMethodTest extends TestCase
     public function store_creates_a_venue_and_redirects()
     {
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([VenuesController::class, 'create']))
             ->post(action([VenuesController::class, 'store']), VenueRequestDataFactory::new()->create([
                 'name' => 'Example Venue',
@@ -84,7 +81,7 @@ class VenuesControllerStoreMethodTest extends TestCase
     public function a_basic_user_cannot_create_a_venue()
     {
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->from(action([VenuesController::class, 'create']))
             ->post(action([VenuesController::class, 'store']), VenueRequestDataFactory::new()->create())
             ->assertForbidden();

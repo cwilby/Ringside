@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeClearedFromInjuryException;
 use App\Http\Controllers\Referees\ClearInjuryController;
 use App\Http\Controllers\Referees\RefereesController;
 use App\Models\Referee;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class ClearInjuryControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -31,13 +28,13 @@ class ClearInjuryControllerTest extends TestCase
         $this->assertNull($referee->injuries->last()->ended_at);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ClearInjuryController::class], $referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
         tap($referee->fresh(), function ($referee) {
             $this->assertNotNull($referee->injuries->last()->ended_at);
-            $this->assertEquals(RefereeStatus::BOOKABLE, $referee->status);
+            $this->assertEquals(RefereeStatus::bookable(), $referee->status);
         });
     }
 
@@ -48,7 +45,7 @@ class ClearInjuryControllerTest extends TestCase
     {
         $referee = Referee::factory()->injured()->create();
 
-        $this->actAs(Role::BASIC)
+        $this->actAs(Role::basic())
             ->patch(action([ClearInjuryController::class], $referee))
             ->assertForbidden();
     }
@@ -77,7 +74,7 @@ class ClearInjuryControllerTest extends TestCase
         $referee = Referee::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ClearInjuryController::class], $referee));
     }
 

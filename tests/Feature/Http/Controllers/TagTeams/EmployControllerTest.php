@@ -9,7 +9,6 @@ use App\Exceptions\CannotBeEmployedException;
 use App\Http\Controllers\TagTeams\EmployController;
 use App\Http\Controllers\TagTeams\TagTeamsController;
 use App\Models\TagTeam;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -20,8 +19,6 @@ use Tests\TestCase;
  */
 class EmployControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -30,20 +27,20 @@ class EmployControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->unemployed()->create();
 
         $this->assertCount(0, $tagTeam->employments);
-        $this->assertEquals(TagTeamStatus::UNEMPLOYED, $tagTeam->status);
+        $this->assertEquals(TagTeamStatus::unemployed(), $tagTeam->status);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([EmployController::class], $tagTeam))
             ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertCount(1, $tagTeam->employments);
-            $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
+            $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
 
             foreach ($tagTeam->currentWrestlers as $wrestler) {
                 $this->assertCount(1, $wrestler->employments);
-                $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+                $this->assertEquals(WrestlerStatus::bookable(), $wrestler->status);
             }
         });
     }
@@ -57,20 +54,20 @@ class EmployControllerTest extends TestCase
         $startedAt = $tagTeam->employments->last()->started_at;
 
         $this->assertTrue(now()->lt($startedAt));
-        $this->assertEquals(TagTeamStatus::FUTURE_EMPLOYMENT, $tagTeam->status);
+        $this->assertEquals(TagTeamStatus::future_employment(), $tagTeam->status);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([EmployController::class], $tagTeam))
             ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) use ($startedAt) {
             $this->assertTrue($tagTeam->currentEmployment->started_at->lt($startedAt));
-            $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
+            $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
 
             foreach ($tagTeam->currentWrestlers as $wrestler) {
                 $this->assertTrue($wrestler->currentEmployment->started_at->lt($startedAt));
-                $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+                $this->assertEquals(WrestlerStatus::bookable(), $wrestler->status);
             }
         });
     }
@@ -82,20 +79,20 @@ class EmployControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->released()->create();
 
-        $this->assertEquals(TagTeamStatus::RELEASED, $tagTeam->status);
+        $this->assertEquals(TagTeamStatus::released(), $tagTeam->status);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([EmployController::class], $tagTeam))
             ->assertRedirect(action([TagTeamsController::class, 'index']));
 
         tap($tagTeam->fresh(), function ($tagTeam) {
             $this->assertCount(2, $tagTeam->employments);
-            $this->assertEquals(TagTeamStatus::BOOKABLE, $tagTeam->status);
+            $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
 
             foreach ($tagTeam->currentWrestlers as $wrestler) {
                 $this->assertCount(2, $wrestler->employments);
-                $this->assertEquals(WrestlerStatus::BOOKABLE, $wrestler->status);
+                $this->assertEquals(WrestlerStatus::bookable(), $wrestler->status);
             }
         });
     }
@@ -108,7 +105,7 @@ class EmployControllerTest extends TestCase
         $tagTeam = TagTeam::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([EmployController::class], $tagTeam))
             ->assertForbidden();
     }
@@ -135,7 +132,7 @@ class EmployControllerTest extends TestCase
 
         $tagTeam = TagTeam::factory()->{$factoryState}()->create();
 
-        $this->actAs(Role::ADMINISTRATOR)
+        $this->actAs(Role::administrator())
             ->patch(action([EmployController::class], $tagTeam));
     }
 

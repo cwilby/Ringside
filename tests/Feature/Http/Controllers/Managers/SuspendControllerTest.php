@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeSuspendedException;
 use App\Http\Controllers\Managers\ManagersController;
 use App\Http\Controllers\Managers\SuspendController;
 use App\Models\Manager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class SuspendControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -29,13 +26,13 @@ class SuspendControllerTest extends TestCase
         $manager = Manager::factory()->available()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([SuspendController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertCount(1, $manager->suspensions);
-            $this->assertEquals(ManagerStatus::SUSPENDED, $manager->status);
+            $this->assertEquals(ManagerStatus::suspended(), $manager->status);
         });
     }
 
@@ -47,7 +44,7 @@ class SuspendControllerTest extends TestCase
         $manager = Manager::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([SuspendController::class], $manager))
             ->assertForbidden();
     }
@@ -76,7 +73,7 @@ class SuspendControllerTest extends TestCase
         $manager = Manager::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([SuspendController::class], $manager));
     }
 

@@ -9,7 +9,6 @@ use App\Models\Referee;
 use App\Models\Title;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class EventMatchControllerStoreMethodTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function setUp(): void
     {
         parent::setUp();
@@ -39,7 +36,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
         $wrestlerB = Wrestler::factory()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([EventMatchesController::class, 'create'], $event))
             ->post(
                 action([EventMatchesController::class, 'store'], $event),
@@ -74,7 +71,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
         $wrestlerB = Wrestler::factory()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->from(action([EventMatchesController::class, 'create'], $event))
             ->post(
                 action([EventMatchesController::class, 'store'], $event),
@@ -100,7 +97,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
         $event = Event::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->from(action([EventMatchesController::class, 'create'], $event))
             ->post(
                 action([EventMatchesController::class, 'store'], $event),

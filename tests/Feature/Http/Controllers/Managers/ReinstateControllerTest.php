@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeReinstatedException;
 use App\Http\Controllers\Managers\ManagersController;
 use App\Http\Controllers\Managers\ReinstateController;
 use App\Models\Manager;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -19,8 +18,6 @@ use Tests\TestCase;
  */
 class ReinstateControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */
@@ -31,13 +28,13 @@ class ReinstateControllerTest extends TestCase
         $this->assertNull($manager->currentSuspension->ended_at);
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ReinstateController::class], $manager))
             ->assertRedirect(action([ManagersController::class, 'index']));
 
         tap($manager->fresh(), function ($manager) {
             $this->assertNotNull($manager->suspensions->last()->ended_at);
-            $this->assertEquals(ManagerStatus::AVAILABLE, $manager->status);
+            $this->assertEquals(ManagerStatus::available(), $manager->status);
         });
     }
 
@@ -49,7 +46,7 @@ class ReinstateControllerTest extends TestCase
         $manager = Manager::factory()->create();
 
         $this
-            ->actAs(Role::BASIC)
+            ->actAs(Role::basic())
             ->patch(action([ReinstateController::class], $manager))
             ->assertForbidden();
     }
@@ -78,7 +75,7 @@ class ReinstateControllerTest extends TestCase
         $manager = Manager::factory()->{$factoryState}()->create();
 
         $this
-            ->actAs(Role::ADMINISTRATOR)
+            ->actAs(Role::administrator())
             ->patch(action([ReinstateController::class], $manager));
     }
 

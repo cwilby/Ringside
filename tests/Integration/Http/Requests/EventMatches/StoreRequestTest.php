@@ -7,7 +7,6 @@ use App\Models\Title;
 use App\Models\User;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
@@ -19,8 +18,7 @@ use Tests\ValidatesRequests;
  */
 class StoreRequestTest extends TestCase
 {
-    use RefreshDatabase,
-        ValidatesRequests;
+    use ValidatesRequests;
 
     public function setUp(): void
     {

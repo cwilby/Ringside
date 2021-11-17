@@ -2,8 +2,8 @@
 
 namespace Tests\Integration\Models;
 
+use App\Enums\RefereeStatus;
 use App\Models\Referee;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
@@ -11,8 +11,7 @@ use Tests\TestCase;
  */
 class RefereeTest extends TestCase
 {
-    use RefreshDatabase,
-        Concerns\EmployableContractTests,
+    use Concerns\EmployableContractTests,
         Concerns\InjurableContractTests,
         Concerns\RetirableContractTests,
         Concerns\SuspendableContractTests;
@@ -82,9 +81,8 @@ class RefereeTest extends TestCase
     public function a_referee_has_a_status()
     {
         $referee = Referee::factory()->create();
-        $referee->setRawAttributes(['status' => 'example'], true);
 
-        $this->assertEquals('example', $referee->getRawOriginal('status'));
+        $this->assertInstanceOf(RefereeStatus::class, $referee->status);
     }
 
     /**
