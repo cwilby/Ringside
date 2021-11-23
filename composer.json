@@ -10,7 +10,6 @@
     "require": {
         "php": "^8.0",
         "fideloper/proxy": "^4.0",
-        "illuminatech/validation-composite": "*",
         "laravel/framework": "^8.70",
         "laravel/telescope": "^4",
         "laravel/tinker": "^2.0",

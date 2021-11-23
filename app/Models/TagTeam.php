@@ -23,8 +23,7 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
         Concerns\Retirable,
         Concerns\StableMember,
         Concerns\Suspendable,
-        Concerns\Unguarded,
-        \Staudenmeir\EloquentHasManyDeep\HasTableAlias;
+        Concerns\Unguarded;
 
     /**
      * The "booted" method of the model.
