@@ -11,7 +11,6 @@ use App\Models\Contracts\Releasable;
 use App\Models\Contracts\Retirable;
 use App\Models\Contracts\StableMember;
 use App\Models\Contracts\Suspendable;
-use Fidum\EloquentMorphToOne\HasMorphToOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,7 +19,6 @@ class TagTeam extends Model implements Bookable, Employable, Releasable, Retirab
 {
     use SoftDeletes,
         HasFactory,
-        HasMorphToOne,
         Concerns\OwnedByUser,
         Concerns\Retirable,
         Concerns\StableMember,
