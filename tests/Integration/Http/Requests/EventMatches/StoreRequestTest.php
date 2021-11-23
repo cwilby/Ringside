@@ -4,9 +4,11 @@ namespace Tests\Integration\Http\Requests\EventMatches;
 
 use App\Http\Requests\EventMatches\StoreRequest;
 use App\Models\Title;
+use App\Models\MatchType;
 use App\Models\User;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 use Tests\ValidatesRequests;
@@ -44,6 +46,7 @@ class StoreRequestTest extends TestCase
      */
     public function a_non_administrator_is_not_authorized_to_make_this_request()
     {
+        /** @var Authenticatable */
         $user = User::factory()->create();
 
         $this->createRequest(StoreRequest::class)
@@ -205,6 +208,58 @@ class StoreRequestTest extends TestCase
                 'titles' => [999999],
             ]))
             ->assertFailsValidation(['titles.0' => 'exists']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_event_match_competitors_is_required()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'competitors' => null,
+            ]))
+            ->assertFailsValidation(['competitors' => 'required']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_event_match_competitors_must_be_an_array()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'competitors' => 'not-an-array',
+            ]))
+            ->assertFailsValidation(['competitors' => 'array']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_event_match_competitors_array_must_contain_at_least_two_items()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'competitors' => [[1]],
+            ]))
+            ->assertFailsValidation(['competitors' => 'min:2']);
+    }
+
+    /**
+     * @test
+     */
+    public function each_event_match_competitors_items_in_the_array_must_equal_number_of_sides_of_the_match_type()
+    {
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'match_type_id' => MatchType::factory()->create(['number_of_sides' => 2])->id,
+                'competitors' => [
+                    [1],
+                    [2],
+                    [3],
+                ],
+            ]))->assertFailsValidation(['competitors' => 'app\rules\competitorsgroupedintocorrectnumberofsidesformatchtype']);
     }
 
     /**

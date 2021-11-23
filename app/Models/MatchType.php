@@ -15,4 +15,13 @@ class MatchType extends Model
      * @var string
      */
     protected $table = 'match_types';
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'number_of_sides' => 'integer',
+    ];
 }
