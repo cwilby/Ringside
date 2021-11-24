@@ -3,8 +3,8 @@
 namespace Tests\Integration\Http\Requests\EventMatches;
 
 use App\Http\Requests\EventMatches\StoreRequest;
-use App\Models\Title;
 use App\Models\MatchType;
+use App\Models\Title;
 use App\Models\User;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
@@ -213,6 +213,21 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
+    public function each_event_match_titles_must_be_active()
+    {
+        $title = Title::factory()->nonActive()->create();
+
+        dd($this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'titles' => [$title->id],
+            ]))->assertHasMessage('testing'));
+
+        // ->assertFailsValidation(['titles.0' => 'app\rules\titlemustbeactive']);
+    }
+
+    /**
+     * @test
+     */
     public function each_event_match_competitors_is_required()
     {
         $this->createRequest(StoreRequest::class)
@@ -279,15 +294,15 @@ class StoreRequestTest extends TestCase
      */
     public function title_with_champion_must_be_included_in_competitors_for_title_match()
     {
-        $title = Title::factory()->withChampion(Wrestler::factory())->create();
+        // $title = Title::factory()->withChampion(Wrestler::factory())->create();
+        $title = Title::factory()->create();
         // dd($title->championships);
-        dd($title->allTitleChampions);
         [$wrestlerB, $wrestlerC] = Wrestler::factory()->count(2)->create();
 
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
-                'title' => [$title->id],
-                'competitors' => [$wrestlerB->id, $wrestlerC->id],
+                'titles' => [$title->id],
+                'competitors' => [[$wrestlerB->id], [$wrestlerC->id]],
             ]))
             ->assertFailsValidation(['competitors']);
     }

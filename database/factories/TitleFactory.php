@@ -110,4 +110,18 @@ class TitleFactory extends Factory
     {
         return $this->has(TitleChampionship::factory()->hasAttached($championFactory, [], 'champion'), 'championships');
     }
+
+    public function nonActive()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => $this->faker->randomElement([
+                    TitleStatus::inactive(),
+                    TitleStatus::retired(),
+                    TitleStatus::future_activation(),
+                    TitleStatus::unactivated(),
+                ]),
+            ];
+        });
+    }
 }

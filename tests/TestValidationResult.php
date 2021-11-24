@@ -93,6 +93,7 @@ class TestValidationResult
     public function assertHasMessage($message, $rule = null)
     {
         $validationMessages = $this->getValidationMessages($rule);
+        dd($validationMessages);
         assertContains(
             $message,
             $validationMessages,
