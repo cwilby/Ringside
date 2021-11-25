@@ -5,7 +5,7 @@ namespace App\Http\Requests\EventMatches;
 use App\Models\EventMatch;
 use App\Rules\CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType;
 use App\Rules\TitleChampionIncludedInTitleMatch;
-use App\Rules\TitleMustBeActive;
+use App\Rules\TitlesMustBeActive;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -33,7 +33,7 @@ class StoreRequest extends FormRequest
             'referees' => ['required', 'array'],
             'referees.*' => ['integer', 'distinct', Rule::exists('referees', 'id')],
             'titles' => ['nullable', 'array'],
-            'titles.*' => ['integer', 'distinct', Rule::exists('titles', 'id'), new TitleMustBeActive],
+            'titles.*' => ['integer', 'distinct', Rule::exists('titles', 'id')],
             'competitors' => ['required', 'array', 'min:2'],
             'competitors.*' => ['required', 'array'],
             'competitors.*.*' => ['integer', 'distinct', Rule::exists('wrestlers', 'id')],
@@ -51,20 +51,28 @@ class StoreRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isEmpty()) {
-                $rule = new CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType($this->input('match_type_id'));
+                $ruleA = new CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType($this->input('match_type_id'));
 
-                if (! $rule->passes('competitors', $this->input('competitors'))) {
+                if (! $ruleA->passes('competitors', $this->input('competitors'))) {
                     $validator->addFailure('competitors', CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class);
                 }
 
                 if ($this->input('titles')) {
-                    $rule2 = new TitleChampionIncludedInTitleMatch($this->input('titles'));
+                    $ruleB = new TitlesMustBeActive;
 
-                    if (! $rule2->passes('competitors', $this->input('competitors'))) {
-                        $validator->addFailure('competitors', TitleChampionIncludedInTitleMatch::class);
+                    if (! $ruleB->passes('titles', $this->input('titles'))) {
+                        $validator->addFailure('titles', TitlesMustBeActive::class);
                     }
+
+                    // $ruleC = new TitleChampionIncludedInTitleMatch($this->input('titles'));
+
+                    // if (! $ruleC->passes('competitors', $this->input('competitors'))) {
+                    //     $validator->addFailure('competitors', TitleChampionIncludedInTitleMatch::class);
+                    // }
                 }
             }
         });
+
+        return $validator->messages()->getMessages();
     }
 }
