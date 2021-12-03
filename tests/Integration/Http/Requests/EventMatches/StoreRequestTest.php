@@ -273,7 +273,9 @@ class StoreRequestTest extends TestCase
                     [2],
                     [3],
                 ],
-            ]))->assertFailsValidation(['competitors' => 'app\rules\competitorsgroupedintocorrectnumberofsidesformatchtype']);
+            ]))->assertFailsValidation([
+                'competitors' => 'app\rules\competitorsgroupedintocorrectnumberofsidesformatchtype',
+            ]);
     }
 
     /**
