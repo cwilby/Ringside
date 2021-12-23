@@ -13,8 +13,8 @@ use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 
 /**
- * @group events
- * @group feature-events
+ * @group event-matches
+ * @group feature-event-matches
  */
 class EventMatchControllerStoreMethodTest extends TestCase
 {
@@ -30,10 +30,10 @@ class EventMatchControllerStoreMethodTest extends TestCase
      */
     public function store_creates_a_match_for_an_event_and_redirects()
     {
-        $event = Event::factory()->create();
-        $referee = Referee::factory()->create();
-        $wrestlerA = Wrestler::factory()->create();
-        $wrestlerB = Wrestler::factory()->create();
+        $event = Event::factory()->scheduled()->create();
+        $referee = Referee::factory()->bookable()->create();
+        $wrestlerA = Wrestler::factory()->bookable()->create();
+        $wrestlerB = Wrestler::factory()->bookable()->create();
 
         $this
             ->actAs(Role::administrator())
@@ -64,11 +64,11 @@ class EventMatchControllerStoreMethodTest extends TestCase
      */
     public function store_creates_a_title_match_for_an_event_and_redirects()
     {
-        $event = Event::factory()->create();
-        $referee = Referee::factory()->create();
-        $title = Title::factory()->create();
-        $wrestlerA = Wrestler::factory()->create();
-        $wrestlerB = Wrestler::factory()->create();
+        $event = Event::factory()->scheduled()->create();
+        $referee = Referee::factory()->bookable()->create();
+        $title = Title::factory()->active()->create();
+        $wrestlerA = Wrestler::factory()->bookable()->create();
+        $wrestlerB = Wrestler::factory()->bookable()->create();
 
         $this
             ->actAs(Role::administrator())

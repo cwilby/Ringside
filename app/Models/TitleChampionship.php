@@ -43,18 +43,8 @@ class TitleChampionship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function wrestler()
+    public function champion()
     {
-        return $this->morphedByMany(Wrestler::class, 'champion', 'title_championships', 'title_id');
-    }
-
-    /**
-     * Undocumented function.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function tagTeam()
-    {
-        return $this->morphedByMany(TagTeam::class, 'champion', 'title_championships', 'title_id');
+        return $this->morphTo();
     }
 }

@@ -292,14 +292,10 @@ class StoreRequestTest extends TestCase
 
     /**
      * @test
-     * @todo Fix test
      */
     public function title_with_champion_must_be_included_in_competitors_for_title_match()
     {
-        $this->markTestIncomplete();
-        // $title = Title::factory()->withChampion(Wrestler::factory())->create();
-        $title = Title::factory()->create();
-        // dd($title->championships);
+        $title = Title::factory()->active()->withChampion(Wrestler::factory()->bookable())->create();
         [$wrestlerB, $wrestlerC] = Wrestler::factory()->count(2)->create();
 
         $this->createRequest(StoreRequest::class)
@@ -307,6 +303,24 @@ class StoreRequestTest extends TestCase
                 'titles' => [$title->id],
                 'competitors' => [[$wrestlerB->id], [$wrestlerC->id]],
             ]))
-            ->assertFailsValidation(['competitors']);
+            ->assertFailsValidation([
+                'competitors' => 'app\rules\titlechampionincludedintitlematch',
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function title_with_champion_must_be_included_in_competitors_for_title_match_two()
+    {
+        $title = Title::factory()->active()->withChampion(Wrestler::factory()->bookable())->create();
+        $nonChampionWrestler = Wrestler::factory()->bookable()->create();
+
+        $this->createRequest(StoreRequest::class)
+            ->validate(EventMatchRequestDataFactory::new()->create([
+                'titles' => [$title->id],
+                'competitors' => [[$title->currentChampionship->champion->id], [$nonChampionWrestler->id]],
+            ]))
+            ->assertPassesValidation();
     }
 }

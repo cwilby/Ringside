@@ -12,11 +12,11 @@ class TitlesMustBeActive implements Rule
     /**
      * @var Collection
      */
-    private $inActiveTitleNames;
+    private $inactiveTitleNames;
 
     public function __construct()
     {
-        $this->inActiveTitleNames = collect();
+        $this->inactiveTitleNames = collect();
     }
 
     /**
@@ -28,17 +28,17 @@ class TitlesMustBeActive implements Rule
      */
     public function passes($attribute, $value)
     {
-        $titlesFromRequest = Title::findMany($value);
+        $nonActiveTitles = Title::where('status', '!=', TitleStatus::active())->findMany($value);
 
-        foreach ($titlesFromRequest as $title) {
-            if (! $title->status->equals(TitleStatus::active())) {
-                $this->inActiveTitleNames->push($title->name);
-            }
+        if ($nonActiveTitles->isEmpty()) {
+            return true;
         }
 
-        if ($this->inActiveTitleNames->isNotEmpty()) {
-            return false;
+        foreach ($nonActiveTitles as $title) {
+            $this->inactiveTitleNames->push($title->name);
         }
+
+        return false;
     }
 
     /**
@@ -48,10 +48,10 @@ class TitlesMustBeActive implements Rule
      */
     public function message()
     {
-        if ($this->inActiveTitleNames->count() == 1) {
-            return $this->inActiveTitleNames->implode(',').' is not an active title and cannot be added to the match';
+        if ($this->inactiveTitleNames->count() == 1) {
+            return $this->inactiveTitleNames->implode(',').' is not an active title and cannot be added to the match';
         }
 
-        return $this->inActiveTitleNames->implode(', ').' are not active titles and cannot be added to the match.';
+        return $this->inactiveTitleNames->implode(', ').' are not active titles and cannot be added to the match.';
     }
 }

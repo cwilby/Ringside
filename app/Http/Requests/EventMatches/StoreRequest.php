@@ -58,17 +58,13 @@ class StoreRequest extends FormRequest
                 }
 
                 if ($this->input('titles')) {
-                    $ruleB = new TitlesMustBeActive;
-
-                    if (! $ruleB->passes('titles', $this->input('titles'))) {
+                    if (! (new TitlesMustBeActive)->passes('titles', $this->input('titles'))) {
                         $validator->addFailure('titles', TitlesMustBeActive::class);
                     }
 
-                    // $ruleC = new TitleChampionIncludedInTitleMatch($this->input('titles'));
-
-                    // if (! $ruleC->passes('competitors', $this->input('competitors'))) {
-                    //     $validator->addFailure('competitors', TitleChampionIncludedInTitleMatch::class);
-                    // }
+                    if (! (new TitleChampionIncludedInTitleMatch($this->input('titles')))->passes('competitors', $this->input('competitors'))) {
+                        $validator->addFailure('competitors', TitleChampionIncludedInTitleMatch::class);
+                    }
                 }
             }
         });

@@ -69,9 +69,14 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function currentChampion()
+    public function currentChampionship()
     {
-        return $this->morphOneThrough(TitleChampionship::class, 'champion')->whereNotNull('lost_at');
+        return $this->hasOne(TitleChampionship::class)->whereNull('lost_at')->latestOfMany();
+    }
+
+    public function isVacant()
+    {
+        return is_null($this->currentChampionship->champion);
     }
 
     /**

@@ -33,17 +33,19 @@ class TitleChampionIncludedInTitleMatch implements Rule
     {
         $titles = Title::findMany($this->titleIds);
 
+        $titlesNotHavingChampionsInvoled = collect();
+
         foreach ($titles as $title) {
-            if (is_null($title->champion)) {
-                continue;
+            if ($title->isVacant()) {
+                break;
             }
 
-            if (in_array($title->champion->id, $value)) {
-                return true;
+            if (! in_array($title->currentChampionship->champion->id, $value)) {
+                $titlesNotHavingChampionsInvoled->push($title->id);
             }
         }
 
-        return false;
+        return $titlesNotHavingChampionsInvoled->isEmpty();
     }
 
     /**
