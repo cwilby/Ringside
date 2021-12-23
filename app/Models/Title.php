@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
+use App\Observers\TitleObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,23 +23,27 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
         SoftDeletes;
 
     /**
-     * The "booted" method of the model.
+     * The "boot" method of the model.
      *
      * @return void
      */
-    protected static function booted()
+    protected static function boot()
     {
-        static::saving(function ($title) {
-            $title->updateStatus();
-        });
+        parent::boot();
+
+        self::observe(TitleObserver::class);
     }
 
     /**
-     * The table associated with the model.
+     * Create a new Eloquent query builder for the model.
      *
-     * @var string
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    protected $table = 'titles';
+    public function newEloquentBuilder($query)
+    {
+        return new TitleQueryBuilder($query);
+    }
 
     /**
      * The attributes that should be cast to native types.
@@ -84,23 +90,5 @@ class Title extends Model implements Activatable, Deactivatable, Retirable
         }
 
         return false;
-    }
-
-    /**
-     * Update the status for the title.
-     *
-     * @return $this
-     */
-    public function updateStatus()
-    {
-        $this->status = match (true) {
-            $this->isCurrentlyActivated() => TitleStatus::active(),
-            $this->hasFutureActivation() => TitleStatus::future_activation(),
-            $this->isDeactivated() => TitleStatus::inactive(),
-            $this->isRetired() => TitleStatus::retired(),
-            default => TitleStatus::unactivated()
-        };
-
-        return $this;
     }
 }
