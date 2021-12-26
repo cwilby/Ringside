@@ -12,7 +12,7 @@ class EventMatchFactory extends Factory
      *
      * @var string
      */
-    protected $model = EventMatch::class;
+    protected $modelClass = EventMatch::class;
 
     /**
      * Define the model's default state.

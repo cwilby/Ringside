@@ -22,9 +22,11 @@ class VenueFactory extends Factory
      */
     public function definition(): array
     {
+        // $this->faker->addProvider(new \Faker\Provider\en_US\Address($this->faker));
+
         return [
             'name' => $this->faker->sentence(),
-            'address1' => $this->faker->buildingNumber().' '.$this->faker->streetName(),
+            'address1' => $this->faker->buildingNumber() . ' ' . $this->faker->streetName(),
             'address2' => $this->faker->optional()->secondaryAddress(),
             'city' => $this->faker->city(),
             'state' => $this->faker->state(),
@@ -32,8 +34,13 @@ class VenueFactory extends Factory
         ];
     }
 
-    public function softDeleted()
+    /**
+     * Generate a soft deleted venue.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function softDeleted(): Factory
     {
-        return $this->state(fn (array $attributes) => ['deleted_at' => now()]);
+        return $this->state(['deleted_at' => now()]);
     }
 }

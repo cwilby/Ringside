@@ -34,9 +34,12 @@ class ActivationFactory extends Factory
     }
 
     /**
-     * @param string|Carbon $activationDate
+     * Set the start date of the activation.
+     *
+     * @param  string|Carbon $activationDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function started($activationDate = 'now')
+    public function started($activationDate = 'now'): Factory
     {
         return $this->state([
             'started_at' => $activationDate instanceof Carbon ? $activationDate : new Carbon($activationDate),
@@ -44,16 +47,24 @@ class ActivationFactory extends Factory
     }
 
     /**
-     * @param string|Carbon $deactivationDate
+     * Set the deactivation date of the activation.
+     *
+     * @param  string|Carbon $deactivationDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function ended($deactivationDate = 'now')
+    public function ended($deactivationDate = 'now'): Factory
     {
         return $this->state([
             'ended_at' => $deactivationDate instanceof Carbon ? $deactivationDate : new Carbon($deactivationDate),
         ]);
     }
 
-    public function activatable()
+    /**
+     * Retrieve a random activatable model.
+     *
+     * @return mixed
+     */
+    public function activatable(): mixed
     {
         return $this->faker->randomElement([
             Stable::class,

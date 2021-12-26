@@ -41,6 +41,7 @@ class UserFactory extends Factory
         ]);
     }
 
+    
     public function basicUser(): self
     {
         return $this->state([
@@ -48,7 +49,13 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function withRole($role)
+    /**
+     * Create a user with a specific role.
+     *
+     * @param  string $role
+     * @return static
+     */
+    public function withRole(string $role): static
     {
         return $this->state([
             'role' => $role,

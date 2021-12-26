@@ -34,89 +34,115 @@ class ManagerFactory extends Factory
         ];
     }
 
-    public function available()
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
     {
-        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::available()])
-        ->has(Employment::factory()->started(Carbon::yesterday()))
-        ->afterCreating(function (Manager $manager) {
-            $manager->save();
-        });
+        return $this->afterCreating(fn (Manager $manager) => $manager->save());
     }
 
-    public function withFutureEmployment()
+    /**
+     * Generate an available manager.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function available(): Factory
     {
-        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::future_employment()])
-        ->has(Employment::factory()->started(Carbon::tomorrow()))
-        ->afterCreating(function (Manager $manager) {
-            $manager->save();
-        });
+        return $this->state(['status' => ManagerStatus::available()])
+            ->has(Employment::factory()->started(Carbon::yesterday()));
     }
 
-    public function unemployed()
+    /**
+     * Generate a manager with a future employment.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withFutureEmployment(): Factory
     {
-        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::unemployed()])
-        ->afterCreating(function (Manager $manager) {
-            $manager->save();
-        });
+        return $this->state(['status' => ManagerStatus::future_employment()])
+            ->has(Employment::factory()->started(Carbon::tomorrow()));
     }
 
-    public function retired()
+    /**
+     * Generate an unemployed manager.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function unemployed(): Factory
+    {
+        return $this->state(['status' => ManagerStatus::unemployed()]);
+    }
+
+    /**
+     * Generate a retired manager.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function retired(): Factory
     {
         $start = now()->subMonths(1);
         $end = now()->subDays(3);
 
-        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::retired()])
-        ->has(Employment::factory()->started($start)->ended($end))
-        ->has(Retirement::factory()->started($end))
-        ->afterCreating(function (Manager $manager) {
-            $manager->save();
-        });
+        return $this->state(['status' => ManagerStatus::retired()])
+            ->has(Employment::factory()->started($start)->ended($end))
+            ->has(Retirement::factory()->started($end));
     }
 
-    public function released()
+    /**
+     * Generate a released manager.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function released(): Factory
     {
         $start = now()->subMonths(1);
         $end = now()->subDays(3);
 
-        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::released()])
-        ->has(Employment::factory()->started($start)->ended($end))
-        ->afterCreating(function (Manager $manager) {
-            $manager->save();
-        });
+        return $this->state(['status' => ManagerStatus::released()])
+            ->has(Employment::factory()->started($start)->ended($end));
     }
 
-    public function suspended()
+    /**
+     * Generate a suspened manager.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function suspended(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::suspended()])
-        ->has(Employment::factory()->started($start))
-        ->has(Suspension::factory()->started($end))
-        ->afterCreating(function (Manager $manager) {
-            $manager->save();
-        });
+        return $this->state(['status' => ManagerStatus::suspended()])
+            ->has(Employment::factory()->started($start))
+            ->has(Suspension::factory()->started($end));
     }
 
-    public function injured()
+    /**
+     * Generate an injured manager.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function injured(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
 
-        return $this->state(fn (array $attributes) => ['status' => ManagerStatus::injured()])
-        ->has(Employment::factory()->started($start))
-        ->has(Injury::factory()->started($now))
-        ->afterCreating(function (Manager $manager) {
-            $manager->save();
-        });
+        return $this->state(['status' => ManagerStatus::injured()])
+            ->has(Employment::factory()->started($start))
+            ->has(Injury::factory()->started($now));
     }
 
-    public function softDeleted()
+    /**
+     * Generate a soft deleted manager.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function softDeleted(): Factory
     {
-        return $this->state(fn (array $attributes) => ['deleted_at' => now()])
-        ->afterCreating(function (Manager $manager) {
-            $manager->save();
-        });
+        return $this->state(['deleted_at' => now()]);
     }
 }

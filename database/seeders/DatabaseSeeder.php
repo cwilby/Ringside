@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $dateToStart = Carbon::now()->subYears(5);
 
@@ -27,14 +27,5 @@ class DatabaseSeeder extends Seeder
         // $this->call(RefereesTableSeeder::class, false, $dateToStart->copy());
         // $this->call(StablesTableSeeder::class, false, $dateToStart->copy());
         // $this->call(EventsTableSeeder::class);
-    }
-
-    public function call($class, $silent = false, $extra = null)
-    {
-        $this->resolve($class)->run($extra);
-
-        if (isset($this->command)) {
-            $this->command->getOutput()->writeln("<info>Seeded:</info> $class");
-        }
     }
 }

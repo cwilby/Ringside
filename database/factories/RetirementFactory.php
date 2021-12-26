@@ -28,19 +28,22 @@ class RetirementFactory extends Factory
      */
     public function definition(): array
     {
-        // $retiree = $this->retirable();
+        $retiree = $this->retirable();
 
         return [
-            // 'retiree_id' => $retiree::factory(),
-            // 'retiree_type' => $retiree,
+            'retiree_id' => $retiree::factory(),
+            'retiree_type' => $retiree,
             'started_at' => now()->toDateTimeString(),
         ];
     }
 
     /**
-     * @param string|Carbon $retirementDate
+     * Set the start date of the retirement.
+     *
+     * @param  string|Carbon $retirementDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function started($retirementDate = 'now')
+    public function started($retirementDate = 'now'): Factory
     {
         return $this->state([
             'started_at' => $retirementDate instanceof Carbon ? $retirementDate : new Carbon($retirementDate),
@@ -48,16 +51,24 @@ class RetirementFactory extends Factory
     }
 
     /**
+     * Set the end date of the retirement.
+     *
      * @param string|Carbon $unretireDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function ended($unretireDate = 'now')
+    public function ended($unretireDate = 'now'): Factory
     {
         return $this->state([
             'ended_at' => $unretireDate instanceof Carbon ? $unretireDate : new Carbon($unretireDate),
         ]);
     }
 
-    public function retirable()
+    /**
+     * Retrieve a random retirable model.
+     *
+     * @return mixed
+     */
+    public function retirable(): mixed
     {
         return $this->faker->randomElement([
             Manager::class,

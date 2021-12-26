@@ -35,9 +35,12 @@ class InjuryFactory extends Factory
     }
 
     /**
-     * @param string|Carbon $injureDate
+     * Set the start date of the injury.
+     *
+     * @param  string|Carbon $injureDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function started($injureDate = 'now')
+    public function started($injureDate = 'now'): Factory
     {
         return $this->state([
             'started_at' => $injureDate instanceof Carbon ? $injureDate : new Carbon($injureDate),
@@ -45,16 +48,24 @@ class InjuryFactory extends Factory
     }
 
     /**
-     * @param string|Carbon $recoveryDate
+     * Set the recovery date of the injury.
+     *
+     * @param  string|Carbon $recoveryDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function ended($recoveryDate = 'now'): self
+    public function ended($recoveryDate = 'now'): Factory
     {
         return $this->state([
             'ended_at' => $recoveryDate instanceof Carbon ? $recoveryDate : new Carbon($recoveryDate),
         ]);
     }
 
-    public function injurable()
+    /**
+     * Retrieve a random injurable model.
+     *
+     * @return mixed
+     */
+    public function injurable(): mixed
     {
         return $this->faker->randomElement([
             Manager::class,

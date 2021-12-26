@@ -6,14 +6,16 @@ use Illuminate\View\Component;
 
 class SubHeader extends Component
 {
+    /** @var string */
     public $title;
 
     /**
      * Create a new component instance.
      *
+     * @param  string $title
      * @return void
      */
-    public function __construct($title)
+    public function __construct(string $title)
     {
         $this->title = $title;
     }
@@ -21,7 +23,7 @@ class SubHeader extends Component
     /**
      * Get the view / contents that represent the component.
      *
-     * @return \Illuminate\View\View|string
+     * @return \Illuminate\View\View
      */
     public function render()
     {

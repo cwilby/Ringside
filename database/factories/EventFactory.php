@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\EventStatus;
 use App\Models\Event;
+use App\Models\Venue;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -32,74 +33,108 @@ class EventFactory extends Factory
         ];
     }
 
-    public function unscheduled(): self
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(fn (Event $event) => $event->save());
+    }
+
+    /**
+     * Generate an unschedule event.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function unscheduled(): Factory
     {
         return $this->state([
             'status' => EventStatus::unscheduled(),
             'date' => null,
-        ])->afterCreating(function (Event $event) {
-            $event->save();
-        });
+        ]);
     }
 
-    public function scheduled(): self
+    /**
+     * Generate a scheduled event.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function scheduled(): Factory
     {
         return $this->state([
             'status' => EventStatus::scheduled(),
             'date' => Carbon::tomorrow(),
-        ])->afterCreating(function (Event $event) {
-            $event->save();
-        });
+        ]);
     }
 
-    public function past(): self
+    /**
+     * Generate an event in the past.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function past(): Factory
     {
         return $this->state([
             'status' => EventStatus::past(),
             'date' => Carbon::yesterday(),
-        ])->afterCreating(function (Event $event) {
-            $event->save();
-        });
+        ]);
     }
 
-    public function atVenue($venue)
+    /**
+     * Set the venue for the event.
+     *
+     * @param  \App\Models\Venue $venue
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function atVenue(Venue $venue): Factory
     {
         return $this->state([
             'venue_id' => $venue->id,
         ]);
     }
 
-    public function scheduledOn($date): self
+    /**
+     * Set the date for the event.
+     *
+     * @param  string $date
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function scheduledOn($date): Factory
     {
-        return $this->state([
-            'date' => $date,
-        ])->afterCreating(function (Event $event) {
-            $event->save();
-        });
+        return $this->state(['date' => $date]);
     }
 
-    public function withName($name): self
+    /**
+     * Set the name for the event.
+     *
+     * @param  string $name
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withName($name): Factory
     {
-        return $this->state([
-            'name' => $name,
-        ])->afterCreating(function (Event $event) {
-            $event->save();
-        });
+        return $this->state(['name' => $name]);
     }
 
-    public function withPreview($preview): self
+    /**
+     * Set the preview for the event.
+     *
+     * @param  string $preview
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withPreview($preview): Factory
     {
-        return $this->state([
-            'preview' => $preview,
-        ])->afterCreating(function (Event $event) {
-            $event->save();
-        });
+        return $this->state(['preview' => $preview]);
     }
 
-    public function softDeleted(): self
+    /**
+     * Generate a soft deleted event.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function softDeleted(): Factory
     {
-        return $this->state([
-            'deleted_at' => now(),
-        ]);
+        return $this->state(['deleted_at' => now()]);
     }
 }

@@ -27,73 +27,93 @@ class TitleFactory extends Factory
     public function definition()
     {
         return [
-            'name' => Str::title($this->faker->unique()->words(2, true)).' Title',
+            'name' => Str::title($this->faker->unique()->words(2, true)) . ' Title',
             'status' => TitleStatus::unactivated(),
         ];
     }
 
-    public function active()
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(fn (Title $title) => $title->save());
+    }
+
+    /**
+     * Generate an active title.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function active(): Factory
     {
         $activationDate = Carbon::yesterday();
 
-        return $this->state(fn (array $attributes) => ['status' => TitleStatus::active()])
-        ->has(Activation::factory()->started($activationDate))
-        ->afterCreating(function (Title $title) {
-            $title->save();
-        });
+        return $this->state(['status' => TitleStatus::active()])
+            ->has(Activation::factory()->started($activationDate));
     }
 
-    public function inactive()
+    /**
+     * Generate an inactive title.
+     *
+     * @return static
+     */
+    public function inactive(): static
     {
         $now = now();
         $start = $now->copy()->subDays(3);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => TitleStatus::inactive()])
-        ->has(Activation::factory()->started($start)->ended($end))
-        ->afterCreating(function (Title $title) {
-            $title->save();
-        });
+        return $this->state(['status' => TitleStatus::inactive()])
+            ->has(Activation::factory()->started($start)->ended($end));
     }
 
-    public function withFutureActivation()
+    /**
+     * Generate a title with a future activation.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withFutureActivation(): Factory
     {
-        return $this->state(fn (array $attributes) => ['status' => TitleStatus::future_activation()])
-        ->has(Activation::factory()->started(Carbon::tomorrow()))
-        ->afterCreating(function (Title $title) {
-            $title->save();
-        });
+        return $this->state(['status' => TitleStatus::future_activation()])
+            ->has(Activation::factory()->started(Carbon::tomorrow()));
     }
 
-    public function retired()
+    /**
+     * Generate a retired title.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function retired(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(3);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => TitleStatus::retired()])
-        ->has(Activation::factory()->started($start)->ended($end))
-        ->has(Retirement::factory()->started($end))
-        ->afterCreating(function (Title $title) {
-            $title->save();
-        });
+        return $this->state(['status' => TitleStatus::retired()])
+            ->has(Activation::factory()->started($start)->ended($end))
+            ->has(Retirement::factory()->started($end));
     }
 
-    public function unactivated()
+    /**
+     * Generate an unactivated title.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function unactivated(): Factory
     {
-        return $this->state(function (array $attributes) {
-            return ['status' => TitleStatus::unactivated()];
-        })->afterCreating(function (Title $title) {
-            $title->save();
-        });
+        return $this->state(['status' => TitleStatus::unactivated()]);
     }
 
-    public function softDeleted($delete = true)
+    /**
+     * Generate a soft deleted title.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function softDeleted(): Factory
     {
-        return $this->state(function (array $attributes) {
-            return ['deleted_at' => now()];
-        })->afterCreating(function (Title $title) {
-            $title->save();
-        });
+        return $this->state(['deleted_at' => now()]);
     }
 }

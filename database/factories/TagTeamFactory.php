@@ -28,8 +28,11 @@ class TagTeamFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var string */
+        $name = $this->faker->words(2, true);
+
         return [
-            'name' => Str::title($this->faker->words(2, true)),
+            'name' => Str::title($name),
             'signature_move' => null,
             'status' => TagTeamStatus::unemployed(),
         ];
@@ -42,141 +45,163 @@ class TagTeamFactory extends Factory
      */
     public function configure()
     {
+        // return $this->afterCreating(function (TagTeam $tagTeam) {
+        //     if ($tagTeam->wrestlers->isEmpty()) {
+        //         $wrestlers = Wrestler::factory()->count(2)->create();
+        //         foreach ($wrestlers as $wrestler) {
+        //             $tagTeam->wrestlers()->attach($wrestler->id, ['joined_at' => now()->toDateTimeString()]);
+        //         }
+        //     }
+        // });
+
         return $this->afterCreating(function (TagTeam $tagTeam) {
-            if ($tagTeam->wrestlers->isEmpty()) {
-                $wrestlers = Wrestler::factory()->count(2)->create();
-                foreach ($wrestlers as $wrestler) {
-                    $tagTeam->wrestlers()->attach($wrestler->id, ['joined_at' => now()->toDateTimeString()]);
-                }
-            }
+            $tagTeam->currentWrestlers->each->save();
+            $tagTeam->save();
         });
     }
 
-    public function bookable()
+    /**
+     * Generate a bookable tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function bookable(): Factory
     {
         $start = now()->subDays(3);
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::bookable()])
-        ->has(Employment::factory()->started($start))
-        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->bookable(), ['joined_at' => $start])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->currentWrestlers->each(function ($wrestler) {
-                $wrestler->save();
-            });
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::bookable()])
+            ->has(Employment::factory()->started($start))
+            ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->bookable(), ['joined_at' => $start]);
     }
 
-    public function unbookable()
+    /**
+     * Generate an unbookable tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function unbookable(): Factory
     {
         $start = Carbon::yesterday();
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::unbookable()])
-        ->has(Employment::factory()->started($start))
-        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->injured(), ['joined_at' => Carbon::yesterday()])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::unbookable()])
+            ->has(Employment::factory()->started($start))
+            ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->injured(), ['joined_at' => Carbon::yesterday()]);
     }
 
-    public function withFutureEmployment()
+    /**
+     * Generate a tag team with a future employment.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withFutureEmployment(): Factory
     {
         $start = Carbon::tomorrow();
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::future_employment()])
-        ->has(Employment::factory()->started($start))
-        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start)), ['joined_at' => Carbon::now()])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::future_employment()])
+            ->has(Employment::factory()->started($start))
+            ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start)), ['joined_at' => Carbon::now()]);
     }
 
-    public function suspended()
+    /**
+     * Generate a suspended tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function suspended(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::suspended()])
-        ->has(Employment::factory()->started($start))
-        ->has(Suspension::factory()->started($end))
-        ->hasAttached(Wrestler::factory()->count(2)->suspended(), ['joined_at' => $start])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::suspended()])
+            ->has(Employment::factory()->started($start))
+            ->has(Suspension::factory()->started($end))
+            ->hasAttached(Wrestler::factory()->count(2)->suspended(), ['joined_at' => $start]);
     }
 
-    public function retired()
+    /**
+     * Generate a retired tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function retired(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::retired()])
-        ->has(Employment::factory()->started($start)->ended($end))
-        ->has(Retirement::factory()->started($end))
-        ->hasAttached(Wrestler::factory()->count(2)->retired(), ['joined_at' => $start])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::retired()])
+            ->has(Employment::factory()->started($start)->ended($end))
+            ->has(Retirement::factory()->started($end))
+            ->hasAttached(Wrestler::factory()->count(2)->retired(), ['joined_at' => $start]);
     }
 
-    public function unemployed()
+    /**
+     * Generate an unemployed tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function unemployed(): Factory
     {
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::unemployed()])
-        ->hasAttached(Wrestler::factory()->count(2), ['joined_at' => Carbon::now()])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::unemployed()])
+            ->hasAttached(Wrestler::factory()->count(2), ['joined_at' => Carbon::now()]);
     }
 
-    public function released()
+    /**
+     * Generate a released tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function released(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::released()])
-        ->has(Employment::factory()->started($start)->ended($end))
-        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start)->ended($end)), ['joined_at' => $start])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::released()])
+            ->has(Employment::factory()->started($start)->ended($end))
+            ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start)->ended($end)), ['joined_at' => $start]);
     }
 
-    public function withInjuredWrestler()
+    /**
+     * Generate an unbookabble tag team with an injured wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withInjuredWrestler(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::UNbookable()])
-        ->has(Employment::factory()->started($start))
-        ->hasAttached(Wrestler::factory()->injured()->has(Employment::factory()->started($start)), ['joined_at' => $start])
-        ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::unbookable()])
+            ->has(Employment::factory()->started($start))
+            ->hasAttached(Wrestler::factory()->injured()->has(Employment::factory()->started($start)), ['joined_at' => $start])
+            ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start]);
     }
 
-    public function withSuspendedWrestler()
+    /**
+     * Generate an unbookable tag team with a suspended wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withSuspendedWrestler(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
 
-        return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::UNbookable()])
-        ->has(Employment::factory()->started($start))
-        ->hasAttached(Wrestler::factory()->suspended()->has(Employment::factory()->started($start)), ['joined_at' => $start])
-        ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['status' => TagTeamStatus::unbookable()])
+            ->has(Employment::factory()->started($start))
+            ->hasAttached(Wrestler::factory()->suspended()->has(Employment::factory()->started($start)), ['joined_at' => $start])
+            ->hasAttached(Wrestler::factory()->has(Employment::factory()->started($start)), ['joined_at' => $start]);
     }
 
-    public function softDeleted()
+    /**
+     * Generate a soft deleted tag team.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function softDeleted(): Factory
     {
-        return $this->state(fn (array $attributes) => ['deleted_at' => now()])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->save();
-        });
+        return $this->state(['deleted_at' => now()]);
     }
 }

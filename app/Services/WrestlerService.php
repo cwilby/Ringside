@@ -27,7 +27,7 @@ class WrestlerService
     /**
      * Create a new wrestler with given data.
      *
-     * @param  array $data
+     * @param  array<int, Type> $data
      * @return \App\Models\Wrestler $wrestler
      */
     public function create(array $data)
@@ -45,7 +45,7 @@ class WrestlerService
      * Update a given wrestler with given data.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  array $data
+     * @param  array<int, Type> $data
      * @return \App\Models\Wrestler $wrestler
      */
     public function update(Wrestler $wrestler, array $data)
@@ -83,7 +83,7 @@ class WrestlerService
      * @param  \App\Models\Wrestler $wrestler
      * @return void
      */
-    public function delete(Wrestler $wrestler)
+    public function delete(Wrestler $wrestler): void
     {
         $this->wrestlerRepository->delete($wrestler);
     }
@@ -94,7 +94,7 @@ class WrestlerService
      * @param  \App\Models\Wrestler $wrestler
      * @return void
      */
-    public function restore(Wrestler $wrestler)
+    public function restore(Wrestler $wrestler): void
     {
         $this->wrestlerRepository->restore($wrestler);
     }

@@ -26,19 +26,25 @@ class SuspensionFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var string */
         $suspendable = $this->suspendable();
 
+        $model = app($suspendable);
+
         return [
-            'suspendable_id' => $suspendable::factory(),
-            'suspendable_type' => $suspendable,
+            'suspendable_id' => call_user_func($model.'::factory()'),
+            'suspendable_type' => 'testing',
             'started_at' => now()->toDateTimeString(),
         ];
     }
 
     /**
-     * @param string|Carbon $suspensionDate
+     * Set the start date of the suspension.
+     *
+     * @param  string|Carbon $suspensionDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function started($suspensionDate = 'now'): self
+    public function started($suspensionDate = 'now'): Factory
     {
         return $this->state([
             'started_at' => $suspensionDate instanceof Carbon ? $suspensionDate : new Carbon($suspensionDate),
@@ -46,16 +52,24 @@ class SuspensionFactory extends Factory
     }
 
     /**
-     * @param string|Carbon $reinstateDate
+     * Set the end date of the suspension.
+     *
+     * @param  string|Carbon $reinstateDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function ended($reinstateDate = 'now'): self
+    public function ended($reinstateDate = 'now'): Factory
     {
         return $this->state([
             'ended_at' => $reinstateDate instanceof Carbon ? $reinstateDate : new Carbon($reinstateDate),
         ]);
     }
 
-    public function suspendable()
+    /**
+     * Retrieve a random suspendable model.
+     *
+     * @return mixed
+     */
+    public function suspendable(): mixed
     {
         return $this->faker->randomElement([
             Manager::class,

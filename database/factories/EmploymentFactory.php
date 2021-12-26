@@ -36,9 +36,10 @@ class EmploymentFactory extends Factory
     }
 
     /**
-     * @param string|Carbon $employmentDate
+     * @param  string|Carbon $employmentDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function started($employmentDate = 'now')
+    public function started($employmentDate = 'now'): Factory
     {
         return $this->state([
             'started_at' => $employmentDate instanceof Carbon ? $employmentDate : new Carbon($employmentDate),
@@ -46,16 +47,22 @@ class EmploymentFactory extends Factory
     }
 
     /**
-     * @param string|Carbon $releaseDate
+     * @param  string|Carbon $releaseDate
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function ended($releaseDate = 'now')
+    public function ended($releaseDate = 'now'): Factory
     {
         return $this->state([
             'ended_at' => $releaseDate instanceof Carbon ? $releaseDate : new Carbon($releaseDate),
         ]);
     }
 
-    public function employable()
+    /**
+     * Retrieve a random employable model.
+     *
+     * @return mixed
+     */
+    public function employable(): mixed
     {
         return $this->faker->randomElement([
             Manager::class,

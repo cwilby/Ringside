@@ -32,106 +32,123 @@ class WrestlerFactory extends Factory
             'name' => $this->faker->name(),
             'height' => $this->faker->numberBetween(60, 95),
             'weight' => $this->faker->numberBetween(180, 500),
-            'hometown' => $this->faker->city().', '.$this->faker->state(),
+            'hometown' => $this->faker->city() . ', ' . $this->faker->state(),
             'signature_move' => null,
             'status' => WrestlerStatus::unemployed(),
         ];
     }
 
-    public function bookable()
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
     {
-        return $this->state(fn (array $attributes) => ['status' => WrestlerStatus::bookable()])
-        ->has(Employment::factory()->started(Carbon::yesterday()))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-        });
+        return $this->afterCreating(fn (Wrestler $wrestler) => $wrestler->save());
     }
 
-    public function withFutureEmployment()
+    /**
+     * Generate a bookable wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function bookable(): Factory
     {
-        return $this->state(fn (array $attributes) => ['status' => WrestlerStatus::future_employment()])
-        ->has(Employment::factory()->started(Carbon::tomorrow()))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-        });
+        return $this->state(['status' => WrestlerStatus::bookable()])
+            ->has(Employment::factory()->started(Carbon::yesterday()));
     }
 
-    public function unemployed()
+    /**
+     * Generate a wrestler with a future employment.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withFutureEmployment(): Factory
     {
-        return $this->state(fn (array $attributes) => ['status' => WrestlerStatus::unemployed()])
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-        });
+        return $this->state(['status' => WrestlerStatus::future_employment()])
+            ->has(Employment::factory()->started(Carbon::tomorrow()));
     }
 
-    public function retired()
+    /**
+     * Generate a unemployed wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function unemployed(): Factory
+    {
+        return $this->state(['status' => WrestlerStatus::unemployed()]);
+    }
+
+    /**
+     * Generate a retired wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function retired(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => WrestlerStatus::retired()])
-        ->has(Employment::factory()->started($start)->ended($end))
-        ->has(Retirement::factory()->started($end))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-            $wrestler->load('retirements');
-        });
+        return $this->state(['status' => WrestlerStatus::retired()])
+            ->has(Employment::factory()->started($start)->ended($end))
+            ->has(Retirement::factory()->started($end));
     }
 
-    public function released()
+    /**
+     * Generate a released wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function released(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => WrestlerStatus::released()])
-        ->has(Employment::factory()->started($start)->ended($end))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-        });
+        return $this->state(['status' => WrestlerStatus::released()])
+            ->has(Employment::factory()->started($start)->ended($end));
     }
 
-    public function suspended()
+    /**
+     * Generate a suspended wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function suspended(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
         $end = $now->copy()->subDays(1);
 
-        return $this->state(fn (array $attributes) => ['status' => WrestlerStatus::suspended()])
-        ->has(Employment::factory()->started($start))
-        ->has(Suspension::factory()->started($end))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-            $wrestler->load('suspensions');
-        });
+        return $this->state(['status' => WrestlerStatus::suspended()])
+            ->has(Employment::factory()->started($start))
+            ->has(Suspension::factory()->started($end));
     }
 
-    public function injured()
+    /**
+     * Generate an injured wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function injured(): Factory
     {
         $now = now();
         $start = $now->copy()->subDays(2);
 
-        return $this->state(fn (array $attributes) => ['status' => WrestlerStatus::injured()])
-        ->has(Employment::factory()->started($start))
-        ->has(Injury::factory()->started($now))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-            $wrestler->load('injuries');
-        });
+        return $this->state(['status' => WrestlerStatus::injured()])
+            ->has(Employment::factory()->started($start))
+            ->has(Injury::factory()->started($now));
     }
 
-    public function softDeleted()
+    /**
+     * Generate a soft deleted wrestler.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function softDeleted(): Factory
     {
-        return $this->state(fn (array $attributes) => ['deleted_at' => now()])
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-        });
+        return $this->state(['deleted_at' => now()]);
     }
 }

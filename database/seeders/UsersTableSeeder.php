@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $userData = [];
         collect(\App\Enums\Role::toArray())->each(function ($value, $key) use (&$userData): void {
@@ -35,4 +35,5 @@ class UsersTableSeeder extends Seeder
         });
         $this->command->table(['Role', 'Name', 'Email', 'Password'], $userData);
     }
+
 }

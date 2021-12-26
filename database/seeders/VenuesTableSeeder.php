@@ -14,8 +14,6 @@ class VenuesTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($w = 1; $w <= 100; $w++) {
-            Venue::factory()->create(['name' => 'Venue '.$w]);
-        }
+        Venue::factory()->count(100)->create();
     }
 }

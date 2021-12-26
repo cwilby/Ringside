@@ -35,7 +35,8 @@
         "nunomaduro/larastan": "^0.7.12",
         "nunomaduro/laravel-mojito": "^0.2.4",
         "phpunit/phpunit": "^9",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "*",
+        "vimeo/psalm": "^4.15"
     },
     "config": {
         "optimize-autoloader": true,
