@@ -19,11 +19,10 @@ class VenueFactory extends Factory
      * Define the model's default state.
      *
      * @return array
+     * @psalm-suppress UndefinedMagicMethod
      */
     public function definition(): array
     {
-        // $this->faker->addProvider(new \Faker\Provider\en_US\Address($this->faker));
-
         return [
             'name' => $this->faker->sentence(),
             'address1' => $this->faker->buildingNumber() . ' ' . $this->faker->streetName(),

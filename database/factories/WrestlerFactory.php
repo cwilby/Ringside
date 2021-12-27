@@ -24,6 +24,7 @@ class WrestlerFactory extends Factory
      * Define the model's default state.
      *
      * @return array
+     * @psalm-suppress UndefinedMagicMethod
      */
     public function definition(): array
     {

@@ -36,6 +36,8 @@ class EmploymentFactory extends Factory
     }
 
     /**
+     * Set the start date of the employment.
+     *
      * @param  string|Carbon $employmentDate
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
@@ -47,6 +49,8 @@ class EmploymentFactory extends Factory
     }
 
     /**
+     * Set the end date of the employment.
+     *
      * @param  string|Carbon $releaseDate
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */

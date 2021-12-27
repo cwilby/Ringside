@@ -12,7 +12,7 @@ class VenuesTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         Venue::factory()->count(100)->create();
     }
