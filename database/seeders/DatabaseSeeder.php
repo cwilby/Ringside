@@ -25,4 +25,13 @@ class DatabaseSeeder extends Seeder
         $this->call(StablesTableSeeder::class);
         $this->call(EventsTableSeeder::class);
     }
+
+    public function call($class, $silent = false, $extra = null)
+    {
+        $this->resolve($class)->run($extra);
+
+        if (isset($this->command)) {
+            $this->command->getOutput()->writeln("<info>Seeded:</info> {$class}");
+        }
+    }
 }
