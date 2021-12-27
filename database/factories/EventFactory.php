@@ -57,11 +57,11 @@ class EventFactory extends Factory
     }
 
     /**
-     * Generate a scheduled event.
+     * Generate a future event.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function scheduled(): Factory
+    public function future(): Factory
     {
         return $this->state([
             'status' => EventStatus::scheduled(),

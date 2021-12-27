@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Event;
 use Illuminate\Database\Seeder;
-use Tests\Factories\EventFactory;
 
 class EventsTableSeeder extends Seeder
 {
@@ -15,20 +14,8 @@ class EventsTableSeeder extends Seeder
      */
     public function run()
     {
-        $eNum = 1;
+        Event::factory()->count(5)->future()->create();
 
-        for ($w = 1; $w <= 5; $w++) {
-            Event::factory()->scheduled()->create([
-                'name' => 'Event '.$eNum,
-            ]);
-
-            $eNum++;
-        }
-
-        EventFactory::new()->past()->create([
-            'name' => 'Title '.$eNum,
-        ]);
-
-        $eNum++;
+        Event::factory()->count(5)->past()->create();
     }
 }
