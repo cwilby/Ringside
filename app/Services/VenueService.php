@@ -57,7 +57,7 @@ class VenueService
      * @param  \App\Models\Venue $venue
      * @return void
      */
-    public function delete(Venue $venue)
+    public function delete(Venue $venue): void
     {
         $this->venueRepository->delete($venue);
     }
@@ -68,7 +68,7 @@ class VenueService
      * @param  \App\Models\Venue $venue
      * @return void
      */
-    public function restore(Venue $venue)
+    public function restore(Venue $venue): void
     {
         $this->venueRepository->restore($venue);
     }

@@ -26,8 +26,10 @@ class TitleFactory extends Factory
      */
     public function definition()
     {
+        $name = Str::title($this->faker->unique()->words(2, true));
+
         return [
-            'name' => Str::title($this->faker->unique()->words(2, true)) . ' Title',
+            'name' =>  $name.' Title',
             'status' => TitleStatus::unactivated(),
         ];
     }

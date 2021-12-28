@@ -12,7 +12,7 @@ class ValidationServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
     }
 
@@ -21,7 +21,7 @@ class ValidationServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Validator::replacer('ends_with', function ($message, $attribute, $rule, $parameters) {
             $values = array_pop($parameters);

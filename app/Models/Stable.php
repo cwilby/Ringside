@@ -14,13 +14,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Stable extends Model implements Activatable, Deactivatable, Retirable
 {
-    use Activatable,
-        Deactivatable,
-        HasFactory,
-        HasMembers,
-        OwnedByUser,
-        SoftDeletes,
-        Unguarded;
+    use Activatable;
+    use Deactivatable;
+    use HasFactory;
+    use HasMembers;
+    use OwnedByUser;
+    use SoftDeletes;
+    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
@@ -36,7 +36,7 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      *
      * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

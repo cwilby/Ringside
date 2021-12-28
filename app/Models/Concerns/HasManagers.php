@@ -9,11 +9,11 @@ trait HasManagers
         return $this->belongsToMany(Manager::class);
     }
 
-    public function currentManagers()
+    public function currentManagers(): void
     {
     }
 
-    public function previousManagers()
+    public function previousManagers(): void
     {
     }
 }

@@ -41,7 +41,7 @@ class RefereeRepository
      * @param  \App\Models\Referee $referee
      * @return void
      */
-    public function delete(Referee $referee)
+    public function delete(Referee $referee): void
     {
         $referee->delete();
     }
@@ -52,7 +52,7 @@ class RefereeRepository
      * @param  \App\Models\Referee $referee
      * @return void
      */
-    public function restore(Referee $referee)
+    public function restore(Referee $referee): void
     {
         $referee->restore();
     }

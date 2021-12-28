@@ -41,7 +41,6 @@ class UserFactory extends Factory
         ]);
     }
 
-    
     public function basicUser(): self
     {
         return $this->state([

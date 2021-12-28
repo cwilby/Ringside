@@ -42,7 +42,7 @@ class TagTeamRepository
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
      */
-    public function delete(TagTeam $tagTeam)
+    public function delete(TagTeam $tagTeam): void
     {
         $tagTeam->delete();
     }
@@ -53,7 +53,7 @@ class TagTeamRepository
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
      */
-    public function restore(TagTeam $tagTeam)
+    public function restore(TagTeam $tagTeam): void
     {
         $tagTeam->restore();
     }

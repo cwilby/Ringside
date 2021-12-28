@@ -104,7 +104,7 @@ class TagTeamService
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
      */
-    public function delete(TagTeam $tagTeam)
+    public function delete(TagTeam $tagTeam): void
     {
         $this->tagTeamRepository->delete($tagTeam);
     }
@@ -115,7 +115,7 @@ class TagTeamService
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
      */
-    public function restore(TagTeam $tagTeam)
+    public function restore(TagTeam $tagTeam): void
     {
         $this->tagTeamRepository->restore($tagTeam);
     }
@@ -151,7 +151,7 @@ class TagTeamService
      * @param  \App\Models\TagTeam $tagTeam
      * @return void
      */
-    public function employ(TagTeam $tagTeam)
+    public function employ(TagTeam $tagTeam): void
     {
         $this->tagTeamRepository->employ($tagTeam, now()->toDateTimeString());
     }

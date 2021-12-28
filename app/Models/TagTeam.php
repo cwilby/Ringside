@@ -16,13 +16,13 @@ use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
 class TagTeam extends RosterMember implements Bookable, StableMember
 {
-    use HasFactory,
-        HasMorphToOne,
-        HasTableAlias,
-        OwnedByUser,
-        SoftDeletes,
-        StableMember,
-        Unguarded;
+    use HasFactory;
+    use HasMorphToOne;
+    use HasTableAlias;
+    use OwnedByUser;
+    use SoftDeletes;
+    use StableMember;
+    use Unguarded;
 
     /**
      * The number of the wrestlers allowed on a tag team.
@@ -45,7 +45,7 @@ class TagTeam extends RosterMember implements Bookable, StableMember
      *
      * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

@@ -9,9 +9,9 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory,
-        Notifiable,
-        Unguarded;
+    use HasFactory;
+    use Notifiable;
+    use Unguarded;
 
     /**
      * The attributes that should be hidden for arrays.

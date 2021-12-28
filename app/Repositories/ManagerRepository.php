@@ -41,7 +41,7 @@ class ManagerRepository
      * @param  \App\Models\Manager $manager
      * @return void
      */
-    public function delete(Manager $manager)
+    public function delete(Manager $manager): void
     {
         $manager->delete();
     }
@@ -52,7 +52,7 @@ class ManagerRepository
      * @param  \App\Models\Manager $manager
      * @return void
      */
-    public function restore(Manager $manager)
+    public function restore(Manager $manager): void
     {
         $manager->restore();
     }
@@ -172,7 +172,7 @@ class ManagerRepository
      *
      * @return void
      */
-    public function removeFromCurrentTagTeams($manager)
+    public function removeFromCurrentTagTeams($manager): void
     {
         foreach ($manager->currentTagTeams as $tagTeam) {
             $manager->currentTagTeams()->updateExistingPivot($tagTeam->id, [
@@ -186,7 +186,7 @@ class ManagerRepository
      *
      * @return void
      */
-    public function removeFromCurrentWrestlers($manager)
+    public function removeFromCurrentWrestlers($manager): void
     {
         foreach ($manager->currentWrestlers as $wrestler) {
             $manager->currentWrestlers()->updateExistingPivot($wrestler->id, [

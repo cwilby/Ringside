@@ -25,7 +25,7 @@ class VenueFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(),
-            'address1' => $this->faker->buildingNumber() . ' ' . $this->faker->streetName(),
+            'address1' => $this->faker->streetAddress(),
             'address2' => $this->faker->optional()->secondaryAddress(),
             'city' => $this->faker->city(),
             'state' => $this->faker->state(),

@@ -69,7 +69,7 @@ class StableService
      * @param  \App\Models\Stable $stable
      * @return void
      */
-    public function delete(Stable $stable)
+    public function delete(Stable $stable): void
     {
         $this->stableRepository->delete($stable);
     }
@@ -80,7 +80,7 @@ class StableService
      * @param  \App\Models\Stable $stable
      * @return void
      */
-    public function restore(Stable $stable)
+    public function restore(Stable $stable): void
     {
         $this->stableRepository->restore($stable);
     }
@@ -179,7 +179,7 @@ class StableService
      * @param  string $joinedDate
      * @return void
      */
-    public function addTagTeams($stable, $tagTeamIds, $joinedDate)
+    public function addTagTeams($stable, $tagTeamIds, $joinedDate): void
     {
         foreach ($tagTeamIds as $tagTeamId) {
             $stable->tagTeams()->attach($tagTeamId, ['joined_at' => $joinedDate]);
@@ -193,7 +193,7 @@ class StableService
      * @param  array  $wrestlerIds
      * @return void
      */
-    public function updateWrestlers(Stable $stable, $wrestlerIds)
+    public function updateWrestlers(Stable $stable, $wrestlerIds): void
     {
         $now = now()->toDateTimeString();
 

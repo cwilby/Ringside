@@ -4,18 +4,19 @@ namespace App\Models;
 
 use App\Builders\RefereeQueryBuilder;
 use App\Enums\RefereeStatus;
+use App\Models\Concerns\HasFullName;
+use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Bookable;
-use App\Models\SingleRosterMember;
 use App\Observers\RefereeObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Referee extends SingleRosterMember implements Bookable
 {
-    use HasFactory,
-        HasFullName,
-        SoftDeletes,
-        Unguarded;
+    use HasFactory;
+    use HasFullName;
+    use SoftDeletes;
+    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
@@ -31,7 +32,7 @@ class Referee extends SingleRosterMember implements Bookable
      *
      * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

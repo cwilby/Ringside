@@ -15,10 +15,10 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    use EmployableContractTests,
-        InjurableContractTests,
-        RetirableContractTests,
-        SuspendableContractTests;
+    use EmployableContractTests;
+    use InjurableContractTests;
+    use RetirableContractTests;
+    use SuspendableContractTests;
 
     private $futureEmployedManager;
     private $availableManager;

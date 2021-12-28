@@ -45,9 +45,9 @@ class StoreRequest extends FormRequest
      * @param  \Illuminate\Validation\Validator  $validator
      * @return void
      */
-    public function withValidator($validator)
+    public function withValidator($validator): void
     {
-        $validator->after(function ($validator) {
+        $validator->after(function ($validator): void {
             if ($validator->errors()->isEmpty()) {
                 $rule = new CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType($this->input('match_type_id'));
 

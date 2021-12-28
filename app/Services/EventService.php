@@ -53,7 +53,7 @@ class EventService
      * @param  \App\Models\Event $event
      * @return void
      */
-    public function delete($event)
+    public function delete($event): void
     {
         $this->eventRepository->delete($event);
     }
@@ -64,7 +64,7 @@ class EventService
      * @param  \App\Models\Event $event
      * @return void
      */
-    public function restore(Event $event)
+    public function restore(Event $event): void
     {
         $this->eventRepository->restore($event);
     }

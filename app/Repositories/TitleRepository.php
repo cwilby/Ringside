@@ -43,7 +43,7 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * @param  \App\Models\Title $title
      * @return void
      */
-    public function delete(Title $title)
+    public function delete(Title $title): void
     {
         $title->delete();
     }
@@ -54,7 +54,7 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * @param  \App\Models\Title $title
      * @return void
      */
-    public function restore(Title $title)
+    public function restore(Title $title): void
     {
         $title->restore();
     }

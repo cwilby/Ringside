@@ -17,12 +17,12 @@ use Tests\TestCase;
  */
 class WrestlerTest extends TestCase
 {
-    use EmployableContractTests,
-        InjurableContractTests,
-        RetirableContractTests,
-        StableMemberContractTests,
-        SuspendableContractTests,
-        TagTeamMemberContractTests;
+    use EmployableContractTests;
+    use InjurableContractTests;
+    use RetirableContractTests;
+    use StableMemberContractTests;
+    use SuspendableContractTests;
+    use TagTeamMemberContractTests;
 
     private $bookableWrestler;
     private $futureEmployedWrestler;

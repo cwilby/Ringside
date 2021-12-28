@@ -58,7 +58,7 @@ class StoreRequest extends FormRequest
      */
     public function withValidator(Validator $validator): void
     {
-        $validator->after(function ($validator) {
+        $validator->after(function ($validator): void {
             if ($validator->errors()->isEmpty()) {
                 $this->merge(['height' => ($this->input('feet') * 12) + $this->input('inches')]);
                 $this->offsetUnset('feet');

@@ -6,7 +6,9 @@ use Illuminate\View\Component;
 
 class DataTable extends Component
 {
-    /** @var \Illuminate\Support\Collection */
+    /**
+     * @var \Illuminate\Support\Collection
+     */
     public $collection;
 
     /**

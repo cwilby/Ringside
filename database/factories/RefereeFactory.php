@@ -45,7 +45,6 @@ class RefereeFactory extends Factory
             ->has(Employment::factory()->started(Carbon::yesterday()));
     }
 
-
     /**
      * Generate a referee with a future employment.
      *

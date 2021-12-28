@@ -16,15 +16,15 @@ use App\Observers\WrestlerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Wrestler extends SingleRosterMember implements Bookable, Manageable, CanBeAStableMember, TagTeamMember
+class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMember, Manageable, TagTeamMember
 {
-    use HasFactory,
-        HasManagers,
-        OwnedByUser,
-        SoftDeletes,
-        CanJoinStables,
-        CanJoinTagTeams,
-        Unguarded;
+    use CanJoinStables;
+    use CanJoinTagTeams;
+    use HasFactory;
+    use HasManagers;
+    use OwnedByUser;
+    use SoftDeletes;
+    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
@@ -41,7 +41,7 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, CanBe
      *
      * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

@@ -83,7 +83,7 @@ class TitleService
      * @param  \App\Models\Title $title
      * @return void
      */
-    public function delete(Title $title)
+    public function delete(Title $title): void
     {
         $this->titleRepository->delete($title);
     }
@@ -94,7 +94,7 @@ class TitleService
      * @param  \App\Models\Title $title
      * @return void
      */
-    public function restore(Title $title)
+    public function restore(Title $title): void
     {
         $this->titleRepository->restore($title);
     }

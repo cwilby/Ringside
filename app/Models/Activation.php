@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Activation extends Model
 {
-    use HasFactory,
-        Unguarded;
+    use HasFactory;
+    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.

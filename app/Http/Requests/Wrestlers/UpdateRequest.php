@@ -64,7 +64,7 @@ class UpdateRequest extends FormRequest
      */
     public function withValidator(Validator $validator): void
     {
-        $validator->after(function (Validator $validator) {
+        $validator->after(function (Validator $validator): void {
             if ($validator->errors()->isEmpty()) {
                 $this->merge(['height' => ($this->input('feet') * 12) + $this->input('inches')]);
             }

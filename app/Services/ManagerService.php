@@ -83,7 +83,7 @@ class ManagerService
      * @param  \App\Models\Manager $manager
      * @return void
      */
-    public function delete(Manager $manager)
+    public function delete(Manager $manager): void
     {
         $this->managerRepository->delete($manager);
     }
@@ -94,7 +94,7 @@ class ManagerService
      * @param  \App\Models\Manager $manager
      * @return void
      */
-    public function restore(Manager $manager)
+    public function restore(Manager $manager): void
     {
         $this->managerRepository->restore($manager);
     }

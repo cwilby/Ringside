@@ -43,7 +43,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * @param  \App\Models\Stable $stable
      * @return void
      */
-    public function delete(Stable $stable)
+    public function delete(Stable $stable): void
     {
         $stable->delete();
     }
@@ -54,7 +54,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * @param  \App\Models\Stable $stable
      * @return void
      */
-    public function restore(Stable $stable)
+    public function restore(Stable $stable): void
     {
         $stable->restore();
     }
@@ -137,7 +137,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * @param  string  $joinDate
      * @return void
      */
-    public function addWrestlers(Stable $stable, array $wrestlerIds, string $joinDate)
+    public function addWrestlers(Stable $stable, array $wrestlerIds, string $joinDate): void
     {
         foreach ($wrestlerIds as $wrestlerId) {
             $stable->currentWrestlers()->attach($wrestlerId, ['joined_at' => $joinDate]);
@@ -152,7 +152,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * @param  string  $joinDate
      * @return void
      */
-    public function addTagTeams(Stable $stable, array $tagTeamIds, string $joinDate)
+    public function addTagTeams(Stable $stable, array $tagTeamIds, string $joinDate): void
     {
         foreach ($tagTeamIds as $tagTeamId) {
             $stable->currentTagTeams()->attach($tagTeamId, ['joined_at' => $joinDate]);
@@ -167,7 +167,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * @param  string $removalDate
      * @return void
      */
-    public function removeWrestlers(Stable $stable, array $currentWrestlerIds, string $removalDate)
+    public function removeWrestlers(Stable $stable, array $currentWrestlerIds, string $removalDate): void
     {
         foreach ($currentWrestlerIds as $wrestlerId) {
             $stable->currentWrestlers()->updateExistingPivot($wrestlerId, ['left_at' => $removalDate]);
@@ -182,7 +182,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      * @param  string $removalDate
      * @return void
      */
-    public function removeTagTeams(Stable $stable, array $currentTagTeamIds, string $removalDate)
+    public function removeTagTeams(Stable $stable, array $currentTagTeamIds, string $removalDate): void
     {
         foreach ($currentTagTeamIds as $tagTeamId) {
             $stable->currentTagTeams()->updateExistingPivot($tagTeamId, ['left_at' => $removalDate]);

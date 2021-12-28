@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Venue extends Model
 {
-    use HasFactory,
-        SoftDeletes,
-        Unguarded;
+    use HasFactory;
+    use SoftDeletes;
+    use Unguarded;
 }

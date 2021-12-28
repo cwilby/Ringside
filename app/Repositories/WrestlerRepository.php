@@ -47,7 +47,7 @@ class WrestlerRepository
      * @param  \App\Models\Wrestler $wrestler
      * @return void
      */
-    public function delete(Wrestler $wrestler)
+    public function delete(Wrestler $wrestler): void
     {
         $wrestler->delete();
     }
@@ -58,7 +58,7 @@ class WrestlerRepository
      * @param  \App\Models\Wrestler $wrestler
      * @return void
      */
-    public function restore(Wrestler $wrestler)
+    public function restore(Wrestler $wrestler): void
     {
         $wrestler->restore();
     }
@@ -178,7 +178,7 @@ class WrestlerRepository
      * @param  string  $removalDate
      * @return void
      */
-    public function removeFromCurrentTagTeam(Wrestler $wrestler, string $removalDate)
+    public function removeFromCurrentTagTeam(Wrestler $wrestler, string $removalDate): void
     {
         $wrestler->currentTagTeam()->updateExistingPivot($wrestler->currentTagTeam->id, [
             'left_at' => $removalDate,

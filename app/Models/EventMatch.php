@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class EventMatch extends Model
 {
-    use HasFactory,
-        Unguarded;
+    use HasFactory;
+    use Unguarded;
 
     /**
      * Get the referees assigned to the match.

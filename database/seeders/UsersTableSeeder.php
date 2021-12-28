@@ -36,5 +36,4 @@ class UsersTableSeeder extends Seeder
         });
         $this->command->table(['Role', 'Name', 'Email', 'Password'], $userData);
     }
-
 }

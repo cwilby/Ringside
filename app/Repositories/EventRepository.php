@@ -45,7 +45,7 @@ class EventRepository
      * @param  \App\Models\Event $event
      * @return void
      */
-    public function delete(Event $event)
+    public function delete(Event $event): void
     {
         $event->delete($event);
     }
@@ -56,7 +56,7 @@ class EventRepository
      * @param  \App\Models\Event $event
      * @return void
      */
-    public function restore(Event $event)
+    public function restore(Event $event): void
     {
         $event->restore($event);
     }
@@ -67,7 +67,7 @@ class EventRepository
      * @param  \App\Models\Event $event
      * @return void
      */
-    public function addMatch(Event $event, $matches)
+    public function addMatch(Event $event, $matches): void
     {
         foreach ($matches as $match) {
             $event->matches()->create([

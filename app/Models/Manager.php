@@ -6,20 +6,19 @@ use App\Builders\ManagerQueryBuilder;
 use App\Enums\ManagerStatus;
 use App\Models\Concerns\StableMember;
 use App\Models\Contracts\CanBeAStableMember;
-use App\Models\SingleRosterMember;
 use App\Observers\ManagerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Manager extends SingleRosterMember implements CanBeAStableMember
 {
-    use HasFactory,
-        HasFullName,
-        Manageables,
-        OwnedByUser,
-        SoftDeletes,
-        StableMember,
-        Unguarded;
+    use HasFactory;
+    use HasFullName;
+    use Manageables;
+    use OwnedByUser;
+    use SoftDeletes;
+    use StableMember;
+    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
@@ -35,7 +34,7 @@ class Manager extends SingleRosterMember implements CanBeAStableMember
      *
      * @return void
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

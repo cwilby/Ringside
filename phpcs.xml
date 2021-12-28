@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Standard">
-    <rule ref="PSR12">
-        <!-- <exclude name="PSR1.Methods.CamelCapsMethodName"/> -->
-    </rule>
+<ruleset name="Laravel Standard">
+    <description>PSR-2 The Laravel conventions</description>
+    <rule ref="PSR2.Namespaces.UseDeclaration"/>
 </ruleset>

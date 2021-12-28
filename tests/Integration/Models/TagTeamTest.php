@@ -15,10 +15,10 @@ use Tests\TestCase;
  */
 class TagTeamTest extends TestCase
 {
-    use EmployableContractTests,
-        RetirableContractTests,
-        StableMemberContractTests,
-        SuspendableContractTests;
+    use EmployableContractTests;
+    use RetirableContractTests;
+    use StableMemberContractTests;
+    use SuspendableContractTests;
 
     private $futureEmployedTagTeam;
     private $bookableTagTeam;

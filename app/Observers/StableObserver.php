@@ -13,7 +13,7 @@ class StableObserver
      * @param  App\Models\Stable $stable
      * @return void
      */
-    public function saving(Stable $stable)
+    public function saving(Stable $stable): void
     {
         $stable->status = match (true) {
             $stable->isCurrentlyActivated() => StableStatus::active(),

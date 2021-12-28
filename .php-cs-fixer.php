@@ -85,6 +85,8 @@ $rules = [
     'not_operator_with_successor_space' => true,
     'object_operator_without_whitespace' => true,
     'ordered_imports' => ['sort_algorithm' => 'alpha'],
+    'ordered_interfaces' => true,
+    'ordered_traits' => true,
     'phpdoc_indent' => true,
     'phpdoc_line_span' => true,
     'phpdoc_no_access' => true,
@@ -109,6 +111,7 @@ $rules = [
         'comment_types' => ['hash'],
     ],
     'single_quote' => true,
+    'single_trait_insert_per_statement' => true,
     'space_after_semicolon' => true,
     'standardize_not_equals' => true,
     'switch_case_semicolon_to_colon' => true,
@@ -120,6 +123,7 @@ $rules = [
     'visibility_required' => [
         'elements' => ['method', 'property'],
     ],
+    'void_return' => true,
     'whitespace_after_comma_in_array' => true,
 ];
 

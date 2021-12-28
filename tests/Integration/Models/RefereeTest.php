@@ -15,10 +15,10 @@ use Tests\TestCase;
  */
 class RefereeTest extends TestCase
 {
-    use EmployableContractTests,
-        InjurableContractTests,
-        RetirableContractTests,
-        SuspendableContractTests;
+    use EmployableContractTests;
+    use InjurableContractTests;
+    use RetirableContractTests;
+    use SuspendableContractTests;
 
     private $futureEmployedReferee;
     private $bookableReferee;

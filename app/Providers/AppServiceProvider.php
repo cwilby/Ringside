@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         if ($this->app->environment('local')) {
             $this->app->register(LaravelTelescopeServiceProvider::class);
@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Builder::macro('orderByNullsLast', function ($column, $direction = 'asc') {
             /** @var Builder $this */
