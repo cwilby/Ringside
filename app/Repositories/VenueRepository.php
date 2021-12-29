@@ -12,7 +12,7 @@ class VenueRepository
      * @param  array $data
      * @return \App\Models\Venue
      */
-    public function create(array $data)
+    public function create(array $data): Venue
     {
         return Venue::create($data);
     }
@@ -22,7 +22,7 @@ class VenueRepository
      *
      * @param  \App\Models\Venue $venue
      * @param  array $data
-     * @return \App\Models\Venue $venue
+     * @return bool
      */
     public function update(Venue $venue, array $data)
     {

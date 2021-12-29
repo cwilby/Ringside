@@ -6,6 +6,9 @@ use App\Builders\TagTeamQueryBuilder;
 use App\Enums\TagTeamStatus;
 use App\Exceptions\CannotBeEmployedException;
 use App\Exceptions\NotEnoughMembersException;
+use App\Models\Concerns\CanJoinStables;
+use App\Models\Concerns\OwnedByUser;
+use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\StableMember;
 use App\Observers\TagTeamObserver;
@@ -16,12 +19,12 @@ use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
 class TagTeam extends RosterMember implements Bookable, StableMember
 {
+    use CanJoinStables;
     use HasFactory;
     use HasMorphToOne;
     use HasTableAlias;
     use OwnedByUser;
     use SoftDeletes;
-    use StableMember;
     use Unguarded;
 
     /**

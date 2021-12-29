@@ -4,7 +4,11 @@ namespace App\Models;
 
 use App\Builders\ManagerQueryBuilder;
 use App\Enums\ManagerStatus;
-use App\Models\Concerns\StableMember;
+use App\Models\Concerns\CanJoinStables;
+use App\Models\Concerns\HasFullName;
+use App\Models\Concerns\Manageables;
+use App\Models\Concerns\OwnedByUser;
+use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Observers\ManagerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,12 +16,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Manager extends SingleRosterMember implements CanBeAStableMember
 {
+    use CanJoinStables;
     use HasFactory;
     use HasFullName;
     use Manageables;
     use OwnedByUser;
     use SoftDeletes;
-    use StableMember;
     use Unguarded;
 
     /**

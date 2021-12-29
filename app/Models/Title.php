@@ -4,6 +4,11 @@ namespace App\Models;
 
 use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
+use App\Models\Concerns\ActivatableTrait;
+use App\Models\Concerns\Competable;
+use App\Models\Concerns\DeactivatableTrait;
+use App\Models\Concerns\RetirableTrait;
+use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
@@ -14,11 +19,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {
-    use Activatable;
+    use ActivatableTrait;
     use Competable;
-    use Deactivatable;
+    use DeactivatableTrait;
     use HasFactory;
-    use Retirable;
+    use RetirableTrait;
     use SoftDeletes;
     use Unguarded;
 
