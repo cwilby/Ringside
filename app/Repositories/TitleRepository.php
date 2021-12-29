@@ -28,7 +28,7 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      *
      * @param  \App\Models\Title $title
      * @param  array $data
-     * @return \App\Models\Title $title
+     * @return bool
      */
     public function update(Title $title, array $data)
     {

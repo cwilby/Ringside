@@ -28,7 +28,7 @@ class StableRepository implements ActivationRepositoryInterface, DeactivationRep
      *
      * @param  \App\Models\Stable $stable
      * @param  array $data
-     * @return \App\Models\Stable $stable
+     * @return bool
      */
     public function update(Stable $stable, array $data)
     {

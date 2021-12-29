@@ -27,7 +27,7 @@ class EventRepository
      *
      * @param  \App\Models\Event $event
      * @param  array $data
-     * @return \App\Models\Event $event
+     * @return bool
      */
     public function update(Event $event, array $data)
     {

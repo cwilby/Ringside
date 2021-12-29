@@ -46,7 +46,7 @@ class VenueService
      */
     public function update(Venue $venue, array $data)
     {
-        $venue = $this->venueRepository->update($venue, $data);
+        $this->venueRepository->update($venue, $data);
 
         return $venue;
     }

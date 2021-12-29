@@ -25,7 +25,7 @@ class RefereeRepository
      *
      * @param  \App\Models\Referee $referee
      * @param  array $data
-     * @return \App\Models\Referee $referee
+     * @return bool
      */
     public function update(Referee $referee, array $data)
     {

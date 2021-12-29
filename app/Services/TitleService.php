@@ -64,7 +64,7 @@ class TitleService
      *
      * @param  \App\Models\Title $title
      * @param  string $activationDate
-     * @return \App\Models\Stable
+     * @return \App\Models\Title|null
      */
     public function activateOrUpdateActivation(Title $title, string $activationDate)
     {

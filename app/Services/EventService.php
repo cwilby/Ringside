@@ -44,7 +44,9 @@ class EventService
      */
     public function update(Event $event, array $data)
     {
-        return $this->eventRepository->update($event, $data);
+        $this->eventRepository->update($event, $data);
+
+        return $event;
     }
 
     /**

@@ -27,7 +27,7 @@ class WrestlerService
     /**
      * Create a new wrestler with given data.
      *
-     * @param  array<int, Type> $data
+     * @param  array $data
      * @return \App\Models\Wrestler $wrestler
      */
     public function create(array $data)
@@ -45,7 +45,7 @@ class WrestlerService
      * Update a given wrestler with given data.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  array<int, Type> $data
+     * @param  array $data
      * @return \App\Models\Wrestler $wrestler
      */
     public function update(Wrestler $wrestler, array $data)
@@ -64,7 +64,7 @@ class WrestlerService
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  string $employmentDate
-     * @return void
+     * @return \App\Models\Wrestler|null
      */
     public function employOrUpdateEmployment(Wrestler $wrestler, string $employmentDate)
     {

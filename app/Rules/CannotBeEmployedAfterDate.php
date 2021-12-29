@@ -7,8 +7,10 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CannotBeEmployedAfterDate implements Rule
 {
-    protected $wrestler;
-    protected ?string $startedAt;
+    protected Wrestler $wrestler;
+
+    /** @var string|null */
+    protected $startedAt;
 
     public function __construct(string $startedAt = null)
     {
@@ -24,7 +26,7 @@ class CannotBeEmployedAfterDate implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ($this->startedAt === null || ! is_string($this->startedAt)) {
+        if ($this->startedAt === null) {
             return true;
         }
 

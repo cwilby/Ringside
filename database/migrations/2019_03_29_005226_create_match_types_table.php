@@ -14,7 +14,7 @@ class CreateMatchTypesTable extends Migration
     public function up()
     {
         Schema::create('match_types', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name');
             $table->string('slug');
             $table->tinyInteger('number_of_sides')->nullable();

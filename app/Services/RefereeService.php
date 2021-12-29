@@ -64,7 +64,7 @@ class RefereeService
      *
      * @param  \App\Models\Referee $referee
      * @param  string $employmentDate
-     * @return void
+     * @return \App\Models\Referee|null
      */
     public function employOrUpdateEmployment(Referee $referee, string $employmentDate)
     {

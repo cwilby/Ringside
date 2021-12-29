@@ -18,6 +18,18 @@ use App\Observers\WrestlerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property integer $id
+ * @property string $name
+ * @property integer $height
+ * @property integer $weight
+ * @property string $hometown
+ * @property string|null $signature_move
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ */
 class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMember, Manageable, TagTeamMember
 {
     use CanJoinStables;

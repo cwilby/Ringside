@@ -25,7 +25,7 @@ class ManagerRepository
      *
      * @param  \App\Models\Manager $manager
      * @param  array $data
-     * @return \App\Models\Manager $manager
+     * @return bool
      */
     public function update(Manager $manager, array $data)
     {

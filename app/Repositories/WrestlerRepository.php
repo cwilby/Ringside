@@ -28,7 +28,7 @@ class WrestlerRepository
      *
      * @param  \App\Models\Wrestler $wrestler
      * @param  array $data
-     * @return \App\Models\Wrestler $wrestler
+     * @return bool
      */
     public function update(Wrestler $wrestler, array $data)
     {

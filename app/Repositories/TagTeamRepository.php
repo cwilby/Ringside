@@ -26,7 +26,7 @@ class TagTeamRepository
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  array $data
-     * @return \App\Models\TagTeam $tagTeam
+     * @return bool
      */
     public function update(TagTeam $tagTeam, array $data)
     {
