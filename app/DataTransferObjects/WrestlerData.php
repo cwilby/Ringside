@@ -8,8 +8,8 @@ use App\Http\Requests\Wrestlers\StoreRequest;
 class WrestlerData
 {
     public string $name;
-    public integer $height;
-    public integer $weight;
+    public int $height;
+    public int $weight;
     public string $hometown;
     public ?string $signature_move;
     public ?string $start_date;

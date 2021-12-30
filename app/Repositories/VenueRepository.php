@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DataTransferObjects\VenueData;
 use App\Models\Venue;
 
 class VenueRepository
@@ -12,7 +13,7 @@ class VenueRepository
      * @param  \App\DataTransferObjects\VenueData $venueData
      * @return \App\Models\Venue
      */
-    public function create(VenueData $venueData)
+    public function create(VenueData $venueData): Venue
     {
         return Venue::create([
             'name' => $venueData->name,
@@ -31,9 +32,9 @@ class VenueRepository
      * @param  \App\DataTransferObjects\VenueData $venueData
      * @return \App\Models\Venue $venue
      */
-    public function update(Venue $venue, VenueData $venueData)
+    public function update(Venue $venue, VenueData $venueData): Venue
     {
-        return $venue->update([
+        $venue->update([
             'name' => $venueData->name,
             'address1' => $venueData->address1,
             'address2' => $venueData->address2,
@@ -41,6 +42,8 @@ class VenueRepository
             'state' => $venueData->state,
             'zip' => $venueData->zip,
         ]);
+
+        return $venue;
     }
 
     /**

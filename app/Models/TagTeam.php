@@ -10,6 +10,7 @@ use App\Models\Concerns\CanJoinStables;
 use App\Models\Concerns\OwnedByUser;
 use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Bookable;
+use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\StableMember;
 use App\Observers\TagTeamObserver;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
@@ -25,8 +26,10 @@ use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method \Illuminate\Database\Eloquent\Collection $wrestlers
+ * @method \Illuminate\Database\Eloquent\Collection $currentWrestlers
  */
-class TagTeam extends RosterMember implements Bookable, StableMember
+class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
 {
     use CanJoinStables;
     use HasFactory;

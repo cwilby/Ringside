@@ -17,7 +17,7 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * @param  \App\DataTransferObjects\TitleData $titleData
      * @return \App\Models\Title
      */
-    public function create(TitleData $titleData)
+    public function create(TitleData $titleData): Title
     {
         return Title::create([
             'name' => $titleData->name,
@@ -31,11 +31,13 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * @param  \App\DataTransferObjects\TitleData $titleData
      * @return \App\Models\Title $title
      */
-    public function update(Title $title, TitleData $titleData)
+    public function update(Title $title, TitleData $titleData): Title
     {
-        return $title->update([
+        $title->update([
             'name' => $titleData->name,
         ]);
+
+        return $title;
     }
 
     /**
@@ -67,7 +69,7 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * @param  string $activationDate
      * @return \App\Models\Title $title
      */
-    public function activate(Activatable $title, string $activationDate)
+    public function activate(Activatable $title, string $activationDate): Title
     {
         $title->activations()->updateOrCreate(['ended_at' => null], ['started_at' => $activationDate]);
 
@@ -81,9 +83,9 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * @param  string $deactivationDate
      * @return \App\Models\Title $title
      */
-    public function deactivate(Deactivatable $title, string $deactivationDate)
+    public function deactivate(Deactivatable $title, string $deactivationDate): Title
     {
-        $title = $title->currentActivation()->update(['ended_at' => $deactivationDate]);
+        $title->currentActivation()->update(['ended_at' => $deactivationDate]);
 
         return $title;
     }
@@ -95,9 +97,11 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * @param  string $retirementDate
      * @return \App\Models\Title $title
      */
-    public function retire(Title $title, string $retirementDate)
+    public function retire(Title $title, string $retirementDate): Title
     {
-        return $title->retirements()->create(['started_at' => $retirementDate]);
+        $title->retirements()->create(['started_at' => $retirementDate]);
+
+        return $title;
     }
 
     /**
@@ -107,8 +111,10 @@ class TitleRepository implements ActivationRepositoryInterface, DeactivationRepo
      * @param  string $unretireDate
      * @return \App\Models\Title $title
      */
-    public function unretire(Title $title, string $unretireDate)
+    public function unretire(Title $title, string $unretireDate): Title
     {
-        return $title->currentRetirement()->update(['ended_at' => $unretireDate]);
+        $title->currentRetirement()->update(['ended_at' => $unretireDate]);
+
+        return $title;
     }
 }

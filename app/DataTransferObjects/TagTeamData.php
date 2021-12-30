@@ -4,13 +4,17 @@ namespace App\DataTransferObjects;
 
 use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Http\Requests\TagTeams\StoreRequest;
-use \Illumiante\Support\Collection;
+use \Illuminate\Support\Collection;
 
 class TagTeamData
 {
     public string $name;
     public ?string $signature_move;
     public ?string $start_date;
+
+    /**
+     * @var \Illuminate\Support\Collection|Wrestler[]
+     */
     public Collection $wrestlers;
 
     public static function fromStoreRequest(StoreRequest $request): TagTeamData

@@ -65,7 +65,7 @@ class ManagerService
      *
      * @param  \App\Models\Manager $manager
      * @param  string $employmentDate
-     * @return void
+     * @return \App\Models\Manager|null
      */
     private function employOrUpdateEmployment(Manager $manager, string $employmentDate)
     {

@@ -35,7 +35,7 @@ class RefereeService
     {
         $referee = $this->refereeRepository->create($refereeData);
 
-        if (isset($data['started_at'])) {
+        if (isset($refereeData->start_date)) {
             $this->refereeRepository->employ($referee, $refereeData->start_date);
         }
 

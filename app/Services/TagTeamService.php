@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\DataTransferObjects\TagTeamData;
 use App\Models\TagTeam;
+use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
 use App\Repositories\WrestlerRepository;
+use Illuminate\Support\Collection;
 
 class TagTeamService
 {
@@ -37,23 +40,24 @@ class TagTeamService
     /**
      * Create a tag team with given data.
      *
-     * @param  array $data
+     * @param  \App\DataTransferObjects\TagTeamData $tagTeamData
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function create(array $data)
+    public function create(TagTeamData $tagTeamData)
     {
-        $tagTeam = $this->tagTeamRepository->create($data);
+        $tagTeam = $this->tagTeamRepository->create($tagTeamData);
 
-        if (isset($data['started_at'])) {
-            $this->tagTeamRepository->employ($tagTeam, $data['started_at']);
-            foreach ($data['wrestlers'] as $wrestlerId) {
-                $wrestler = $this->wrestlerRepository->findById($wrestlerId);
-                $this->wrestlerRepository->employ($wrestler, $data['started_at']);
-            }
-            $this->tagTeamRepository->addWrestlers($tagTeam, $data['wrestlers'], $data['started_at']);
+        if (isset($tagTeamData->start_date) && $tagTeamData->wrestlers->isNotEmpty()) {
+            $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);
+
+            $tagTeamData->wrestlers->each(
+                fn (Wrestler $wrestler) => $this->wrestlerRepository->employ($wrestler, $tagTeamData->start_date)
+            );
+
+            $this->tagTeamRepository->addWrestlers($tagTeam, $tagTeamData->wrestlers, $tagTeamData->start_date);
         } else {
-            if (isset($data['wrestlers'])) {
-                $this->tagTeamRepository->addWrestlers($tagTeam, $data['wrestlers']);
+            if ($tagTeamData->wrestlers->isNotEmpty()) {
+                $this->tagTeamRepository->addWrestlers($tagTeam, $tagTeamData->wrestlers);
             }
         }
 
@@ -64,18 +68,18 @@ class TagTeamService
      * Update a given tag team with given data.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  array $data
+     * @param  \App\DataTransferObjects\TagTeamData $tagTeamData
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function update(TagTeam $tagTeam, array $data)
+    public function update(TagTeam $tagTeam, TagTeamData $tagTeamData)
     {
-        $this->tagTeamRepository->update($tagTeam, $data);
+        $this->tagTeamRepository->update($tagTeam, $tagTeamData);
 
-        if ($tagTeam->canHaveEmploymentStartDateChanged() && isset($data['started_at'])) {
-            $this->employOrUpdateEmployment($tagTeam, $data['started_at']);
+        if ($tagTeam->canHaveEmploymentStartDateChanged() && isset($tagTeamData->start_date)) {
+            $this->employOrUpdateEmployment($tagTeam, $tagTeamData->start_date);
         }
 
-        $this->updateTagTeamPartners($tagTeam, $data['wrestlers']);
+        $this->updateTagTeamPartners($tagTeam, $tagTeamData->wrestlers);
 
         return $tagTeam;
     }
@@ -124,18 +128,18 @@ class TagTeamService
      * Update a given tag team with given wrestlers.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  array $wrestlerIds
+     * @param  \Illuminate\Support\Collection $wrestlers
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function updateTagTeamPartners(TagTeam $tagTeam, array $wrestlerIds)
+    public function updateTagTeamPartners(TagTeam $tagTeam, Collection $wrestlers)
     {
         if ($tagTeam->currentWrestlers->isEmpty()) {
-            if ($wrestlerIds) {
-                $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlerIds);
+            if ($wrestlers->isNotEmpty()) {
+                $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlers);
             }
         } else {
             $currentTagTeamPartners = collect($tagTeam->currentWrestlers->pluck('id'));
-            $suggestedTagTeamPartners = collect($wrestlerIds);
+            $suggestedTagTeamPartners = collect($wrestlers);
             $formerTagTeamPartners = $currentTagTeamPartners->diff($suggestedTagTeamPartners);
             $newTagTeamPartners = $suggestedTagTeamPartners->diff($currentTagTeamPartners);
 

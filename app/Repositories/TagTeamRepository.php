@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DataTransferObjects\TagTeamData;
 use App\Models\TagTeam;
 use Illuminate\Support\Collection;
 
@@ -146,17 +147,17 @@ class TagTeamRepository
      * Add wrestlers to a tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  array $wrestlerIds
+     * @param  \Illuminate\Support\Collection $wrestlers
      * @param  string|null $joinDate
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function addWrestlers(TagTeam $tagTeam, array $wrestlerIds, string $joinDate = null)
+    public function addWrestlers(TagTeam $tagTeam, Collection $wrestlers, string $joinDate = null)
     {
         $joinDate ??= now()->toDateString();
 
-        foreach ($wrestlerIds as $wrestlerId) {
-            $tagTeam->wrestlers()->attach($wrestlerId, ['joined_at' => $joinDate]);
-        }
+        $wrestlers->each(
+            fn (Wrestler $wrestler) => $tagTeam->wrestlers()->attach($wrestler->id, ['joined_at' => $joinDate])
+        );
     }
 
     /**

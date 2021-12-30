@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DataTransferObjects\TitleData;
 use App\Models\Title;
 use App\Repositories\TitleRepository;
 
@@ -27,15 +28,15 @@ class TitleService
     /**
      * Create a title with given data.
      *
-     * @param  array $data
+     * @param  \App\DataTransferObjects\TitleData $titleData
      * @return \App\Models\Title
      */
-    public function create(array $data)
+    public function create(TitleData $titleData)
     {
-        $title = $this->titleRepository->create($data);
+        $title = $this->titleRepository->create($titleData);
 
-        if (isset($data['activated_at'])) {
-            $this->titleRepository->activate($title, $data['activated_at']);
+        if (isset($titleData->activation_date)) {
+            $this->titleRepository->activate($title, $titleData->activation_date);
         }
 
         return $title;
@@ -45,15 +46,15 @@ class TitleService
      * Update a given title with given data.
      *
      * @param  \App\Models\Title $title
-     * @param  array $data
+     * @param  \App\DataTransferObjects\TitleData $titleData
      * @return \App\Models\Title $title
      */
-    public function update(Title $title, array $data)
+    public function update(Title $title, TitleData $titleData)
     {
-        $this->titleRepository->update($title, $data);
+        $this->titleRepository->update($title, $titleData);
 
-        if ($title->canHaveActivationStartDateChanged() && isset($data['activated_at'])) {
-            $this->activateOrUpdateActivation($title, $data['activated_at']);
+        if ($title->canHaveActivationStartDateChanged() && isset($titleData->activation_date)) {
+            $this->activateOrUpdateActivation($title, $titleData->activation_date);
         }
 
         return $title;
@@ -64,17 +65,11 @@ class TitleService
      *
      * @param  \App\Models\Title $title
      * @param  string $activationDate
-     * @return \App\Models\Title|null
+     * @return \App\Models\Title
      */
     public function activateOrUpdateActivation(Title $title, string $activationDate)
     {
-        if ($title->isUnactivated()) {
-            return $this->titleRepository->activate($title, $activationDate);
-        }
-
-        if ($title->hasFutureActivation() && ! $title->activatedOn($activationDate)) {
-            return $this->titleRepository->updateActivation($title, $activationDate);
-        }
+        return $this->titleRepository->activate($title, $activationDate);
     }
 
     /**
