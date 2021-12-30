@@ -30,14 +30,16 @@ class EventRepository
      * @param  \App\DataTransferObjects\EventData $eventData
      * @return \App\Models\Event $event
      */
-    public function update(Event $event, EventData $eventData)
+    public function update(Event $event, EventData $eventData): Event
     {
-        return $event->update([
+        $event->update([
             'name' => $eventData->name,
             'date' => $eventData->date,
             'venue_id' => $eventData->venue->id,
             'preview' => $eventData->preview,
         ]);
+
+        return $event;
     }
 
     /**
@@ -48,7 +50,7 @@ class EventRepository
      */
     public function delete(Event $event): void
     {
-        $event->delete($event);
+        $event->delete();
     }
 
     /**
@@ -59,21 +61,6 @@ class EventRepository
      */
     public function restore(Event $event): void
     {
-        $event->restore($event);
-    }
-
-    /**
-     * Restore a given event.
-     *
-     * @param  \App\Models\Event $event
-     * @return void
-     */
-    public function addMatch(Event $event, $matches): void
-    {
-        foreach ($matches as $match) {
-            $event->matches()->create([
-
-            ]);
-        }
+        $event->restore();
     }
 }

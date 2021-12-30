@@ -13,7 +13,7 @@ class ManagerRepository
      * @param  \App\DataTransferObjects\ManagerData $managerData
      * @return \App\Models\Manager
      */
-    public function create(ManagerData $managerData)
+    public function create(ManagerData $managerData): Manager
     {
         return Manager::create([
             'first_name' => $managerData->first_name,
@@ -28,12 +28,14 @@ class ManagerRepository
      * @param  \App\DataTransferObjects\ManagerData $managerData
      * @return \App\Models\Manager $manager
      */
-    public function update(Manager $manager, ManagerData $managerData)
+    public function update(Manager $manager, ManagerData $managerData): Manager
     {
-        return $manager->update([
+        $manager->update([
             'first_name' => $managerData->first_name,
             'last_name' => $managerData->last_name,
         ]);
+
+        return $manager;
     }
 
     /**
@@ -65,9 +67,11 @@ class ManagerRepository
      * @param  string $employmentDate
      * @return \App\Models\Manager $manager
      */
-    public function employ(Manager $manager, string $employmentDate)
+    public function employ(Manager $manager, string $employmentDate): Manager
     {
-        return $manager->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate]);
+        $manager->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate]);
+
+        return $manager;
     }
 
     /**
@@ -77,9 +81,11 @@ class ManagerRepository
      * @param  string $releaseDate
      * @return \App\Models\Manager $manager
      */
-    public function release(Manager $manager, string $releaseDate)
+    public function release(Manager $manager, string $releaseDate): Manager
     {
-        return $manager->currentEmployment()->update(['ended_at' => $releaseDate]);
+        $manager->currentEmployment()->update(['ended_at' => $releaseDate]);
+
+        return $manager;
     }
 
     /**
@@ -89,9 +95,11 @@ class ManagerRepository
      * @param  string $injureDate
      * @return \App\Models\Manager $manager
      */
-    public function injure(Manager $manager, string $injureDate)
+    public function injure(Manager $manager, string $injureDate): Manager
     {
-        return $manager->injuries()->create(['started_at' => $injureDate]);
+        $manager->injuries()->create(['started_at' => $injureDate]);
+
+        return $manager;
     }
 
     /**
@@ -101,7 +109,7 @@ class ManagerRepository
      * @param  string $recoveryDate
      * @return \App\Models\Manager $manager
      */
-    public function clearInjury(Manager $manager, string $recoveryDate)
+    public function clearInjury(Manager $manager, string $recoveryDate): Manager
     {
         $manager->currentInjury()->update(['ended_at' => $recoveryDate]);
 
@@ -115,9 +123,11 @@ class ManagerRepository
      * @param  string $retirementDate
      * @return \App\Models\Manager $manager
      */
-    public function retire(Manager $manager, string $retirementDate)
+    public function retire(Manager $manager, string $retirementDate): Manager
     {
-        return $manager->retirements()->create(['started_at' => $retirementDate]);
+        $manager->retirements()->create(['started_at' => $retirementDate]);
+
+        return $manager;
     }
 
     /**
@@ -127,9 +137,11 @@ class ManagerRepository
      * @param  string $unretireDate
      * @return \App\Models\Manager $manager
      */
-    public function unretire(Manager $manager, string $unretireDate)
+    public function unretire(Manager $manager, string $unretireDate): Manager
     {
-        return $manager->currentRetirement()->update(['ended_at' => $unretireDate]);
+        $manager->currentRetirement()->update(['ended_at' => $unretireDate]);
+
+        return $manager;
     }
 
     /**
@@ -139,9 +151,11 @@ class ManagerRepository
      * @param  string $suspensionDate
      * @return \App\Models\Manager $manager
      */
-    public function suspend(Manager $manager, string $suspensionDate)
+    public function suspend(Manager $manager, string $suspensionDate): Manager
     {
-        return $manager->suspensions()->create(['started_at' => $suspensionDate]);
+        $manager->suspensions()->create(['started_at' => $suspensionDate]);
+
+        return $manager;
     }
 
     /**
@@ -151,9 +165,11 @@ class ManagerRepository
      * @param  string $reinstateDate
      * @return \App\Models\Manager $manager
      */
-    public function reinstate(Manager $manager, string $reinstateDate)
+    public function reinstate(Manager $manager, string $reinstateDate): Manager
     {
-        return $manager->currentSuspension()->update(['ended_at' => $reinstateDate]);
+        $manager->currentSuspension()->update(['ended_at' => $reinstateDate]);
+
+        return $manager;
     }
 
     /**
@@ -163,36 +179,36 @@ class ManagerRepository
      * @param  string $employmentDate
      * @return \App\Models\Manager $manager
      */
-    public function updateEmployment(Manager $manager, string $employmentDate)
+    public function updateEmployment(Manager $manager, string $employmentDate): Manager
     {
-        return $manager->futureEmployment()->update(['started_at' => $employmentDate]);
+        $manager->futureEmployment()->update(['started_at' => $employmentDate]);
+
+        return $manager;
     }
 
     /**
      * Updates a manager's status and saves.
      *
+     * @param  \App\Models\Manager $manager
      * @return void
      */
-    public function removeFromCurrentTagTeams($manager): void
+    public function removeFromCurrentTagTeams(Manager $manager): void
     {
-        foreach ($manager->currentTagTeams as $tagTeam) {
-            $manager->currentTagTeams()->updateExistingPivot($tagTeam->id, [
-                'left_at' => now(),
-            ]);
-        }
+        $manager->currentTagTeams->each(
+            fn (TagTeam $tagTeam) => $manager->currentTagTeams()->updateExistingPivot($tagTeam->id, ['left_at' => now()])
+        );
     }
 
     /**
      * Updates a manager's status and saves.
      *
+     * @param  \App\Models\Manager $manager
      * @return void
      */
-    public function removeFromCurrentWrestlers($manager): void
+    public function removeFromCurrentWrestlers(Manager $manager): void
     {
-        foreach ($manager->currentWrestlers as $wrestler) {
-            $manager->currentWrestlers()->updateExistingPivot($wrestler->id, [
-                'left_at' => now(),
-            ]);
-        }
+        $manager->currentWrestlers->each(
+            fn (Wrestler $wrestler) => $manager->currentWrestlers()->updateExistingPivot($wrestler->id, ['left_at' => now()])
+        );
     }
 }
