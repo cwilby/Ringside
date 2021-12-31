@@ -17,24 +17,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * @property integer $id
- * @property integer|null $user_id
- * @property string $name
- * @property string $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- */
 class Stable extends Model implements Activatable, Deactivatable, Retirable
 {
-    use Activations,
-        Deactivations,
-        HasFactory,
-        HasMembers,
-        OwnedByUser,
-        SoftDeletes,
-        Unguarded;
+    use Activations;
+    use Deactivations;
+    use HasFactory;
+    use HasMembers;
+    use OwnedByUser;
+    use SoftDeletes;
+    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.

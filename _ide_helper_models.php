@@ -448,6 +448,8 @@ namespace App\Models{
      * @property-read int|null $activations_count
      * @property-read \App\Models\Activation|null $currentActivation
      * @property-read \App\Models\Retirement|null $currentRetirement
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $currentTagTeams
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Wrestler> $currentWrestlers
      * @property-read \App\Models\Activation|null $firstActivation
      * @property-read \App\Models\Activation|null $futureActivation
      * @property-read string|null $activated_at
@@ -460,10 +462,10 @@ namespace App\Models{
      * @property-read int|null $previous_retirements_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
      * @property-read int|null $retirements_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeams
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $tagTeams
      * @property-read int|null $tag_teams_count
      * @property-read \App\Models\User|null $user
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Wrestler> $wrestlers
      * @property-read int|null $wrestlers_count
      * @method static \App\Builders\StableQueryBuilder|Stable active()
      * @method static \App\Builders\StableQueryBuilder|Stable deactivated()
@@ -554,7 +556,7 @@ namespace App\Models{
      * @property-read \App\Models\Employment|null $currentEmployment
      * @property-read \App\Models\Retirement|null $currentRetirement
      * @property-read \App\Models\Suspension|null $currentSuspension
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $currentWrestlers
+     * @property-read \Illuminate\Database\Eloquent\Collection $currentWrestlers
      * @property-read int|null $current_wrestlers_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $employments
      * @property-read int|null $employments_count
@@ -573,7 +575,7 @@ namespace App\Models{
      * @property-read \App\Models\Suspension|null $previousSuspension
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $previousSuspensions
      * @property-read int|null $previous_suspensions_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $previousWrestlers
+     * @property-read \Illuminate\Database\Eloquent\Collection $previousWrestlers
      * @property-read int|null $previous_wrestlers_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
      * @property-read int|null $retirements_count
@@ -582,7 +584,7 @@ namespace App\Models{
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
      * @property-read int|null $suspensions_count
      * @property-read \App\Models\User|null $user
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
+     * @property-read \Illuminate\Database\Eloquent\Collection $wrestlers
      * @property-read int|null $wrestlers_count
      * @method static \App\Builders\TagTeamQueryBuilder|TagTeam bookable()
      * @method static \App\Builders\TagTeamQueryBuilder|TagTeam employed()
@@ -841,7 +843,7 @@ namespace App\Models{
      * @method static \Illuminate\Database\Query\Builder|Wrestler withTrashed()
      * @method static \Illuminate\Database\Query\Builder|Wrestler withoutTrashed()
      */
-    class Wrestler extends \Eloquent implements \App\Models\Contracts\Bookable, \App\Models\Contracts\Manageable, \App\Models\Contracts\CanBeAStableMember, \App\Models\Contracts\TagTeamMember
+    class Wrestler extends \Eloquent implements \App\Models\Contracts\Bookable, \App\Models\Contracts\CanBeAStableMember, \App\Models\Contracts\Manageable, \App\Models\Contracts\TagTeamMember
     {
     }
 }

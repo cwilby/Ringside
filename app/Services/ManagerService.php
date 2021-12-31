@@ -35,7 +35,7 @@ class ManagerService
     {
         $manager = $this->managerRepository->create($managerData);
 
-        if (isset($managerData->start_date)) {
+        if (! is_null($managerData->start_date)) {
             $this->managerRepository->employ($manager, $managerData->start_date);
         }
 
@@ -53,7 +53,7 @@ class ManagerService
     {
         $this->managerRepository->update($manager, $managerData);
 
-        if ($manager->canHaveEmploymentStartDateChanged() && isset($managerData->start_date)) {
+        if ($manager->canHaveEmploymentStartDateChanged() && ! is_null($managerData->start_date)) {
             $this->employOrUpdateEmployment($manager, $managerData->start_date);
         }
 
@@ -70,11 +70,15 @@ class ManagerService
     private function employOrUpdateEmployment(Manager $manager, string $employmentDate)
     {
         if ($manager->isNotInEmployment()) {
-            return $this->managerRepository->employ($manager, $employmentDate);
+            $this->managerRepository->employ($manager, $employmentDate);
+
+            return $manager;
         }
 
         if ($manager->hasFutureEmployment() && ! $manager->employedOn($employmentDate)) {
-            return $this->managerRepository->updateEmployment($manager, $employmentDate);
+            $this->managerRepository->updateEmployment($manager, $employmentDate);
+
+            return $manager;
         }
     }
 

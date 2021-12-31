@@ -35,7 +35,7 @@ class WrestlerService
     {
         $wrestler = $this->wrestlerRepository->create($wrestlerData);
 
-        if (isset($wrestlerData->start_date)) {
+        if (! is_null($wrestlerData->start_date)) {
             $this->wrestlerRepository->employ($wrestler, $wrestlerData->start_date);
         }
 
@@ -53,7 +53,7 @@ class WrestlerService
     {
         $this->wrestlerRepository->update($wrestler, $wrestlerData);
 
-        if ($wrestler->canHaveEmploymentStartDateChanged() && isset($wrestlerData->start_date)) {
+        if ($wrestler->canHaveEmploymentStartDateChanged() && ! is_null($wrestlerData->start_date)) {
             $this->employOrUpdateEmployment($wrestler, $wrestlerData->start_date);
         }
 
@@ -70,11 +70,15 @@ class WrestlerService
     public function employOrUpdateEmployment(Wrestler $wrestler, string $employmentDate)
     {
         if ($wrestler->isNotInEmployment()) {
-            return $this->wrestlerRepository->employ($wrestler, $employmentDate);
+            $this->wrestlerRepository->employ($wrestler, $employmentDate);
+
+            return $wrestler;
         }
 
         if ($wrestler->hasFutureEmployment() && ! $wrestler->employedOn($employmentDate)) {
-            return $this->wrestlerRepository->updateEmployment($wrestler, $employmentDate);
+            $this->wrestlerRepository->updateEmployment($wrestler, $employmentDate);
+
+            return $wrestler;
         }
     }
 

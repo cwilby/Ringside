@@ -127,11 +127,11 @@ class StableRepository
     public function disassemble(Stable $stable, string $deactivationDate): Stable
     {
         $stable->currentWrestlers->each(
-            fn(Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot($wrestler, ['left_at' => $deactivationDate])->save()
+            fn (Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot($wrestler, ['left_at' => $deactivationDate])->save()
         );
 
         $stable->currentTagTeams->each(
-            fn(TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot($tagTeam, ['left_at' => $deactivationDate])->save()
+            fn (TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot($tagTeam, ['left_at' => $deactivationDate])->save()
         );
 
         return $stable;
@@ -165,7 +165,7 @@ class StableRepository
     public function addTagTeams(Stable $stable, Collection $tagTeams, string $joinDate): Stable
     {
         $tagTeams->each(
-            fn(TagTeam $tagTeam) => $stable->currentTagTeams()->attach($tagTeam->id, ['joined_at' => $joinDate])
+            fn (TagTeam $tagTeam) => $stable->currentTagTeams()->attach($tagTeam->id, ['joined_at' => $joinDate])
         );
 
         return $stable;
@@ -175,14 +175,14 @@ class StableRepository
      * Undocumented function.
      *
      * @param  \App\Models\Stable  $stable
-     * @param  \Illuminate\Support\Collection $currentWrestlers
+     * @param  \Illuminate\Support\Collection $wrestlers
      * @param  string $removalDate
      * @return \App\Models\Stable  $stable
      */
-    public function removeWrestlers(Stable $stable, Collection $currentWrestlers, string $removalDate): Stable
+    public function removeWrestlers(Stable $stable, Collection $wrestlers, string $removalDate): Stable
     {
-        $currentWrestlers->each(
-            fn(Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot($wrestler->id, ['left_at' => $removalDate])
+        $wrestlers->each(
+            fn (Wrestler $wrestler) => $stable->currentWrestlers()->updateExistingPivot($wrestler->id, ['left_at' => $removalDate])
         );
 
         return $stable;
@@ -199,7 +199,7 @@ class StableRepository
     public function removeTagTeams(Stable $stable, Collection $currentTagTeams, string $removalDate)
     {
         $currentTagTeams->each(
-            fn(TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot($tagTeam->id, ['left_at' => $removalDate])
+            fn (TagTeam $tagTeam) => $stable->currentTagTeams()->updateExistingPivot($tagTeam->id, ['left_at' => $removalDate])
         );
 
         return $stable;

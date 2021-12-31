@@ -2,9 +2,9 @@
 
 namespace App\DataTransferObjects;
 
-use App\Http\Requests\Stables\UpdateRequest;
 use App\Http\Requests\Stables\StoreRequest;
-use \Illumiante\Support\Collection;
+use App\Http\Requests\Stables\UpdateRequest;
+use Illuminate\Support\Collection;
 
 class StableData
 {
@@ -14,9 +14,9 @@ class StableData
     public Collection $tagTeams;
     public Collection $wrestlers;
 
-    public static function fromStoreRequest(StoreRequest $request): StableData
+    public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->name = $request->input('name');
         $dto->start_date = $request->input('started_at');
@@ -26,9 +26,9 @@ class StableData
         return $dto;
     }
 
-    public static function fromUpdateRequest(UpdateRequest $request): StableData
+    public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->name = $request->input('name');
         $dto->start_date = $request->input('started_at');

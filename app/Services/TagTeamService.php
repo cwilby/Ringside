@@ -47,17 +47,19 @@ class TagTeamService
     {
         $tagTeam = $this->tagTeamRepository->create($tagTeamData);
 
-        if (isset($tagTeamData->start_date) && $tagTeamData->wrestlers->isNotEmpty()) {
-            $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);
-
-            $tagTeamData->wrestlers->each(
-                fn (Wrestler $wrestler) => $this->wrestlerRepository->employ($wrestler, $tagTeamData->start_date)
-            );
-
-            $this->tagTeamRepository->addWrestlers($tagTeam, $tagTeamData->wrestlers, $tagTeamData->start_date);
-        } else {
+        if (is_null($tagTeamData->start_date)) {
             if ($tagTeamData->wrestlers->isNotEmpty()) {
                 $this->tagTeamRepository->addWrestlers($tagTeam, $tagTeamData->wrestlers);
+            }
+        } else {
+            if ($tagTeamData->wrestlers->isNotEmpty()) {
+                $this->tagTeamRepository->employ($tagTeam, $tagTeamData->start_date);
+
+                $tagTeamData->wrestlers->each(
+                    fn (Wrestler $wrestler) => $this->wrestlerRepository->employ($wrestler, $tagTeamData->start_date)
+                );
+
+                $this->tagTeamRepository->addWrestlers($tagTeam, $tagTeamData->wrestlers, $tagTeamData->start_date);
             }
         }
 
@@ -94,11 +96,15 @@ class TagTeamService
     public function employOrUpdateEmployment(TagTeam $tagTeam, string $employmentDate)
     {
         if ($tagTeam->isNotInEmployment()) {
-            return $this->tagTeamRepository->employ($tagTeam, $employmentDate);
+            $this->tagTeamRepository->employ($tagTeam, $employmentDate);
+
+            return $tagTeam;
         }
 
         if ($tagTeam->hasFutureEmployment() && ! $tagTeam->employedOn($employmentDate)) {
-            return $this->tagTeamRepository->updateEmployment($tagTeam, $employmentDate);
+            $this->tagTeamRepository->updateEmployment($tagTeam, $employmentDate);
+
+            return $tagTeam;
         }
     }
 
@@ -138,10 +144,14 @@ class TagTeamService
                 $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlers);
             }
         } else {
-            $currentTagTeamPartners = collect($tagTeam->currentWrestlers->pluck('id'));
-            $suggestedTagTeamPartners = collect($wrestlers);
-            $formerTagTeamPartners = $currentTagTeamPartners->diff($suggestedTagTeamPartners);
-            $newTagTeamPartners = $suggestedTagTeamPartners->diff($currentTagTeamPartners);
+            /** @var Collection */
+            $currentTagTeamPartners = $tagTeam->currentWrestlers->pluck('id');
+
+            /** @var Collection */
+            $formerTagTeamPartners = $currentTagTeamPartners->diff($wrestlers);
+
+            /** @var Collection */
+            $newTagTeamPartners = $wrestlers->diff($currentTagTeamPartners);
 
             $this->tagTeamRepository->syncTagTeamPartners($tagTeam, $formerTagTeamPartners, $newTagTeamPartners);
         }

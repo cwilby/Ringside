@@ -164,8 +164,8 @@ class TagTeamRepository
      * Add wrestlers to a tag team.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  array $formerTagTeamPartners
-     * @param  array $newTagTeamPartners
+     * @param  \Illuminate\Support\Collection $formerTagTeamPartners
+     * @param  \Illuminate\Support\Collection $newTagTeamPartners
      * @param  string|null $date
      * @return \App\Models\TagTeam $tagTeam
      */
@@ -177,16 +177,13 @@ class TagTeamRepository
     ) {
         $date ??= now()->toDateTimeString();
 
-        foreach ($formerTagTeamPartners as $tagTeamPartner) {
-            $tagTeam->currentWrestlers()->updateExistingPivot($tagTeamPartner, ['left_at' => $date]);
-        }
+        $formerTagTeamPartners->each(
+            fn (Wrestler $tagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot($tagTeamPartner, ['left_at' => $date])
+        );
 
-        foreach ($newTagTeamPartners as $newTagTeamPartner) {
-            $tagTeam->currentWrestlers()->attach(
-                $newTagTeamPartner,
-                ['joined_at' => $date]
-            );
-        }
+        $newTagTeamPartners->each(
+            fn (Wrestler $newTagTeamPartner) => $tagTeam->currentWrestlers()->attach($newTagTeamPartner, ['joined_at' => $date])
+        );
 
         return $tagTeam;
     }

@@ -93,7 +93,7 @@ class StableService
      * @param  \App\Models\Stable $stable
      * @param  \Illuminate\Support\Collection|null $wrestlers
      * @param  \Illuminate\Support\Collection|null $tagTeams
-     * @param  string|null $joinedDate
+     * @param  \Illuminate\Support\Carbon|string|null $joinedDate
      * @return \App\Models\Stable $stable
      */
     private function addMembers(
@@ -105,11 +105,11 @@ class StableService
         $joinedDate ??= now();
 
         if ($wrestlers) {
-            $this->stableRepository->addWrestlers($stable, $wrestlers, $joinedDate);
+            $this->stableRepository->addWrestlers($stable, $wrestlers, (string) $joinedDate);
         }
 
         if ($tagTeams) {
-            $this->stableRepository->addTagTeams($stable, $tagTeams, $joinedDate);
+            $this->stableRepository->addTagTeams($stable, $tagTeams, (string) $joinedDate);
         }
 
         return $stable;
@@ -121,6 +121,7 @@ class StableService
      * @param  \App\Models\Stable $stable
      * @param  \Illuminate\Support\Collection $wrestlers
      * @param  \Illuminate\Support\Collection $tagTeams
+     * @return \App\Models\Stable $stable
      */
     private function updateMembers(Stable $stable, Collection $suggestedWrestlers, Collection $tagTeams)
     {
@@ -129,24 +130,33 @@ class StableService
         if ($stable->currentWrestlers->isEmpty()) {
             $this->stableRepository->addWrestlers($stable, $suggestedWrestlers, $now);
         } else {
-            $currentWrestlerIds = collect($stable->currentWrestlers->modelKeys());
-            $formerWrestlerIds = $currentWrestlerIds->diff($suggestedWrestlers)->toArray();
-            $newWrestlerIds = $suggestedWrestlers->diff($currentWrestlerIds)->toArray();
+            /** @var Collection */
+            $currentWrestlers = $stable->currentWrestlers->modelKeys();
 
-            $this->stableRepository->removeWrestlers($stable, $formerWrestlerIds, $now);
-            $this->stableRepository->addWrestlers($stable, $newWrestlerIds, $now);
+            /** @var Collection */
+            $formerWrestlers = $currentWrestlers->diff($suggestedWrestlers);
+
+            /** @var Collection */
+            $newWrestlers = $suggestedWrestlers->diff($currentWrestlers);
+
+            $this->stableRepository->removeWrestlers($stable, $formerWrestlers, $now);
+            $this->stableRepository->addWrestlers($stable, $newWrestlers, $now);
         }
 
         if ($stable->currentTagTeams->isEmpty()) {
             $this->stableRepository->addTagTeams($stable, $tagTeams, $now);
         } else {
-            $currentTagTeamIds = collect($stable->currentTagTeams->modelKeys());
-            $suggestedTagTeamIds = collect($tagTeamIds);
-            $formerTagTeamIds = $currentTagTeamIds->diff($suggestedTagTeamIds)->toArray();
-            $newTagTeamIds = $suggestedTagTeamIds->diff($currentTagTeamIds)->toArray();
+            /** @var Collection */
+            $currentTagTeams = $stable->currentTagTeams->pluck('id');
 
-            $this->stableRepository->removeTagTeams($stable, $formerTagTeamIds, $now);
-            $this->stableRepository->addTagTeams($stable, $newTagTeamIds, $now);
+            /** @var Collection */
+            $formerTagTeams = $currentTagTeams->diff($tagTeams);
+
+            /** @var Collection */
+            $newTagTeams = $tagTeams->diff($currentTagTeams);
+
+            $this->stableRepository->removeTagTeams($stable, $formerTagTeams, $now);
+            $this->stableRepository->addTagTeams($stable, $newTagTeams, $now);
         }
 
         return $stable;
@@ -162,29 +172,29 @@ class StableService
     public function activateOrUpdateActivation(Stable $stable, string $activationDate)
     {
         if ($stable->isNotInActivation()) {
-            return $this->stableRepository->activate($stable, $activationDate);
+            $this->stableRepository->activate($stable, $activationDate);
+
+            return $stable;
         }
 
         if ($stable->hasFutureActivation() && ! $stable->activatedOn($activationDate)) {
-            return $this->stableRepository->updateActivation($stable, $activationDate);
-        }
+            $this->stableRepository->activate($stable, $activationDate);
 
-        return $stable;
+            return $stable;
+        }
     }
 
     /**
      * Add given tag teams to a given stable on a given join date.
      *
      * @param  \App\Models\Stable $stable
-     * @param  array $tagTeamIds
+     * @param  Collection $tagTeams
      * @param  string $joinedDate
      * @return void
      */
-    public function addTagTeams($stable, $tagTeamIds, $joinedDate): void
+    public function addTagTeams(Stable $stable, Collection $tagTeams, string $joinedDate): void
     {
-        foreach ($tagTeamIds as $tagTeamId) {
-            $stable->tagTeams()->attach($tagTeamId, ['joined_at' => $joinedDate]);
-        }
+        $this->stableRepository->addTagTeams($stable, $tagTeams, $joinedDate);
     }
 
     /**
@@ -194,18 +204,23 @@ class StableService
      * @param  \Illuminate\Support\Collection  $wrestlers
      * @return void
      */
-    public function updateWrestlers(Stable $stable, Collection $wrestlers)
+    public function updateWrestlers(Stable $stable, Collection $wrestlers): void
     {
         $now = now()->toDateTimeString();
 
         if ($stable->currentWrestlers->isEmpty()) {
             $this->stableRepository->addWrestlers($stable, $wrestlers, $now);
         } else {
+            /** @var Collection */
             $currentWrestlers = $stable->currentWrestlers;
-            $formerWrestlers = $currentWrestlers->diff($wrestlers)->toArray();
+
+            /** @var Collection */
+            $formerWrestlers = $currentWrestlers->diff($wrestlers);
+
+            /** @var Collection */
             $newWrestlers = $wrestlers->diff($currentWrestlers);
 
-            $this->stableRepository->removeCurrentWrestlers($stable, $formerWrestlers, $now);
+            $this->stableRepository->removeWrestlers($stable, $formerWrestlers, $now);
             $this->stableRepository->addWrestlers($stable, $newWrestlers, $now);
         }
     }
