@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Builders\StableQueryBuilder;
 use App\Enums\StableStatus;
-use App\Models\Concerns\ActivatableTrait;
-use App\Models\Concerns\DeactivatableTrait;
+use App\Models\Concerns\Activations;
+use App\Models\Concerns\Deactivations;
 use App\Models\Concerns\HasMembers;
 use App\Models\Concerns\OwnedByUser;
 use App\Models\Concerns\Unguarded;
@@ -28,13 +28,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Stable extends Model implements Activatable, Deactivatable, Retirable
 {
-    use ActivatableTrait;
-    use DeactivatableTrait;
-    use HasFactory;
-    use HasMembers;
-    use OwnedByUser;
-    use SoftDeletes;
-    use Unguarded;
+    use Activations,
+        Deactivations,
+        HasFactory,
+        HasMembers,
+        OwnedByUser,
+        SoftDeletes,
+        Unguarded;
 
     /**
      * The attributes that should be cast to native types.

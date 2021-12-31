@@ -2,7 +2,7 @@
 
 namespace App\Models\Concerns;
 
-trait DeactivatableTrait
+trait Deactivations
 {
     /**
      * Check to see if the model is deactivated.
@@ -18,7 +18,7 @@ trait DeactivatableTrait
     }
 
     /**
-     * Determine if the model can be deactivated.
+     * Determine if the stable can be deactivated.
      *
      * @return bool
      */
@@ -29,5 +29,15 @@ trait DeactivatableTrait
         }
 
         return false;
+    }
+
+    /**
+     * Check to see if the model is not in activation.
+     *
+     * @return bool
+     */
+    public function isNotInActivation()
+    {
+        return $this->isNotActivation() || $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
     }
 }

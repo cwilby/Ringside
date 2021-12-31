@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Builders\TitleQueryBuilder;
 use App\Enums\TitleStatus;
-use App\Models\Concerns\ActivatableTrait;
+use App\Models\Concerns\Activations;
 use App\Models\Concerns\Competable;
-use App\Models\Concerns\DeactivatableTrait;
-use App\Models\Concerns\RetirableTrait;
+use App\Models\Concerns\Deactivations;
+use App\Models\Concerns\Retirements;
 use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
@@ -27,13 +27,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {
-    use ActivatableTrait;
-    use Competable;
-    use DeactivatableTrait;
-    use HasFactory;
-    use RetirableTrait;
-    use SoftDeletes;
-    use Unguarded;
+    use Activations,
+        Competable,
+        Deactivations,
+        Retirements,
+        Unguarded,
+        HasFactory,
+        SoftDeletes;
 
     /**
      * The attributes that should be cast to native types.

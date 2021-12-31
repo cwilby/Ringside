@@ -17,26 +17,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
-/**
- * @property int $id
- * @property string $name
- * @property string|null $signature_move
- * @property string $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @method \Illuminate\Database\Eloquent\Collection<Wrestler> $wrestlers
- * @method \Illuminate\Database\Eloquent\Collection<Wrestler> $currentWrestlers
- */
 class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
 {
-    use CanJoinStables;
-    use HasFactory;
-    use HasMorphToOne;
-    use HasTableAlias;
-    use OwnedByUser;
-    use SoftDeletes;
-    use Unguarded;
+    use HasFactory,
+        HasMorphToOne,
+        HasTableAlias,
+        OwnedByUser,
+        SoftDeletes,
+        CanJoinStables,
+        Unguarded;
 
     /**
      * The number of the wrestlers allowed on a tag team.

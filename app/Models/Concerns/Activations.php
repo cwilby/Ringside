@@ -4,7 +4,7 @@ namespace App\Models\Concerns;
 
 use App\Models\Activation;
 
-trait ActivatableTrait
+trait Activations
 {
     /**
      * Get all of the activations of the model.
@@ -151,7 +151,7 @@ trait ActivatableTrait
      *
      * @return bool
      */
-    public function isNotInActivation()
+    public function isNotActivation()
     {
         return $this->isDeactivated() || $this->hasFutureActivation() || $this->isRetired();
     }

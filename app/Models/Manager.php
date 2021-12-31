@@ -26,13 +26,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Manager extends SingleRosterMember implements CanBeAStableMember
 {
-    use CanJoinStables;
-    use HasFactory;
-    use HasFullName;
-    use Manageables;
-    use OwnedByUser;
-    use SoftDeletes;
-    use Unguarded;
+    use HasFactory,
+        HasFullName,
+        Manageables,
+        OwnedByUser,
+        SoftDeletes,
+        CanJoinStables,
+        Unguarded;
 
     /**
      * The attributes that should be cast to native types.
