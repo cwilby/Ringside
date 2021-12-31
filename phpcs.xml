@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="Laravel Standard">
     <description>PSR-2 The Laravel conventions</description>
-    <rule ref="PSR2.Namespaces.UseDeclaration"/>
+    <exclude-pattern>./_ide_helper_models.php</exclude-pattern>
+    <arg name="colors"/>
 </ruleset>
