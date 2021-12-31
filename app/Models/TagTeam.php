@@ -11,7 +11,6 @@ use App\Models\Concerns\OwnedByUser;
 use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
-use App\Models\Contracts\StableMember;
 use App\Observers\TagTeamObserver;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,15 +18,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
 /**
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string|null $signature_move
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @method \Illuminate\Database\Eloquent\Collection $wrestlers
- * @method \Illuminate\Database\Eloquent\Collection $currentWrestlers
+ * @method \Illuminate\Database\Eloquent\Collection<Wrestler> $wrestlers
+ * @method \Illuminate\Database\Eloquent\Collection<Wrestler> $currentWrestlers
  */
 class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
 {
