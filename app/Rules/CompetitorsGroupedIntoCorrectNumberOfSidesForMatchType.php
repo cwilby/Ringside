@@ -26,7 +26,9 @@ class CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType implements Rule
      */
     public function passes($attribute, $value)
     {
-        return MatchType::find($this->matchTypeId)->number_of_sides === count($value);
+        $matchType = MatchType::findOrFail($this->matchTypeId);
+
+        return $matchType->number_of_sides === count($value);
     }
 
     /**
