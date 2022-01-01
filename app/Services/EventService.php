@@ -40,7 +40,7 @@ class EventService
      * Update a given event.
      *
      * @param  \App\Models\Event $event
-     * @param  array $data
+     * @param  \App\DataTransferObjects\EventData $eventData
      * @return \App\Models\Event $event
      */
     public function update(Event $event, EventData $eventData)

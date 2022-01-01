@@ -120,7 +120,7 @@ class StableService
      * Update the members of a given stable.
      *
      * @param  \App\Models\Stable $stable
-     * @param  \Illuminate\Support\Collection $wrestlers
+     * @param  \Illuminate\Support\Collection $suggestedWrestlers
      * @param  \Illuminate\Support\Collection $tagTeams
      * @return \App\Models\Stable $stable
      */

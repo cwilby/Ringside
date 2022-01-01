@@ -8,6 +8,9 @@ use Illuminate\Contracts\Validation\Rule;
 
 class EventDateCanBeChanged implements Rule
 {
+    /**
+     * @var \App\Models\Event
+     */
     protected $event;
 
     public function __construct(Event $event)
