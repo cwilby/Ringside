@@ -17,6 +17,7 @@ class RestoreController extends Controller
      */
     public function __invoke(int $managerId, ManagerService $managerService)
     {
+        /** @var \App\Models\Manager $manager */
         $manager = Manager::onlyTrashed()->findOrFail($managerId);
 
         $this->authorize('restore', $manager);

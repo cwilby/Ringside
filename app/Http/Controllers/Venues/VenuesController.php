@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Venues;
 
+use App\DataTransferObjects\VenueData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Venues\StoreRequest;
 use App\Http\Requests\Venues\UpdateRequest;
@@ -25,7 +26,7 @@ class VenuesController extends Controller
     /**
      * View a list of venues.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -37,7 +38,7 @@ class VenuesController extends Controller
     /**
      * Show the form for creating a venue.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Venue $venue)
     {
@@ -56,7 +57,7 @@ class VenuesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->venueService->create($request->validated());
+        $this->venueService->create(VenueData::fromStoreRequest($request));
 
         return redirect()->route('venues.index');
     }
@@ -65,7 +66,7 @@ class VenuesController extends Controller
      * Show the venue.
      *
      * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Venue $venue)
     {
@@ -80,7 +81,7 @@ class VenuesController extends Controller
      * Show the form for editing a venue.
      *
      * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Venue $venue)
     {
@@ -100,7 +101,7 @@ class VenuesController extends Controller
      */
     public function update(UpdateRequest $request, Venue $venue)
     {
-        $this->venueService->update($venue, $request->validated());
+        $this->venueService->update($venue, VenueData::fromUpdateRequest($request));
 
         return redirect()->route('venues.index');
     }

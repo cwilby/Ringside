@@ -171,7 +171,7 @@ class TagTeamRepository
      */
     public function addWrestlers(TagTeam $tagTeam, Collection $wrestlers, Carbon $joinDate = null)
     {
-        $joinDate ??= now()->toDateString();
+        $joinDate ??= now();
 
         $wrestlers->each(
             fn (Wrestler $wrestler) => $tagTeam->wrestlers()->attach($wrestler->id, ['joined_at' => $joinDate->toDateTimeString()])
@@ -195,7 +195,7 @@ class TagTeamRepository
         Collection $newTagTeamPartners,
         Carbon $date = null
     ) {
-        $date ??= now()->toDateTimeString();
+        $date ??= now();
 
         $formerTagTeamPartners->each(
             fn (Wrestler $tagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot($tagTeamPartner, ['left_at' => $date->toDateTimeString()])

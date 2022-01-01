@@ -17,6 +17,7 @@ class RestoreController extends Controller
      */
     public function __invoke(int $eventId, EventService $eventService)
     {
+        /** @var \App\Models\Event $event */
         $event = Event::onlyTrashed()->findOrFail($eventId);
 
         $this->authorize('restore', $event);

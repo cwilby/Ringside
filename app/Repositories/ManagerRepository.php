@@ -177,12 +177,12 @@ class ManagerRepository
      * Get the model's first employment date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return \App\Models\Manager $manager
      */
-    public function updateEmployment(Manager $manager, string $employmentDate): Manager
+    public function updateEmployment(Manager $manager, Carbon $employmentDate): Manager
     {
-        $manager->futureEmployment()->update(['started_at' => $employmentDate]);
+        $manager->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
 
         return $manager;
     }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Contracts\Employable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class RosterMember extends Model implements Employable
@@ -168,10 +169,10 @@ abstract class RosterMember extends Model implements Employable
     /**
      * Get the model's first employment date.
      *
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return bool
      */
-    public function employedOn(string $employmentDate)
+    public function employedOn(Carbon $employmentDate)
     {
         return $this->employments->last()->started_at->ne($employmentDate);
     }

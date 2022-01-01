@@ -17,6 +17,7 @@ class RestoreController extends Controller
      */
     public function __invoke($tagTeamId, TagTeamService $tagTeamService)
     {
+        /** @var \App\Models\TagTeam $tagTeam */
         $tagTeam = TagTeam::onlyTrashed()->findOrFail($tagTeamId);
 
         $this->authorize('restore', $tagTeam);

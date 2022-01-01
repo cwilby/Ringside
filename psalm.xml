@@ -12,6 +12,7 @@
         <directory name="database/seeders"/> -->
         <ignoreFiles>
             <directory name="vendor"/>
+            <directory name="app/Http/Controllers/Auth"/>
         </ignoreFiles>
     </projectFiles>
 <plugins><pluginClass class="Psalm\LaravelPlugin\Plugin"/></plugins></psalm>

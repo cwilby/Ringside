@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Managers;
 
+use App\DataTransferObjects\ManagerData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\StoreRequest;
 use App\Http\Requests\Managers\UpdateRequest;
@@ -38,7 +39,7 @@ class ManagersController extends Controller
      * Show the form for creating a manager.
      *
      * @param  \App\Models\Manager $manager
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Manager $manager)
     {
@@ -57,7 +58,7 @@ class ManagersController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->managerService->create($request->validated());
+        $this->managerService->create(ManagerData::fromStoreRequest($request));
 
         return redirect()->route('managers.index');
     }
@@ -66,7 +67,7 @@ class ManagersController extends Controller
      * Show the profile of a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Manager $manager)
     {
@@ -81,7 +82,7 @@ class ManagersController extends Controller
      * Show the form for editing a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Manager $manager)
     {
@@ -101,7 +102,7 @@ class ManagersController extends Controller
      */
     public function update(UpdateRequest $request, Manager $manager)
     {
-        $this->managerService->update($manager, $request->validated());
+        $this->managerService->update($manager, ManagerData::fromUpdateRequest($request));
 
         return redirect()->route('managers.index');
     }

@@ -11,7 +11,7 @@ class TagTeamCanJoinStable implements Rule
     /**
      * @var string
      */
-    protected string $message;
+    public $message = '';
 
     /**
      * @var \App\Models\Stable
@@ -45,30 +45,34 @@ class TagTeamCanJoinStable implements Rule
      */
     public function passes($attribute, $value)
     {
-        $tagTeam = TagTeam::with('currentStable', 'futureEmployment')->find($value);
+        $tagTeam = TagTeam::with(['currentStable', 'futureEmployment'])->findOrFail($value);
 
-        if (! $tagTeam) {
+        if ($tagTeam->currentStable->exists() && $tagTeam->currentStable->isNot($this->stable)) {
+            $this->fail('This tag team is already a members of an active stable.');
+
             return false;
         }
 
-        if ($tagTeam->currentStable && $tagTeam->currentStable->isNot($this->stable)) {
-            return $this->fail('This tag team is already a members of an active stable.');
-        }
-
         if (is_string($this->startedAt)) {
-            if ($tagTeam->futureEmployment && $tagTeam->futureEmployment->startedAfter($this->startedAt)) {
-                return $this->fail("This tag team's future employment starts after stable's start date.");
+            if ($tagTeam->futureEmployment->exists() && $tagTeam->futureEmployment->startedAfter($this->startedAt)) {
+                $this->fail("This tag team's future employment starts after stable's start date.");
+
+                return false;
             }
         }
 
         return true;
     }
 
-    protected function fail(string $message)
+    /**
+     * Undocumented function.
+     *
+     * @param  string $message
+     * @return void
+     */
+    protected function fail(string $message): void
     {
         $this->message = $message;
-
-        return false;
     }
 
     /**

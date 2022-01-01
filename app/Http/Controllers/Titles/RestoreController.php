@@ -16,6 +16,7 @@ class RestoreController extends Controller
      */
     public function __invoke($titleId, TitleService $titleService)
     {
+        /** @var \App\Models\Title $title */
         $title = Title::onlyTrashed()->findOrFail($titleId);
 
         $this->authorize('restore', $title);

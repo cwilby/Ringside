@@ -21,9 +21,8 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function invoke_marks_an_injured_referee_as_being_cleared_and_redirects()
+    public function invoke_marks_an_injured_referee_as_being_cleared_and_redirects(): void
     {
-        // $this->withoutExceptionHandling();
         $referee = Referee::factory()->injured()->create();
 
         $this->assertNull($referee->injuries->last()->ended_at);
@@ -33,7 +32,7 @@ class ClearInjuryControllerTest extends TestCase
             ->patch(action([ClearInjuryController::class], $referee))
             ->assertRedirect(action([RefereesController::class, 'index']));
 
-        tap($referee->fresh(), function ($referee) {
+        tap($referee->fresh(), function ($referee): void {
             $this->assertNotNull($referee->injuries->last()->ended_at);
             $this->assertEquals(RefereeStatus::bookable(), $referee->status);
         });
@@ -42,7 +41,7 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_basic_user_cannot_mark_an_injured_referee_as_cleared()
+    public function a_basic_user_cannot_mark_an_injured_referee_as_cleared(): void
     {
         $referee = Referee::factory()->injured()->create();
 
@@ -54,7 +53,7 @@ class ClearInjuryControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_guest_cannot_mark_an_injured_referee_as_cleared()
+    public function a_guest_cannot_mark_an_injured_referee_as_cleared(): void
     {
         $referee = Referee::factory()->injured()->create();
 
@@ -67,7 +66,7 @@ class ClearInjuryControllerTest extends TestCase
      * @test
      * @dataProvider nonclearableRefereeTypes
      */
-    public function invoke_throws_exception_for_clearing_an_injury_from_a_non_clearable_referee($factoryState)
+    public function invoke_throws_exception_for_clearing_an_injury_from_a_non_clearable_referee($factoryState): void
     {
         $this->expectException(CannotBeClearedFromInjuryException::class);
         $this->withoutExceptionHandling();

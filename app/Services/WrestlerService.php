@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DataTransferObjects\WrestlerData;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
+use Carbon\Carbon;
 
 class WrestlerService
 {
@@ -64,10 +65,10 @@ class WrestlerService
      * Employ a given wrestler or update the given wrestler's employment date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return \App\Models\Wrestler|null
      */
-    public function employOrUpdateEmployment(Wrestler $wrestler, string $employmentDate)
+    public function employOrUpdateEmployment(Wrestler $wrestler, Carbon $employmentDate)
     {
         if ($wrestler->isNotInEmployment()) {
             $this->wrestlerRepository->employ($wrestler, $employmentDate);

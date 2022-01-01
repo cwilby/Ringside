@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Referees;
 
+use App\DataTransferObjects\RefereeData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Referees\StoreRequest;
 use App\Http\Requests\Referees\UpdateRequest;
@@ -38,7 +39,7 @@ class RefereesController extends Controller
      * Show the form for creating a new referee.
      *
      * @param  \App\Models\Referee $referee
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Referee $referee)
     {
@@ -57,7 +58,7 @@ class RefereesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->refereeService->create($request->validated());
+        $this->refereeService->create(RefereeData::fromStoreRequest($request));
 
         return redirect()->route('referees.index');
     }
@@ -81,7 +82,7 @@ class RefereesController extends Controller
      * Show the form for editing a referee.
      *
      * @param  \App\Models\Referee  $referee
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Referee $referee)
     {
@@ -101,7 +102,7 @@ class RefereesController extends Controller
      */
     public function update(UpdateRequest $request, Referee $referee)
     {
-        $this->refereeService->update($referee, $request->validated());
+        $this->refereeService->update($referee, RefereeData::fromUpdateRequest($request));
 
         return redirect()->route('referees.index');
     }

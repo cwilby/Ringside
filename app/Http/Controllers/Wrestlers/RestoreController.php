@@ -17,6 +17,7 @@ class RestoreController extends Controller
      */
     public function __invoke(int $wrestlerId, WrestlerService $wrestlerService)
     {
+        /** @var \App\Models\Wrestler $wrestler */
         $wrestler = Wrestler::onlyTrashed()->findOrFail($wrestlerId);
 
         $this->authorize('restore', $wrestler);

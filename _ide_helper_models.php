@@ -555,6 +555,7 @@ namespace App\Models{
      * @property \Illuminate\Support\Carbon|null $deleted_at
      * @property-read \App\Models\Employment|null $currentEmployment
      * @property-read \App\Models\Retirement|null $currentRetirement
+     * @property-read \App\Models\Stable|null $currentStable
      * @property-read \App\Models\Suspension|null $currentSuspension
      * @property-read \Illuminate\Database\Eloquent\Collection $currentWrestlers
      * @property-read int|null $current_wrestlers_count
@@ -772,37 +773,37 @@ namespace App\Models{
      * @property-read \App\Models\Injury|null $currentInjury
      * @property-read \App\Models\Retirement|null $currentRetirement
      * @property-read \App\Models\Suspension|null $currentSuspension
-     * @property-read \Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep|null $currentTagTeam
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $employments
+     * @property-read \App\Models\TagTeam|null $currentTagTeam
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Employment> $employments
      * @property-read int|null $employments_count
      * @property-read \App\Models\Employment|null $firstEmployment
      * @property-read \App\Models\Employment|null $futureEmployment
      * @property-read string|null $started_at
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Injury[] $injuries
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Injury> $injuries
      * @property-read int|null $injuries_count
      * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Manager> $managers
      * @property-read int|null $managers_count
      * @property-read \App\Models\Employment|null $previousEmployment
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $previousEmployments
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Employment> $previousEmployments
      * @property-read int|null $previous_employments_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Injury[] $previousInjuries
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Injury> $previousInjuries
      * @property-read int|null $previous_injuries_count
      * @property-read \App\Models\Injury|null $previousInjury
      * @property-read \App\Models\Retirement|null $previousRetirement
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $previousRetirements
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Retirement> $previousRetirements
      * @property-read int|null $previous_retirements_count
      * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Stable> $previousStables
      * @property-read int|null $previous_stables_count
      * @property-read \App\Models\Suspension|null $previousSuspension
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $previousSuspensions
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Suspension> $previousSuspensions
      * @property-read int|null $previous_suspensions_count
      * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $previousTagTeams
      * @property-read int|null $previous_tag_teams_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Retirement> $retirements
      * @property-read int|null $retirements_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stable[] $stables
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Stable> $stables
      * @property-read int|null $stables_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Suspension> $suspensions
      * @property-read int|null $suspensions_count
      * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $tagTeams
      * @property-read int|null $tag_teams_count

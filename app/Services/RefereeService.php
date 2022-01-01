@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DataTransferObjects\RefereeData;
 use App\Models\Referee;
 use App\Repositories\RefereeRepository;
+use Carbon\Carbon;
 
 class RefereeService
 {
@@ -64,10 +65,10 @@ class RefereeService
      * Employ a given referee or update the given referee's employment date.
      *
      * @param  \App\Models\Referee $referee
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return \App\Models\Referee|null
      */
-    public function employOrUpdateEmployment(Referee $referee, string $employmentDate)
+    public function employOrUpdateEmployment(Referee $referee, Carbon $employmentDate)
     {
         if ($referee->isNotInEmployment()) {
             return $this->refereeRepository->employ($referee, $employmentDate);

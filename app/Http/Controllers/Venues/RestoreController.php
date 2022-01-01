@@ -17,6 +17,7 @@ class RestoreController extends Controller
      */
     public function __invoke($venueId, VenueService $venueService)
     {
+        /** @var \App\Models\Venue $venue */
         $venue = Venue::onlyTrashed()->findOrFail($venueId);
 
         $this->authorize('restore', $venue);

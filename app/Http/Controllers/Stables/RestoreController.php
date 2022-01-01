@@ -17,6 +17,7 @@ class RestoreController extends Controller
      */
     public function __invoke(int $stableId, StableService $stableService)
     {
+        /** @var \App\Models\Stable $stable */
         $stable = Stable::onlyTrashed()->findOrFail($stableId);
 
         $this->authorize('restore', $stable);

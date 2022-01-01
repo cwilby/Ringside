@@ -17,6 +17,7 @@ class RestoreController extends Controller
      */
     public function __invoke(int $refereeId, RefereeService $refereeService)
     {
+        /** @var \App\Models\Referee $referee */
         $referee = Referee::onlyTrashed()->findOrFail($refereeId);
 
         $this->authorize('restore', Referee::class);

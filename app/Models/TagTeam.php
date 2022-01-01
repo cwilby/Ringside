@@ -19,13 +19,13 @@ use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
 class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
 {
-    use HasFactory,
-        HasMorphToOne,
-        HasTableAlias,
-        OwnedByUser,
-        SoftDeletes,
-        CanJoinStables,
-        Unguarded;
+    use CanJoinStables;
+    use HasFactory;
+    use HasMorphToOne;
+    use HasTableAlias;
+    use OwnedByUser;
+    use SoftDeletes;
+    use Unguarded;
 
     /**
      * The number of the wrestlers allowed on a tag team.

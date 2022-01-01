@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
+use App\DataTransferObjects\WrestlerData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Http\Requests\Wrestlers\UpdateRequest;
@@ -56,9 +57,7 @@ class WrestlersController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->wrestlerService->create(
-            $request->only('name', 'height', 'weight', 'hometown', 'signature_move', 'started_at')
-        );
+        $this->wrestlerService->create(WrestlerData::fromStoreRequest($request));
 
         return redirect()->route('wrestlers.index');
     }
@@ -102,10 +101,7 @@ class WrestlersController extends Controller
      */
     public function update(UpdateRequest $request, Wrestler $wrestler)
     {
-        $this->wrestlerService->update(
-            $wrestler,
-            $request->only('name', 'height', 'weight', 'hometown', 'signature_move', 'started_at')
-        );
+        $this->wrestlerService->update($wrestler, WrestlerData::fromUpdateRequest($request));
 
         return redirect()->route('wrestlers.index');
     }

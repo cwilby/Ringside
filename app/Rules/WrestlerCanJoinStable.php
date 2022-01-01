@@ -45,30 +45,34 @@ class WrestlerCanJoinStable implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wrestler = Wrestler::with('currentStable', 'futureEmployment')->find($value);
+        $wrestler = Wrestler::with(['currentStable', 'futureEmployment'])->findOrFail($value);
 
-        if (! $wrestler) {
+        if ($wrestler->currentStable->exists() && $wrestler->currentStable->isNot($this->stable)) {
+            $this->fail('This wrestler is already a member of an active stable.');
+
             return false;
-        }
-
-        if ($wrestler->currentStable && $wrestler->currentStable->isNot($this->stable)) {
-            return $this->fail('This wrestler is already a member of an active stable.');
         }
 
         if (is_string($this->startedAt)) {
             if ($wrestler->futureEmployment && $wrestler->futureEmployment->startedAfter($this->startedAt)) {
-                return $this->fail("This wrestler's future employment starts after stable's start date.");
+                $this->fail("This wrestler's future employment starts after stable's start date.");
+
+                return false;
             }
         }
 
         return true;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param  string $message
+     * @return void
+     */
     protected function fail(string $message)
     {
         $this->message = $message;
-
-        return false;
     }
 
     /**

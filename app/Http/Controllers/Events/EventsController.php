@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Events;
 
+use App\DataTransferObjects\EventData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Events\StoreRequest;
 use App\Http\Requests\Events\UpdateRequest;
@@ -52,12 +53,12 @@ class EventsController extends Controller
     /**
      * Create a new event.
      *
-     * @param  \App\Http\Requests\StoreRequest  $request
+     * @param  \App\Http\Requests\Events\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreRequest $request)
     {
-        $this->eventService->create($request->validated());
+        $this->eventService->create(EventData::fromStoreRequest($request));
 
         return redirect()->route('events.index');
     }
@@ -66,7 +67,7 @@ class EventsController extends Controller
      * Show the event.
      *
      * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Event $event)
     {
@@ -76,7 +77,7 @@ class EventsController extends Controller
             $event->load('venue');
         }
 
-        return response()->view('events.show', [
+        return view('events.show', [
             'event' => $event,
         ]);
     }
@@ -85,7 +86,7 @@ class EventsController extends Controller
      * Show the form for editing a given event.
      *
      * @param  \App\Models\Event $event
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Event $event)
     {
@@ -105,7 +106,7 @@ class EventsController extends Controller
      */
     public function update(UpdateRequest $request, Event $event)
     {
-        $this->eventService->update($event, $request->validated());
+        $this->eventService->update($event, EventData::fromUpdateRequest($request));
 
         return redirect()->route('events.index');
     }

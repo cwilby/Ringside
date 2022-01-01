@@ -17,23 +17,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * @property integer $id
- * @property string $name
- * @property string $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- */
 class Title extends Model implements Activatable, Deactivatable, Retirable
 {
-    use Activations,
-        Competable,
-        Deactivations,
-        Retirements,
-        Unguarded,
-        HasFactory,
-        SoftDeletes;
+    use Activations;
+    use Competable;
+    use Deactivations;
+    use HasFactory;
+    use Retirements;
+    use SoftDeletes;
+    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.

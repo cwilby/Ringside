@@ -7,6 +7,7 @@ use App\Models\TagTeam;
 use App\Models\Wrestler;
 use App\Repositories\TagTeamRepository;
 use App\Repositories\WrestlerRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class TagTeamService
@@ -90,10 +91,10 @@ class TagTeamService
      * Employ a given tag team or update the given tag team's employment date.
      *
      * @param  \App\Models\TagTeam $tagTeam
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return \App\Models\TagTeam $tagTeam
      */
-    public function employOrUpdateEmployment(TagTeam $tagTeam, string $employmentDate)
+    public function employOrUpdateEmployment(TagTeam $tagTeam, Carbon $employmentDate)
     {
         if ($tagTeam->isNotInEmployment()) {
             $this->tagTeamRepository->employ($tagTeam, $employmentDate);
@@ -169,6 +170,6 @@ class TagTeamService
      */
     public function employ(TagTeam $tagTeam): void
     {
-        $this->tagTeamRepository->employ($tagTeam, now()->toDateTimeString());
+        $this->tagTeamRepository->employ($tagTeam, now());
     }
 }

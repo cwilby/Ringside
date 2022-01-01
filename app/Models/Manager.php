@@ -14,25 +14,15 @@ use App\Observers\ManagerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * @property integer $id
- * @property integer|null $user_id
- * @property string $first_name
- * @property string $last_name
- * @property string $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- */
 class Manager extends SingleRosterMember implements CanBeAStableMember
 {
-    use HasFactory,
-        HasFullName,
-        Manageables,
-        OwnedByUser,
-        SoftDeletes,
-        CanJoinStables,
-        Unguarded;
+    use CanJoinStables;
+    use HasFactory;
+    use HasFullName;
+    use Manageables;
+    use OwnedByUser;
+    use SoftDeletes;
+    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
