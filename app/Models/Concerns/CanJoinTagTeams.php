@@ -19,12 +19,11 @@ trait CanJoinTagTeams
     /**
      * Get the current tag team the member belongs to.
      *
-     * @return \Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function currentTagTeam()
     {
-        return $this->hasOneDeep(TagTeam::class, ['tag_team_wrestler'])
-                ->whereNull('tag_team_wrestler.left_at');
+        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler')->wherePivotNull('left_at');
     }
 
     /**
