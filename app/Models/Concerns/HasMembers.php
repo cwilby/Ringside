@@ -13,7 +13,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function wrestlers()
+    public function wrestlers(): MorphByMany
     {
         return $this->morphedByMany(Wrestler::class, 'member', 'stable_members')
                     ->using(StableMember::class)
@@ -25,7 +25,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function currentWrestlers()
+    public function currentWrestlers(): MorphByMany
     {
         return $this->wrestlers()->whereNull('left_at');
     }
@@ -35,7 +35,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function previousWrestlers()
+    public function previousWrestlers(): MorphByMany
     {
         return $this->wrestlers()->whereNotNull('left_at');
     }
@@ -45,7 +45,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function tagTeams()
+    public function tagTeams(): MorphByMany
     {
         return $this->morphedByMany(TagTeam::class, 'member', 'stable_members')
                     ->using(StableMember::class)
@@ -57,7 +57,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function currentTagTeams()
+    public function currentTagTeams(): MorphByMany
     {
         return $this->tagTeams()->whereNull('left_at');
     }
@@ -67,7 +67,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function previousTagTeams()
+    public function previousTagTeams(): MorphByMany
     {
         return $this->tagTeams()->whereNotNull('left_at');
     }
@@ -92,7 +92,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function currentMembers()
+    public function currentMembers(): MorphByMany
     {
         return $this->currentTagTeams()->currentWrestlers();
     }
@@ -102,7 +102,7 @@ trait HasMembers
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
      */
-    public function previousMembers()
+    public function previousMembers(): MorphByMany
     {
         return $this->previousTagTeams()->previousWrestlers();
     }

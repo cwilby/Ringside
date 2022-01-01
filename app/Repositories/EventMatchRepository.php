@@ -3,8 +3,11 @@
 namespace App\Repositories;
 
 use App\DataTransferObjects\EventMatchData;
+use App\Models\Competitor;
 use App\Models\Event;
 use App\Models\EventMatch;
+use App\Models\Referee;
+use App\Models\Title;
 
 class EventMatchRepository
 {
@@ -17,24 +20,22 @@ class EventMatchRepository
      */
     public function createForEvent(Event $event, EventMatchData $eventMatchData): EventMatch
     {
-        $eventMatch = $event->matches()->create([
+        return $event->matches()->create([
             'match_type_id' => $eventMatchData->matchType->id,
             'preview' => $eventMatchData->preview,
         ]);
-
-        return $eventMatch;
     }
 
     /**
      * Create a new event with the given data.
      *
      * @param  \App\MOdels\EventMatch $match
-     * @param  int $titleId
+     * @param  \App\Models\Title $title
      * @return \App\Models\EventMatch $match
      */
-    public function addTitleToMatch(EventMatch $match, int $titleId): EventMatch
+    public function addTitleToMatch(EventMatch $match, Title $title): EventMatch
     {
-        $match->titles()->attach($titleId);
+        $match->titles()->attach($title);
 
         return $match;
     }
@@ -43,12 +44,12 @@ class EventMatchRepository
      * Create a new event with the given data.
      *
      * @param  \App\Models\EventMatch $match
-     * @param  int $refereeId
+     * @param  \App\Models\Referee $referee
      * @return \App\Models\EventMatch $match
      */
-    public function addRefereeToMatch(EventMatch $match, int $refereeId): EventMatch
+    public function addRefereeToMatch(EventMatch $match, Referee $referee): EventMatch
     {
-        $match->referees()->attach($refereeId);
+        $match->referees()->attach($referee);
 
         return $match;
     }
@@ -57,12 +58,12 @@ class EventMatchRepository
      * Create a new event with the given data.
      *
      * @param  \App\Models\EventMatch $match
-     * @param  int $competitorId
+     * @param  \App\Models\Competitor $competitor
      * @return \App\Models\EventMatch $match;
      */
-    public function addCompetitorToMatch(EventMatch $match, int $competitorId): EventMatch
+    public function addCompetitorToMatch(EventMatch $match, Competitor $competitor): EventMatch
     {
-        $match->competitors()->attach($competitorId);
+        $match->competitors()->attach($competitor);
 
         return $match;
     }

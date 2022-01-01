@@ -18,7 +18,7 @@ class EventRepository
         return Event::create([
             'name' => $eventData->name,
             'date' => $eventData->date,
-            'venue_id' => $eventData->venue->id,
+            'venue_id' => $eventData->venue?->id,
             'preview' => $eventData->preview,
         ]);
     }
@@ -35,7 +35,7 @@ class EventRepository
         $event->update([
             'name' => $eventData->name,
             'date' => $eventData->date,
-            'venue_id' => $eventData->venue->id,
+            'venue_id' => $eventData->venue?->id,
             'preview' => $eventData->preview,
         ]);
 

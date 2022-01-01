@@ -106,6 +106,8 @@ class TagTeamService
 
             return $tagTeam;
         }
+
+        return $tagTeam;
     }
 
     /**

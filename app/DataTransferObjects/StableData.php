@@ -4,13 +4,14 @@ namespace App\DataTransferObjects;
 
 use App\Http\Requests\Stables\StoreRequest;
 use App\Http\Requests\Stables\UpdateRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class StableData
 {
     public string $name;
     public ?string $signature_move;
-    public ?string $start_date;
+    public ?Carbon $start_date;
     public Collection $tagTeams;
     public Collection $wrestlers;
 

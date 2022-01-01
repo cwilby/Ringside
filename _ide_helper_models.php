@@ -197,9 +197,9 @@ namespace App\Models{
      * @property-read \App\Models\Injury|null $currentInjury
      * @property-read \App\Models\Retirement|null $currentRetirement
      * @property-read \App\Models\Suspension|null $currentSuspension
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $currentTagTeams
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $currentTagTeams
      * @property-read int|null $current_tag_teams_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $currentWrestlers
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Wrestler> $currentWrestlers
      * @property-read int|null $current_wrestlers_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $employments
      * @property-read int|null $employments_count
@@ -223,9 +223,9 @@ namespace App\Models{
      * @property-read \App\Models\Suspension|null $previousSuspension
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $previousSuspensions
      * @property-read int|null $previous_suspensions_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $previousTagTeams
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $previousTagTeams
      * @property-read int|null $previous_tag_teams_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $previousWrestlers
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Wrestler> $previousWrestlers
      * @property-read int|null $previous_wrestlers_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
      * @property-read int|null $retirements_count
@@ -233,10 +233,10 @@ namespace App\Models{
      * @property-read int|null $stables_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
      * @property-read int|null $suspensions_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeams
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $tagTeams
      * @property-read int|null $tag_teams_count
      * @property-read \App\Models\User|null $user
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Wrestler[] $wrestlers
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Wrestler> $wrestlers
      * @property-read int|null $wrestlers_count
      * @method static \App\Builders\ManagerQueryBuilder|Manager available()
      * @method static \App\Builders\ManagerQueryBuilder|Manager bookable()
@@ -772,6 +772,7 @@ namespace App\Models{
      * @property-read \App\Models\Injury|null $currentInjury
      * @property-read \App\Models\Retirement|null $currentRetirement
      * @property-read \App\Models\Suspension|null $currentSuspension
+     * @property-read \Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep|null $currentTagTeam
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $employments
      * @property-read int|null $employments_count
      * @property-read \App\Models\Employment|null $firstEmployment
@@ -779,7 +780,7 @@ namespace App\Models{
      * @property-read string|null $started_at
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Injury[] $injuries
      * @property-read int|null $injuries_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Manager[] $managers
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Manager> $managers
      * @property-read int|null $managers_count
      * @property-read \App\Models\Employment|null $previousEmployment
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Employment[] $previousEmployments
@@ -790,12 +791,12 @@ namespace App\Models{
      * @property-read \App\Models\Retirement|null $previousRetirement
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $previousRetirements
      * @property-read int|null $previous_retirements_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stable[] $previousStables
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Stable> $previousStables
      * @property-read int|null $previous_stables_count
      * @property-read \App\Models\Suspension|null $previousSuspension
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $previousSuspensions
      * @property-read int|null $previous_suspensions_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $previousTagTeams
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $previousTagTeams
      * @property-read int|null $previous_tag_teams_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Retirement[] $retirements
      * @property-read int|null $retirements_count
@@ -803,7 +804,7 @@ namespace App\Models{
      * @property-read int|null $stables_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Suspension[] $suspensions
      * @property-read int|null $suspensions_count
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TagTeam[] $tagTeams
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\TagTeam> $tagTeams
      * @property-read int|null $tag_teams_count
      * @property-read \App\Models\User|null $user
      * @method static \App\Builders\WrestlerQueryBuilder|Wrestler bookable()

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DataTransferObjects\TitleData;
 use App\Models\Title;
 use App\Repositories\TitleRepository;
+use Carbon\Carbon;
 
 class TitleService
 {
@@ -64,10 +65,10 @@ class TitleService
      * Activate a given manager or update the given title's activation date.
      *
      * @param  \App\Models\Title $title
-     * @param  string $activationDate
+     * @param  \Carbon\Carbon $activationDate
      * @return \App\Models\Title
      */
-    public function activateOrUpdateActivation(Title $title, string $activationDate)
+    public function activateOrUpdateActivation(Title $title, Carbon $activationDate)
     {
         return $this->titleRepository->activate($title, $activationDate);
     }

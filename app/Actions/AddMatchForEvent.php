@@ -2,7 +2,12 @@
 
 namespace App\Actions;
 
+use App\DataTransferObjects\EventMatchData;
+use App\Models\Competitor;
 use App\Models\Event;
+use App\Models\EventMatch;
+use App\Models\Referee;
+use App\Models\Title;
 use App\Repositories\EventMatchRepository;
 
 class AddMatchForEvent
@@ -14,23 +19,30 @@ class AddMatchForEvent
         $this->eventMatchRepository = $eventMatchRepository;
     }
 
-    public function __invoke(Event $event, array $data)
+    /**
+     * Undocumented function.
+     *
+     * @param  \App\Models\Event $event
+     * @param  \App\DataTransferObjects\EventMatchData $eventMatchData
+     * @return \App\Models\EventMatch $createdMatch
+     */
+    public function __invoke(Event $event, EventMatchData $eventMatchData): EventMatch
     {
-        $createdMatch = $this->eventMatchRepository->createForEvent($event, $data);
+        $createdMatch = $this->eventMatchRepository->createForEvent($event, $eventMatchData);
 
-        if (count($data['titles'])) {
-            foreach ($data['titles'] as $titleId) {
-                $this->eventMatchRepository->addTitleToMatch($createdMatch, $titleId);
-            }
+        if ($eventMatchData->titles->isNotEmpty()) {
+            $eventMatchData->titles->each(
+                fn (Title $title) => $this->eventMatchRepository->addTitleToMatch($createdMatch, $title)
+            );
         }
 
-        foreach ($data['referees'] as $refereeId) {
-            $this->eventMatchRepository->addRefereeToMatch($createdMatch, $refereeId);
-        }
+        $eventMatchData->referees->each(
+            fn (Referee $referee) => $this->eventMatchRepository->addRefereeToMatch($createdMatch, $referee)
+        );
 
-        foreach ($data['competitors'] as $competitorId) {
-            $this->eventMatchRepository->addCompetitorToMatch($createdMatch, $competitorId);
-        }
+        $eventMatchData->competitors->each(
+            fn (Competitor $competitor) => $this->eventMatchRepository->addCompetitorToMatch($createdMatch, $competitor)
+        );
 
         return $createdMatch;
     }

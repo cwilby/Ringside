@@ -5,13 +5,14 @@ namespace App\DataTransferObjects;
 use App\Http\Requests\TagTeams\StoreRequest;
 use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Models\Wrestler;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class TagTeamData
 {
     public string $name = '';
     public ?string $signature_move;
-    public ?string $start_date;
+    public ?Carbon $start_date;
 
     /**
      * @var \Illuminate\Support\Collection<Wrestler>

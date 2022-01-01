@@ -182,6 +182,8 @@ class StableService
 
             return $stable;
         }
+
+        return $stable;
     }
 
     /**
