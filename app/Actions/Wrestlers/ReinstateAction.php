@@ -17,7 +17,7 @@ class ReinstateAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler): void
     {
-        $reinstatementDate = now()->toDateTimeString();
+        $reinstatementDate = now();
 
         $this->wrestlerRepository->reinstate($wrestler, $reinstatementDate);
         $wrestler->save();
