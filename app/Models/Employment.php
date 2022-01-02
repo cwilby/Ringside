@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\Unguarded;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class Employment extends Model
 {
     use HasFactory;
-    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
@@ -21,6 +19,13 @@ class Employment extends Model
         'started_at' => 'datetime',
         'ended_at' => 'datetime',
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['employable_id', 'employable_type', 'started_at', 'ended_at'];
 
     /**
      * Get the employed model.

@@ -9,7 +9,6 @@ use App\Models\Concerns\CanJoinStables;
 use App\Models\Concerns\CanJoinTagTeams;
 use App\Models\Concerns\HasManagers;
 use App\Models\Concerns\OwnedByUser;
-use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Models\Contracts\Manageable;
@@ -26,7 +25,6 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
     use HasManagers;
     use OwnedByUser;
     use SoftDeletes;
-    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
@@ -37,6 +35,13 @@ class Wrestler extends SingleRosterMember implements Bookable, CanBeAStableMembe
         'status' => WrestlerStatus::class,
         'height' => HeightCast::class,
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['user_id', 'name', 'height', 'weight', 'hometown', 'signature_move', 'status'];
 
     /**
      * The "boot" method of the model.

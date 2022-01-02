@@ -8,7 +8,6 @@ use App\Exceptions\CannotBeEmployedException;
 use App\Exceptions\NotEnoughMembersException;
 use App\Models\Concerns\CanJoinStables;
 use App\Models\Concerns\OwnedByUser;
-use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Observers\TagTeamObserver;
@@ -25,7 +24,6 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
     use HasTableAlias;
     use OwnedByUser;
     use SoftDeletes;
-    use Unguarded;
 
     /**
      * The number of the wrestlers allowed on a tag team.
@@ -42,6 +40,13 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
     protected $casts = [
         'status' => TagTeamStatus::class,
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['user_id', 'name', 'signature_move', 'status'];
 
     /**
      * The "boot" method of the model.

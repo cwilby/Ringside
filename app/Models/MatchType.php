@@ -17,4 +17,11 @@ class MatchType extends Model
     protected $casts = [
         'number_of_sides' => 'integer',
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'slug', 'number_of_sides'];
 }

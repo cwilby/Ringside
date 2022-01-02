@@ -8,7 +8,6 @@ use App\Models\Concerns\CanJoinStables;
 use App\Models\Concerns\HasFullName;
 use App\Models\Concerns\Manageables;
 use App\Models\Concerns\OwnedByUser;
-use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\CanBeAStableMember;
 use App\Observers\ManagerObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,7 +21,6 @@ class Manager extends SingleRosterMember implements CanBeAStableMember
     use Manageables;
     use OwnedByUser;
     use SoftDeletes;
-    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
@@ -32,6 +30,13 @@ class Manager extends SingleRosterMember implements CanBeAStableMember
     protected $casts = [
         'status' => ManagerStatus::class,
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['user_id', 'first_name', 'last_name', 'status'];
 
     /**
      * The "boot" method of the model.

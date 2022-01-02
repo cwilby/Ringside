@@ -17,7 +17,7 @@ class ManagerTest extends TestCase
     /**
      * @test
      */
-    public function a_manager_status_gets_cast_as_a_manager_status_enum()
+    public function a_manager_status_gets_cast_as_a_manager_status_enum(): void
     {
         $manager = Manager::factory()->make();
 
@@ -27,7 +27,7 @@ class ManagerTest extends TestCase
     /**
      * @test
      */
-    public function a_manager_is_a_single_roster_member()
+    public function a_manager_is_a_single_roster_member(): void
     {
         $this->assertEquals(SingleRosterMember::class, get_parent_class(Manager::class));
     }
@@ -35,15 +35,7 @@ class ManagerTest extends TestCase
     /**
      * @test
      */
-    public function a_manager_uses_has_a_unguarded_trait()
-    {
-        $this->assertUsesTrait('App\Models\Concerns\Unguarded', Manager::class);
-    }
-
-    /**
-     * @test
-     */
-    public function a_manager_uses_soft_deleted_trait()
+    public function a_manager_uses_soft_deleted_trait(): void
     {
         $this->assertUsesTrait('Illuminate\Database\Eloquent\SoftDeletes', Manager::class);
     }
@@ -51,7 +43,7 @@ class ManagerTest extends TestCase
     /**
      * @test
      */
-    public function a_manager_uses_has_a_full_name_trait()
+    public function a_manager_uses_has_a_full_name_trait(): void
     {
         $this->assertUsesTrait('App\Models\Concerns\HasFullName', Manager::class);
     }

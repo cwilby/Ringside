@@ -8,7 +8,6 @@ use App\Models\Concerns\Activations;
 use App\Models\Concerns\Deactivations;
 use App\Models\Concerns\HasMembers;
 use App\Models\Concerns\OwnedByUser;
-use App\Models\Concerns\Unguarded;
 use App\Models\Contracts\Activatable;
 use App\Models\Contracts\Deactivatable;
 use App\Models\Contracts\Retirable;
@@ -25,7 +24,6 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
     use HasMembers;
     use OwnedByUser;
     use SoftDeletes;
-    use Unguarded;
 
     /**
      * The attributes that should be cast to native types.
@@ -35,6 +33,13 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
     protected $casts = [
         'status' => StableStatus::class,
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['user_id', 'name', 'status'];
 
     /**
      * The "boot" method of the model.

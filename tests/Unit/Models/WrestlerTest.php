@@ -49,10 +49,6 @@ class WrestlerTest extends TestCase
      * @test
      */
     public function a_wrestler_uses_has_a_unguarded_trait()
-    {
-        $this->assertUsesTrait('App\Models\Concerns\Unguarded', Wrestler::class);
-    }
-
     /**
      * @test
      */
