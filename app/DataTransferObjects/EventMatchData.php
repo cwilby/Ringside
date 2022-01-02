@@ -2,8 +2,8 @@
 
 namespace App\DataTransferObjects;
 
-use App\Http\Requests\EventMatches\UpdateRequest;
 use App\Http\Requests\EventMatches\StoreRequest;
+use App\Http\Requests\EventMatches\UpdateRequest;
 use App\Models\Competitor;
 use App\Models\MatchType;
 use App\Models\Referee;
@@ -17,9 +17,9 @@ class EventMatchData
     public Collection $competitors;
     public ?string $preview;
 
-    public static function fromStoreRequest(StoreRequest $request): EventMatchData
+    public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->matchType = MatchType::find($request->input('match_type_id'));
         $dto->referees = Referee::findMany($request->input('referees'));
@@ -30,9 +30,9 @@ class EventMatchData
         return $dto;
     }
 
-    public static function fromUpdateRequest(UpdateRequest $request): EventMatchData
+    public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->matchType = MatchType::find($request->input('match_type_id'));
         $dto->referees = Referee::findMany($request->input('referees'));

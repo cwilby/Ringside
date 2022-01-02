@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\DataTransferObjects\WrestlerData;
 use App\Models\Wrestler;
+use Carbon\Carbon;
 
 class WrestlerRepository
 {
@@ -67,121 +69,121 @@ class WrestlerRepository
      * Employ a given wrestler on a given date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return \App\Models\Wrestler $wrestler
      */
-    public function employ(Wrestler $wrestler, string $employmentDate)
+    public function employ(Wrestler $wrestler, Carbon $employmentDate)
     {
-        return $wrestler->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate]);
+        return $wrestler->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
     }
 
     /**
      * Release a given wrestler on a given date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $releaseDate
+     * @param  \Carbon\Carbon $releaseDate
      * @return \App\Models\Wrestler $wrestler
      */
-    public function release(Wrestler $wrestler, string $releaseDate)
+    public function release(Wrestler $wrestler, Carbon $releaseDate)
     {
-        return $wrestler->currentEmployment()->update(['ended_at' => $releaseDate]);
+        return $wrestler->currentEmployment()->update(['ended_at' => $releaseDate->toDateTimeString()]);
     }
 
     /**
      * Injure a given wrestler on a given date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $injureDate
+     * @param  \Carbon\Carbon $injureDate
      * @return \App\Models\Wrestler
      */
-    public function injure(Wrestler $wrestler, string $injureDate)
+    public function injure(Wrestler $wrestler, Carbon $injureDate)
     {
-        return $wrestler->injuries()->create(['started_at' => $injureDate]);
+        return $wrestler->injuries()->create(['started_at' => $injureDate->toDateTimeString()]);
     }
 
     /**
      * Clear the injury of a given wrestler on a given date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $recoveryDate
+     * @param  \Carbon\Carbon $recoveryDate
      * @return \App\Models\Wrestler $wrestler
      */
-    public function clearInjury(Wrestler $wrestler, string $recoveryDate)
+    public function clearInjury(Wrestler $wrestler, Carbon $recoveryDate)
     {
-        return $wrestler->currentInjury()->update(['ended_at' => $recoveryDate]);
+        return $wrestler->currentInjury()->update(['ended_at' => $recoveryDate->toDateTimeString()]);
     }
 
     /**
      * Retire a given wrestler on a given date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $retirementDate
+     * @param  \Carbon\Carbon $retirementDate
      * @return \App\Models\Wrestler $wrestler
      */
-    public function retire(Wrestler $wrestler, string $retirementDate)
+    public function retire(Wrestler $wrestler, Carbon $retirementDate)
     {
-        return $wrestler->retirements()->create(['started_at' => $retirementDate]);
+        return $wrestler->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
     }
 
     /**
      * Unretire a given wrestler on a given date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $unretireDate
+     * @param  \Carbon\Carbon $unretireDate
      * @return \App\Models\Wrestler $wrestler
      */
-    public function unretire(Wrestler $wrestler, string $unretireDate)
+    public function unretire(Wrestler $wrestler, Carbon $unretireDate)
     {
-        return $wrestler->currentRetirement()->update(['ended_at' => $unretireDate]);
+        return $wrestler->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
     }
 
     /**
      * Suspend a given wrestler on a given date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $suspensionDate
+     * @param  \Carbon\Carbon $suspensionDate
      * @return \App\Models\Wrestler $wrestler
      */
-    public function suspend(Wrestler $wrestler, string $suspensionDate)
+    public function suspend(Wrestler $wrestler, Carbon $suspensionDate)
     {
-        return $wrestler->suspensions()->create(['started_at' => $suspensionDate]);
+        return $wrestler->suspensions()->create(['started_at' => $suspensionDate->toDateTimeString()]);
     }
 
     /**
      * Reinstate a given wrestler on a given date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $reinstateDate
+     * @param  \Carbon\Carbon $reinstateDate
      * @return \App\Models\Wrestler $wrestler
      */
-    public function reinstate(Wrestler $wrestler, string $reinstateDate)
+    public function reinstate(Wrestler $wrestler, Carbon $reinstateDate)
     {
-        return $wrestler->currentSuspension()->update(['ended_at' => $reinstateDate]);
+        return $wrestler->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
     }
 
     /**
      * Get the model's first employment date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return \App\Models\Wrestler $wrestler
      */
-    public function updateEmployment(Wrestler $wrestler, string $employmentDate)
+    public function updateEmployment(Wrestler $wrestler, Carbon $employmentDate)
     {
-        return $wrestler->futureEmployment()->update(['started_at' => $employmentDate]);
+        return $wrestler->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
     }
 
     /**
      * Remove the given wrestler from their current tag team on a given date.
      *
      * @param  \App\Models\Wrestler
-     * @param  string  $removalDate
+     * @param  \Carbon\Carbon  $removalDate
      * @return void
      */
-    public function removeFromCurrentTagTeam(Wrestler $wrestler, string $removalDate)
+    public function removeFromCurrentTagTeam(Wrestler $wrestler, Carbon $removalDate)
     {
         $wrestler->currentTagTeam()->updateExistingPivot($wrestler->currentTagTeam->id, [
-            'left_at' => $removalDate,
+            'left_at' => $removalDate->toDateTimeString(),
         ]);
     }
 

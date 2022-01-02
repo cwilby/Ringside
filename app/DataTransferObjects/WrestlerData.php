@@ -4,6 +4,7 @@ namespace App\DataTransferObjects;
 
 use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Http\Requests\Wrestlers\UpdateRequest;
+use Carbon\Carbon;
 
 class WrestlerData
 {
@@ -12,11 +13,11 @@ class WrestlerData
     public int $weight;
     public string $hometown;
     public ?string $signature_move;
-    public ?string $start_date;
+    public ?Carbon $start_date;
 
     public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->name = $request->input('name');
         $dto->height = $request->input('height');
@@ -29,7 +30,7 @@ class WrestlerData
 
     public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->name = $request->input('name');
         $dto->height = $request->input('height');

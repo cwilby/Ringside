@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\DataTransferObjects\WrestlerData;
 use App\Models\Wrestler;
 use App\Repositories\WrestlerRepository;
+use Carbon\Carbon;
 
 class WrestlerService
 {
@@ -27,15 +29,15 @@ class WrestlerService
     /**
      * Create a new wrestler with given data.
      *
-     * @param  array $data
+     * @param  \App\DataTransferObjects\WrestlerData $wrestlerData
      * @return \App\Models\Wrestler $wrestler
      */
-    public function create(array $data)
+    public function create(WrestlerData $wrestlerData)
     {
-        $wrestler = $this->wrestlerRepository->create($data);
+        $wrestler = $this->wrestlerRepository->create($wrestlerData);
 
-        if (isset($data['started_at'])) {
-            $this->wrestlerRepository->employ($wrestler, $data['started_at']);
+        if (isset($wrestler->start_date)) {
+            $this->wrestlerRepository->employ($wrestler, $wrestler->start_date);
         }
 
         return $wrestler;
@@ -45,15 +47,15 @@ class WrestlerService
      * Update a given wrestler with given data.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  array $data
+     * @param  \App\DataTransferObjects\WrestlerData $wrestlerData
      * @return \App\Models\Wrestler $wrestler
      */
-    public function update(Wrestler $wrestler, array $data)
+    public function update(Wrestler $wrestler, WrestlerData $wrestlerData)
     {
-        $this->wrestlerRepository->update($wrestler, $data);
+        $this->wrestlerRepository->update($wrestler, $wrestlerData);
 
-        if ($wrestler->canHaveEmploymentStartDateChanged() && isset($data['started_at'])) {
-            $this->employOrUpdateEmployment($wrestler, $data['started_at']);
+        if ($wrestler->canHaveEmploymentStartDateChanged() && isset($wrestlerData->start_date)) {
+            $this->employOrUpdateEmployment($wrestler, $wrestlerData->start_date);
         }
 
         return $wrestler;
@@ -63,18 +65,24 @@ class WrestlerService
      * Employ a given wrestler or update the given wrestler's employment date.
      *
      * @param  \App\Models\Wrestler $wrestler
-     * @param  string $employmentDate
-     * @return void
+     * @param  \Carbon\Carbon $employmentDate
+     * @return \App\Models\Wrestler $wrestler
      */
-    public function employOrUpdateEmployment(Wrestler $wrestler, string $employmentDate)
+    public function employOrUpdateEmployment(Wrestler $wrestler, Carbon $employmentDate)
     {
         if ($wrestler->isNotInEmployment()) {
-            return $this->wrestlerRepository->employ($wrestler, $employmentDate);
+            $this->wrestlerRepository->employ($wrestler, $employmentDate);
+
+            return $wrestler;
         }
 
         if ($wrestler->hasFutureEmployment() && ! $wrestler->employedOn($employmentDate)) {
-            return $this->wrestlerRepository->updateEmployment($wrestler, $employmentDate);
+            $this->wrestlerRepository->updateEmployment($wrestler, $employmentDate);
+
+            return $wrestler;
         }
+
+        return $wrestler;
     }
 
     /**

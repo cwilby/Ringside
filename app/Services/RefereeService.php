@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DataTransferObjects\RefereeData;
 use App\Models\Referee;
 use App\Repositories\RefereeRepository;
+use Carbon\Carbon;
 
 class RefereeService
 {
@@ -35,7 +36,7 @@ class RefereeService
     {
         $referee = $this->refereeRepository->create($refereeData);
 
-        if (isset($data['started_at'])) {
+        if (isset($refereeData->start_date)) {
             $this->refereeRepository->employ($referee, $refereeData->start_date);
         }
 
@@ -64,18 +65,24 @@ class RefereeService
      * Employ a given referee or update the given referee's employment date.
      *
      * @param  \App\Models\Referee $referee
-     * @param  string $employmentDate
-     * @return void
+     * @param  \Carbon\Carbon $employmentDate
+     * @return \App\Models\Referee $referee
      */
-    public function employOrUpdateEmployment(Referee $referee, string $employmentDate)
+    public function employOrUpdateEmployment(Referee $referee, Carbon $employmentDate)
     {
         if ($referee->isNotInEmployment()) {
-            return $this->refereeRepository->employ($referee, $employmentDate);
+            $this->refereeRepository->employ($referee, $employmentDate);
+
+            return $referee;
         }
 
         if ($referee->hasFutureEmployment() && ! $referee->employedOn($employmentDate)) {
-            return $this->refereeRepository->updateEmployment($referee, $employmentDate);
+            $this->refereeRepository->updateEmployment($referee, $employmentDate);
+
+            return $referee;
         }
+
+        return $referee;
     }
 
     /**

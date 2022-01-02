@@ -17,7 +17,7 @@ class EventRepository
     {
         return Event::create([
             'name' => $eventData->name,
-            'date' => $eventData->date,
+            'date' => $eventData->date->toDateTimeString(),
             'venue_id' => $eventData->venue->id,
             'preview' => $eventData->preview,
         ]);
@@ -34,7 +34,7 @@ class EventRepository
     {
         return $event->update([
             'name' => $eventData->name,
-            'date' => $eventData->date,
+            'date' => $eventData->date->toDateTimeString(),
             'venue_id' => $eventData->venue->id,
             'preview' => $eventData->preview,
         ]);

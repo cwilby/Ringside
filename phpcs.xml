@@ -1,6 +1,4 @@
 <?xml version="1.0"?>
-<ruleset name="Standard">
-    <rule ref="PSR2">
-        <exclude name="PSR1.Methods.CamelCapsMethodName"/>
-    </rule>
+<ruleset name="PSR12">
+    <exclude-pattern>_ide_helper_models.php</exclude-pattern>
 </ruleset>

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DataTransferObjects\ManagerData;
 use App\Models\Manager;
 use App\Repositories\ManagerRepository;
+use Carbon\Carbon;
 
 class ManagerService
 {
@@ -64,18 +65,24 @@ class ManagerService
      * Employ a given manager or update the given manager's employment date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $employmentDate
-     * @return void
+     * @param  \Carbon\Carbon $employmentDate
+     * @return \App\Models\Manager $manager
      */
-    private function employOrUpdateEmployment(Manager $manager, string $employmentDate)
+    private function employOrUpdateEmployment(Manager $manager, Carbon $employmentDate)
     {
         if ($manager->isNotInEmployment()) {
-            return $this->managerRepository->employ($manager, $employmentDate);
+            $this->managerRepository->employ($manager, $employmentDate);
+
+            return $manager;
         }
 
         if ($manager->hasFutureEmployment() && ! $manager->employedOn($employmentDate)) {
-            return $this->managerRepository->updateEmployment($manager, $employmentDate);
+            $this->managerRepository->updateEmployment($manager, $employmentDate);
+
+            return $manager;
         }
+
+        return $manager;
     }
 
     /**

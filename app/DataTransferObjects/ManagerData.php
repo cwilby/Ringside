@@ -2,18 +2,19 @@
 
 namespace App\DataTransferObjects;
 
-use App\Http\Requests\Managers\UpdateRequest;
 use App\Http\Requests\Managers\StoreRequest;
+use App\Http\Requests\Managers\UpdateRequest;
+use Carbon\Carbon;
 
 class ManagerData
 {
     public string $first_name;
     public string $last_name;
-    public ?string $start_date;
+    public ?Carbon $start_date;
 
-    public static function fromStoreRequest(StoreRequest $request): ManagerData
+    public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->first_name = $request->input('first_name');
         $dto->last_name = $request->input('last_name');
@@ -22,9 +23,9 @@ class ManagerData
         return $dto;
     }
 
-    public static function fromUpdateRequest(UpdateRequest $request): ManagerData
+    public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->first_name = $request->input('first_name');
         $dto->last_name = $request->input('last_name');

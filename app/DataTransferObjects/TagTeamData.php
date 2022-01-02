@@ -2,20 +2,21 @@
 
 namespace App\DataTransferObjects;
 
-use App\Http\Requests\TagTeams\UpdateRequest;
 use App\Http\Requests\TagTeams\StoreRequest;
-use \Illumiante\Support\Collection;
+use App\Http\Requests\TagTeams\UpdateRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class TagTeamData
 {
     public string $name;
     public ?string $signature_move;
-    public ?string $start_date;
+    public ?Carbon $start_date;
     public Collection $wrestlers;
 
-    public static function fromStoreRequest(StoreRequest $request): TagTeamData
+    public static function fromStoreRequest(StoreRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->name = $request->input('name');
         $dto->signature_move = $request->input('signature_move');
@@ -25,9 +26,9 @@ class TagTeamData
         return $dto;
     }
 
-    public static function fromUpdateRequest(UpdateRequest $request): TagTeamData
+    public static function fromUpdateRequest(UpdateRequest $request): self
     {
-        $dto = new self();
+        $dto = new self;
 
         $dto->name = $request->input('name');
         $dto->signature_move = $request->input('signature_move');

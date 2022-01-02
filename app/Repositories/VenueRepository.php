@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DataTransferObjects\VenueData;
 use App\Models\Venue;
 
 class VenueRepository

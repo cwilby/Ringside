@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\DataTransferObjects\ManagerData;
 use App\Models\Manager;
+use Carbon\Carbon;
 
 class ManagerRepository
 {
@@ -62,48 +63,48 @@ class ManagerRepository
      * Employ a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return \App\Models\Manager $manager
      */
-    public function employ(Manager $manager, string $employmentDate)
+    public function employ(Manager $manager, Carbon $employmentDate)
     {
-        return $manager->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate]);
+        return $manager->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
     }
 
     /**
      * Release a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $releaseDate
+     * @param  \Carbon\Carbon $releaseDate
      * @return \App\Models\Manager $manager
      */
-    public function release(Manager $manager, string $releaseDate)
+    public function release(Manager $manager, Carbon $releaseDate)
     {
-        return $manager->currentEmployment()->update(['ended_at' => $releaseDate]);
+        return $manager->currentEmployment()->update(['ended_at' => $releaseDate->toDateTimeString()]);
     }
 
     /**
      * Injure a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $injureDate
+     * @param  \Carbon\Carbon $injureDate
      * @return \App\Models\Manager $manager
      */
-    public function injure(Manager $manager, string $injureDate)
+    public function injure(Manager $manager, Carbon $injureDate)
     {
-        return $manager->injuries()->create(['started_at' => $injureDate]);
+        return $manager->injuries()->create(['started_at' => $injureDate->toDateTimeString()]);
     }
 
     /**
      * Clear the current injury of a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $recoveryDate
+     * @param  \Carbon\Carbon $recoveryDate
      * @return \App\Models\Manager $manager
      */
     public function clearInjury(Manager $manager, string $recoveryDate)
     {
-        $manager->currentInjury()->update(['ended_at' => $recoveryDate]);
+        $manager->currentInjury()->update(['ended_at' => $recoveryDate->toDateTimeString()]);
 
         return $manager;
     }
@@ -112,60 +113,60 @@ class ManagerRepository
      * Retire a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $retirementDate
+     * @param  \Carbon\Carbon $retirementDate
      * @return \App\Models\Manager $manager
      */
     public function retire(Manager $manager, string $retirementDate)
     {
-        return $manager->retirements()->create(['started_at' => $retirementDate]);
+        return $manager->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
     }
 
     /**
      * Unretire a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $unretireDate
+     * @param  \Carbon\Carbon $unretireDate
      * @return \App\Models\Manager $manager
      */
     public function unretire(Manager $manager, string $unretireDate)
     {
-        return $manager->currentRetirement()->update(['ended_at' => $unretireDate]);
+        return $manager->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
     }
 
     /**
      * Suspend a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $suspensionDate
+     * @param  \Carbon\Carbon $suspensionDate
      * @return \App\Models\Manager $manager
      */
     public function suspend(Manager $manager, string $suspensionDate)
     {
-        return $manager->suspensions()->create(['started_at' => $suspensionDate]);
+        return $manager->suspensions()->create(['started_at' => $suspensionDate->toDateTimeString()]);
     }
 
     /**
      * Reinstate a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $reinstateDate
+     * @param  \Carbon\Carbon $reinstateDate
      * @return \App\Models\Manager $manager
      */
-    public function reinstate(Manager $manager, string $reinstateDate)
+    public function reinstate(Manager $manager, Carbon $reinstateDate)
     {
-        return $manager->currentSuspension()->update(['ended_at' => $reinstateDate]);
+        return $manager->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
     }
 
     /**
      * Get the model's first employment date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $employmentDate
+     * @param  \Carbon\Carbon $employmentDate
      * @return \App\Models\Manager $manager
      */
-    public function updateEmployment(Manager $manager, string $employmentDate)
+    public function updateEmployment(Manager $manager, Carbon $employmentDate)
     {
-        return $manager->futureEmployment()->update(['started_at' => $employmentDate]);
+        return $manager->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
     }
 
     /**
