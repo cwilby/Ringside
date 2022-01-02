@@ -163,7 +163,9 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
             return false;
         }
 
-        if ($this->currentWrestlers->count() != 2 || ! $this->currentWrestlers->each->canBeReinstated()) {
+        if ($this->currentWrestlers->filter(
+            fn (Wrestler $wrestler) => $wrestler->canBeReinstated()
+        )->count() != 2) {
             return false;
         }
 
@@ -201,10 +203,10 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
      */
     public function partnersAreBookable()
     {
-        foreach ($this->currentWrestlers as $wrestler) {
-            if (! $wrestler->isBookable()) {
-                return false;
-            }
+        if ($this->currentWrestlers->filter(
+            fn (Wrestler $wrestler) => ! $wrestler->isBookable()
+        )->count() != 2) {
+            return false;
         }
 
         return true;

@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
-    use HasFactory,
-        SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -56,7 +56,7 @@ class Event extends Model
     /**
      * Present the event model.
      *
-     * @return App\Presenters\EventPresenter
+     * @return \App\Presenters\EventPresenter
      */
     public function present()
     {

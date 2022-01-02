@@ -26,7 +26,7 @@ class TitleQueryBuilder extends Builder
     public function withCurrentRetiredAtDate()
     {
         return $this->addSelect(['current_retired_at' => Retirement::select('started_at')
-            ->whereColumn('retiree_id', $this->getModel()->getTable() . '.id')
+            ->whereColumn('retiree_id', $this->getModel()->getTable().'.id')
             ->where('retiree_type', $this->getModel())
             ->latest('started_at')
             ->limit(1),
@@ -148,5 +148,15 @@ class TitleQueryBuilder extends Builder
     public function orderByFirstActivatedAtDate(string $direction = 'asc')
     {
         return $this->orderByRaw("DATE(first_activated_at) {$direction}");
+    }
+
+    /**
+     * Scope a query to only include competable models.
+     *
+     * @param  $this
+     */
+    public function competable()
+    {
+        return $this->where('status', TitleStatus::active());
     }
 }

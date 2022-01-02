@@ -17,8 +17,8 @@ class EventRepository
     {
         return Event::create([
             'name' => $eventData->name,
-            'date' => $eventData->date->toDateTimeString(),
-            'venue_id' => $eventData->venue->id,
+            'date' => $eventData->date?->toDateTimeString(),
+            'venue_id' => $eventData->venue?->id,
             'preview' => $eventData->preview,
         ]);
     }
@@ -32,12 +32,14 @@ class EventRepository
      */
     public function update(Event $event, EventData $eventData)
     {
-        return $event->update([
+        $event->update([
             'name' => $eventData->name,
-            'date' => $eventData->date->toDateTimeString(),
-            'venue_id' => $eventData->venue->id,
+            'date' => $eventData->date?->toDateTimeString(),
+            'venue_id' => $eventData->venue?->id,
             'preview' => $eventData->preview,
         ]);
+
+        return $event;
     }
 
     /**
@@ -48,7 +50,7 @@ class EventRepository
      */
     public function delete(Event $event)
     {
-        $event->delete($event);
+        $event->delete();
     }
 
     /**
@@ -59,21 +61,6 @@ class EventRepository
      */
     public function restore(Event $event)
     {
-        $event->restore($event);
-    }
-
-    /**
-     * Restore a given event.
-     *
-     * @param  \App\Models\Event $event
-     * @return void
-     */
-    public function addMatch(Event $event, $matches)
-    {
-        foreach ($matches as $match) {
-            $event->matches()->create([
-
-            ]);
-        }
+        $event->restore();
     }
 }

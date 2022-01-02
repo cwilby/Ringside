@@ -34,13 +34,15 @@ class WrestlerRepository
      */
     public function update(Wrestler $wrestler, WrestlerData $wrestlerData)
     {
-        return $wrestler->update([
+        $wrestler->update([
             'name' => $wrestlerData->name,
             'height' => $wrestlerData->height,
             'weight' => $wrestlerData->weight,
             'hometown' => $wrestlerData->hometown,
             'signature_move' => $wrestlerData->signature_move,
         ]);
+
+        return $wrestler;
     }
 
     /**
@@ -74,7 +76,9 @@ class WrestlerRepository
      */
     public function employ(Wrestler $wrestler, Carbon $employmentDate)
     {
-        return $wrestler->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
+        $wrestler->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
@@ -86,7 +90,9 @@ class WrestlerRepository
      */
     public function release(Wrestler $wrestler, Carbon $releaseDate)
     {
-        return $wrestler->currentEmployment()->update(['ended_at' => $releaseDate->toDateTimeString()]);
+        $wrestler->currentEmployment()->update(['ended_at' => $releaseDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
@@ -98,7 +104,9 @@ class WrestlerRepository
      */
     public function injure(Wrestler $wrestler, Carbon $injureDate)
     {
-        return $wrestler->injuries()->create(['started_at' => $injureDate->toDateTimeString()]);
+        $wrestler->injuries()->create(['started_at' => $injureDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
@@ -110,7 +118,9 @@ class WrestlerRepository
      */
     public function clearInjury(Wrestler $wrestler, Carbon $recoveryDate)
     {
-        return $wrestler->currentInjury()->update(['ended_at' => $recoveryDate->toDateTimeString()]);
+        $wrestler->currentInjury()->update(['ended_at' => $recoveryDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
@@ -122,7 +132,9 @@ class WrestlerRepository
      */
     public function retire(Wrestler $wrestler, Carbon $retirementDate)
     {
-        return $wrestler->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
+        $wrestler->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
@@ -134,7 +146,9 @@ class WrestlerRepository
      */
     public function unretire(Wrestler $wrestler, Carbon $unretireDate)
     {
-        return $wrestler->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
+        $wrestler->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
@@ -146,7 +160,9 @@ class WrestlerRepository
      */
     public function suspend(Wrestler $wrestler, Carbon $suspensionDate)
     {
-        return $wrestler->suspensions()->create(['started_at' => $suspensionDate->toDateTimeString()]);
+        $wrestler->suspensions()->create(['started_at' => $suspensionDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
@@ -158,7 +174,9 @@ class WrestlerRepository
      */
     public function reinstate(Wrestler $wrestler, Carbon $reinstateDate)
     {
-        return $wrestler->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
+        $wrestler->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
@@ -170,13 +188,15 @@ class WrestlerRepository
      */
     public function updateEmployment(Wrestler $wrestler, Carbon $employmentDate)
     {
-        return $wrestler->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
+        $wrestler->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
+
+        return $wrestler;
     }
 
     /**
      * Remove the given wrestler from their current tag team on a given date.
      *
-     * @param  \App\Models\Wrestler
+     * @param  \App\Models\Wrestler $wrestler
      * @param  \Carbon\Carbon  $removalDate
      * @return void
      */
@@ -185,16 +205,5 @@ class WrestlerRepository
         $wrestler->currentTagTeam()->updateExistingPivot($wrestler->currentTagTeam->id, [
             'left_at' => $removalDate->toDateTimeString(),
         ]);
-    }
-
-    /**
-     * Retrieve the model instance by the id field.
-     *
-     * @param  int $wrestlerId
-     * @return \App\Models\Wrestler
-     */
-    public function findById(int $wrestlerId)
-    {
-        return Wrestler::find($wrestlerId);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\DataTransferObjects\TagTeamData;
 use App\Models\TagTeam;
+use App\Models\Wrestler;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -32,10 +33,12 @@ class TagTeamRepository
      */
     public function update(TagTeam $tagTeam, TagTeamData $tagTeamData)
     {
-        return $tagTeam->update([
+        $tagTeam->update([
             'name' => $tagTeamData->name,
             'signature_move' => $tagTeamData->signature_move,
         ]);
+
+        return $tagTeam;
     }
 
     /**
@@ -69,7 +72,9 @@ class TagTeamRepository
      */
     public function employ(TagTeam $tagTeam, Carbon $employmentDate)
     {
-        return $tagTeam->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
+        $tagTeam->employments()->updateOrCreate(['ended_at' => null], ['started_at' => $employmentDate->toDateTimeString()]);
+
+        return $tagTeam;
     }
 
     /**
@@ -81,7 +86,9 @@ class TagTeamRepository
      */
     public function release(TagTeam $tagTeam, Carbon $releaseDate)
     {
-        return $tagTeam->currentEmployment()->update(['ended_at' => $releaseDate->toDateTimeString()]);
+        $tagTeam->currentEmployment()->update(['ended_at' => $releaseDate->toDateTimeString()]);
+
+        return $tagTeam;
     }
 
     /**
@@ -93,7 +100,9 @@ class TagTeamRepository
      */
     public function retire(TagTeam $tagTeam, Carbon $retirementDate)
     {
-        return $tagTeam->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
+        $tagTeam->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
+
+        return $tagTeam;
     }
 
     /**
@@ -105,7 +114,9 @@ class TagTeamRepository
      */
     public function unretire(TagTeam $tagTeam, Carbon $unretireDate)
     {
-        return $tagTeam->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
+        $tagTeam->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
+
+        return $tagTeam;
     }
 
     /**
@@ -113,11 +124,13 @@ class TagTeamRepository
      *
      * @param  \App\Models\TagTeam $tagTeam
      * @param  \Carbon\Carbon $suspensionDate
-     * @return App\Models\TagTeam $tagTeam
+     * @return \App\Models\TagTeam $tagTeam
      */
     public function suspend(TagTeam $tagTeam, Carbon $suspensionDate)
     {
-        return $tagTeam->suspensions()->create(['started_at' => $suspensionDate->toDateTimeString()]);
+        $tagTeam->suspensions()->create(['started_at' => $suspensionDate->toDateTimeString()]);
+
+        return $tagTeam;
     }
 
     /**
@@ -129,7 +142,9 @@ class TagTeamRepository
      */
     public function reinstate(TagTeam $tagTeam, Carbon $reinstateDate)
     {
-        return $tagTeam->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
+        $tagTeam->currentSuspension()->update(['ended_at' => $reinstateDate->toDateTimeString()]);
+
+        return $tagTeam;
     }
 
     /**
@@ -141,7 +156,9 @@ class TagTeamRepository
      */
     public function updateEmployment(TagTeam $tagTeam, Carbon $employmentDate)
     {
-        return $tagTeam->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
+        $tagTeam->futureEmployment()->update(['started_at' => $employmentDate->toDateTimeString()]);
+
+        return $tagTeam;
     }
 
     /**
@@ -156,9 +173,11 @@ class TagTeamRepository
     {
         $joinDate ??= now();
 
-        $wrestlers->each(
+        $wrestlers->map(
             fn (Wrestler $wrestler) => $tagTeam->wrestlers()->attach($wrestler->id, ['joined_at' => $joinDate->toDateTimeString()])
         );
+
+        return $tagTeam;
     }
 
     /**
@@ -178,11 +197,11 @@ class TagTeamRepository
     ) {
         $date ??= now();
 
-        $formerTagTeamPartners->each(
+        $formerTagTeamPartners->map(
             fn (Wrestler $formerTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot($formerTagTeamPartner, ['left_at' => $date->toDateTimeString()])
         );
 
-        $newTagTeamPartners->each(
+        $newTagTeamPartners->map(
             fn (Wrestler $newTagTeamPartner) => $tagTeam->currentWrestlers()->updateExistingPivot($newTagTeamPartner, ['joined_at' => $date->toDateTimeString()])
         );
 

@@ -39,10 +39,10 @@ class EventMatch extends Model
     /**
      * Get the competitors of the match.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function competitors()
     {
-        return $this->morphTo();
+        return $this->morphToMany(Competitor::class, 'competitor', 'event_match_competitors');
     }
 }

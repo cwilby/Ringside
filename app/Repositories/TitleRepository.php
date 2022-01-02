@@ -30,9 +30,11 @@ class TitleRepository
      */
     public function update(Title $title, TitleData $titleData)
     {
-        return $title->update([
+        $title->update([
             'name' => $titleData->name,
         ]);
+
+        return $title;
     }
 
     /**
@@ -80,7 +82,7 @@ class TitleRepository
      */
     public function deactivate(Title $title, Carbon $deactivationDate)
     {
-        $title = $title->currentActivation()->update(['ended_at' => $deactivationDate->toDateTimeString()]);
+        $title->currentActivation()->update(['ended_at' => $deactivationDate->toDateTimeString()]);
 
         return $title;
     }
@@ -94,7 +96,9 @@ class TitleRepository
      */
     public function retire(Title $title, Carbon $retirementDate)
     {
-        return $title->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
+        $title->retirements()->create(['started_at' => $retirementDate->toDateTimeString()]);
+
+        return $title;
     }
 
     /**
@@ -106,6 +110,8 @@ class TitleRepository
      */
     public function unretire(Title $title, Carbon $unretireDate)
     {
-        return $title->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
+        $title->currentRetirement()->update(['ended_at' => $unretireDate->toDateTimeString()]);
+
+        return $title;
     }
 }
