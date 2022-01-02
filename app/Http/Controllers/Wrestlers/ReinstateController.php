@@ -13,7 +13,6 @@ class ReinstateController extends Controller
      * Reinstate a wrestler.
      *
      * @param  \App\Models\Wrestler  $wrestler
-     * @param  \App\Http\Requests\Wrestlers\ReinstateRequest  $request
      * @param  \App\Actions\Wrestlers\ReinstateAction  $action
      * @return \Illuminate\Http\RedirectResponse
      */

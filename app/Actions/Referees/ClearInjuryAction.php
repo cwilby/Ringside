@@ -17,7 +17,7 @@ class ClearInjuryAction extends BaseRefereeAction
      */
     public function handle(Referee $referee): void
     {
-        $recoveryDate = now()->toDateTimeString();
+        $recoveryDate = now();
 
         $this->refereeRepository->clearInjury($referee, $recoveryDate);
         $referee->save();

@@ -17,7 +17,7 @@ class ReinstateAction extends BaseManagerAction
      */
     public function handle(Manager $manager): void
     {
-        $reinstatementDate = now()->toDateTimeString();
+        $reinstatementDate = now();
 
         $this->managerRepository->reinstate($manager, $reinstatementDate);
         $manager->save();

@@ -7,18 +7,21 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CannotBeHindered implements Rule
 {
-    protected $wrestler;
+    /**
+     * @var \App\Models\Wrestler
+     */
+    private $wrestler;
 
     /**
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  int  $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        $this->wrestler = Wrestler::find($value);
+        $this->wrestler = Wrestler::findOrFail((int) $value);
 
         if ($this->wrestler->isUnemployed() || $this->wrestler->isBookable()) {
             return true;

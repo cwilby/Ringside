@@ -17,7 +17,7 @@ class SuspendAction extends BaseManagerAction
      */
     public function handle(Manager $manager): void
     {
-        $suspensionDate = now()->toDateTimeString();
+        $suspensionDate = now();
 
         $this->managerRepository->suspend($manager, $suspensionDate);
         $manager->save();

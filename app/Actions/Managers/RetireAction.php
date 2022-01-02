@@ -17,7 +17,7 @@ class RetireAction extends BaseManagerAction
      */
     public function handle(Manager $manager): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate = now();
 
         if ($manager->isSuspended()) {
             $this->managerRepository->reinstate($manager, $retirementDate);

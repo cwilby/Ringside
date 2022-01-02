@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Stable;
 use App\Models\TagTeam;
+use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
 class TagTeamCanJoinStable implements Rule
@@ -47,14 +48,14 @@ class TagTeamCanJoinStable implements Rule
     {
         $tagTeam = TagTeam::with(['currentStable', 'futureEmployment'])->findOrFail($value);
 
-        if ($tagTeam->currentStable->exists() && $tagTeam->currentStable->isNot($this->stable)) {
+        if ($tagTeam->currentStable?->exists() && $tagTeam->currentStable?->isNot($this->stable)) {
             $this->fail('This tag team is already a members of an active stable.');
 
             return false;
         }
 
         if (is_string($this->startedAt)) {
-            if ($tagTeam->futureEmployment->exists() && $tagTeam->futureEmployment->startedAfter($this->startedAt)) {
+            if ($tagTeam->futureEmployment?->exists() && $tagTeam->futureEmployment?->startedAfter(Carbon::parse($this->startedAt))) {
                 $this->fail("This tag team's future employment starts after stable's start date.");
 
                 return false;

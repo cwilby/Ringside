@@ -30,8 +30,9 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function an_administrator_is_authorized_to_make_this_request()
+    public function an_administrator_is_authorized_to_make_this_request(): void
     {
+        /** @var Authenticatable */
         $administrator = User::factory()->administrator()->create();
 
         $this->createRequest(StoreRequest::class)
@@ -42,7 +43,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function a_non_administrator_is_not_authorized_to_make_this_request()
+    public function a_non_administrator_is_not_authorized_to_make_this_request(): void
     {
         /** @var Authenticatable */
         $user = User::factory()->create();
@@ -55,7 +56,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function event_match_type_id_is_required()
+    public function event_match_type_id_is_required(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -67,7 +68,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function event_match_type_id_must_be_an_integer()
+    public function event_match_type_id_must_be_an_integer(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -79,7 +80,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function event_match_type_must_exist()
+    public function event_match_type_must_exist(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -91,7 +92,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function event_match_referees_is_required()
+    public function event_match_referees_is_required(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -103,7 +104,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function event_match_referees_must_be_an_array()
+    public function event_match_referees_must_be_an_array(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -115,7 +116,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_referees_must_be_an_integer()
+    public function each_event_match_referees_must_be_an_integer(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -127,7 +128,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_referees_must_be_distinct()
+    public function each_event_match_referees_must_be_distinct(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -139,7 +140,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_referees_must_exist()
+    public function each_event_match_referees_must_exist(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -151,7 +152,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function event_match_titles_is_optional()
+    public function event_match_titles_is_optional(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -163,7 +164,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function event_match_titles_must_be_an_array()
+    public function event_match_titles_must_be_an_array(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -175,7 +176,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_titles_must_be_an_integer()
+    public function each_event_match_titles_must_be_an_integer(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -187,7 +188,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_titles_must_be_distinct()
+    public function each_event_match_titles_must_be_distinct(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -199,7 +200,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_titles_must_exist()
+    public function each_event_match_titles_must_exist(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -211,7 +212,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_competitors_is_required()
+    public function each_event_match_competitors_is_required(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -223,7 +224,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_competitors_must_be_an_array()
+    public function each_event_match_competitors_must_be_an_array(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -235,7 +236,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_competitors_array_must_contain_at_least_two_items()
+    public function each_event_match_competitors_array_must_contain_at_least_two_items(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -247,7 +248,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_competitors_items_in_the_array_must_equal_number_of_sides_of_the_match_type()
+    public function each_event_match_competitors_items_in_the_array_must_equal_number_of_sides_of_the_match_type(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([
@@ -263,7 +264,7 @@ class StoreRequestTest extends TestCase
     /**
      * @test
      */
-    public function each_event_match_preview_is_optional()
+    public function each_event_match_preview_is_optional(): void
     {
         $this->createRequest(StoreRequest::class)
             ->validate(EventMatchRequestDataFactory::new()->create([

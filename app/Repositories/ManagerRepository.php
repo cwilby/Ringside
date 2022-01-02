@@ -163,12 +163,12 @@ class ManagerRepository
      * Reinstate a given manager on a given date.
      *
      * @param  \App\Models\Manager $manager
-     * @param  string $reinstateDate
+     * @param  \Carbon\Carbon $reinstatementDate
      * @return \App\Models\Manager $manager
      */
-    public function reinstate(Manager $manager, string $reinstateDate): Manager
+    public function reinstate(Manager $manager, Carbon $reinstatementDate): Manager
     {
-        $manager->currentSuspension()->update(['ended_at' => $reinstateDate]);
+        $manager->currentSuspension()->update(['ended_at' => $reinstatementDate]);
 
         return $manager;
     }

@@ -17,7 +17,7 @@ class InjureAction extends BaseRefereeAction
      */
     public function handle(Referee $referee): void
     {
-        $injureDate = now()->toDateTimeString();
+        $injureDate = now();
 
         $this->refereeRepository->injure($referee, $injureDate);
         $referee->save();

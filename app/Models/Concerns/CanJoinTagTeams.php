@@ -3,9 +3,12 @@
 namespace App\Models\Concerns;
 
 use App\Models\TagTeam;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 trait CanJoinTagTeams
 {
+    use HasRelationships;
+
     /**
      * Get the tag teams the model has been belonged to.
      *
@@ -19,11 +22,12 @@ trait CanJoinTagTeams
     /**
      * Get the current tag team the member belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep
      */
     public function currentTagTeam()
     {
-        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler')->wherePivotNull('left_at');
+        return $this->hasOneDeep(TagTeam::class, ['tag_team_wrestler'])
+                ->whereNull('tag_team_wrestler.left_at');
     }
 
     /**
