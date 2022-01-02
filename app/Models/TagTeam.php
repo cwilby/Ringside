@@ -44,7 +44,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['user_id', 'name', 'signature_move', 'status'];
 

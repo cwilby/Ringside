@@ -23,7 +23,7 @@ class Employment extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['employable_id', 'employable_type', 'started_at', 'ended_at'];
 

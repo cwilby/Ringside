@@ -9,7 +9,7 @@ class Competitor extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = ['event_match_id', 'competitor_id', 'competitor_type'];
 }
