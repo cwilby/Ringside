@@ -17,7 +17,7 @@ class ReleaseAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam): void
     {
-        $releaseDate = now()->toDateTimeString();
+        $releaseDate = now();
 
         if ($tagTeam->isSuspended()) {
             $this->tagTeamRepository->reinstate($tagTeam, $releaseDate);

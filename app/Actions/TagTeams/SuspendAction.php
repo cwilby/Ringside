@@ -17,7 +17,7 @@ class SuspendAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam): void
     {
-        $suspensionDate = now()->toDateTimeString();
+        $suspensionDate = now();
 
         foreach ($tagTeam->currentWrestlers as $wrestler) {
             $this->wrestlerRepository->suspend($wrestler, $suspensionDate);

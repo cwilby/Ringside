@@ -2,8 +2,8 @@
 
 namespace App\DataTransferObjects;
 
-use App\Http\Requests\Managers\StoreRequest;
-use App\Http\Requests\Managers\UpdateRequest;
+use App\Http\Requests\Venues\StoreRequest;
+use App\Http\Requests\Venues\UpdateRequest;
 
 class VenueData
 {

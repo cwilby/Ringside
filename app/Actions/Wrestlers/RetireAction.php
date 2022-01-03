@@ -17,7 +17,7 @@ class RetireAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate = now();
 
         if ($wrestler->isSuspended()) {
             $this->wrestlerRepository->reinstate($wrestler, $retirementDate);

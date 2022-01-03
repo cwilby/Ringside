@@ -17,7 +17,7 @@ class RetireAction extends BaseStableAction
      */
     public function handle(Stable $stable): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate = now();
 
         if ($stable->has('currentTagTeams')) {
             foreach ($stable->currentTagTeams as $tagTeam) {

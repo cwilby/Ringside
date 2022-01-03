@@ -56,15 +56,15 @@ class TagTeamFactory extends Factory
     {
         $start = now()->subDays(3);
 
+        $wrestlers = Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->bookable()->create();
+
         return $this->state(fn (array $attributes) => ['status' => TagTeamStatus::bookable()])
-        ->has(Employment::factory()->started($start))
-        ->hasAttached(Wrestler::factory()->count(2)->has(Employment::factory()->started($start))->bookable(), ['joined_at' => $start])
-        ->afterCreating(function (TagTeam $tagTeam) {
-            $tagTeam->currentWrestlers->each(function ($wrestler) {
-                $wrestler->save();
+            ->has(Employment::factory()->started($start))
+            ->hasAttached($wrestlers, ['joined_at' => $start])
+            ->afterCreating(function (TagTeam $tagTeam) {
+                $tagTeam->save();
+                dd($tagTeam);
             });
-            $tagTeam->save();
-        });
     }
 
     public function unbookable()

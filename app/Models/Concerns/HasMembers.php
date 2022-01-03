@@ -27,7 +27,10 @@ trait HasMembers
      */
     public function currentWrestlers()
     {
-        return $this->wrestlers()->whereNull('left_at');
+        return $this->morphedByMany(Wrestler::class, 'member', 'stable_members')
+                    ->using(StableMember::class)
+                    ->withPivot(['joined_at', 'left_at'])
+                    ->whereNull('left_at');
     }
 
     /**

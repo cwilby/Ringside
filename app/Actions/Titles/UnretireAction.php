@@ -17,7 +17,7 @@ class UnretireAction extends BaseTitleAction
      */
     public function handle(Title $title): void
     {
-        $unretiredDate = now()->toDateTimeString();
+        $unretiredDate = now();
 
         $this->titleRepository->unretire($title, $unretiredDate);
         $this->titleRepository->activate($title, $unretiredDate);

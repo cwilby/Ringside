@@ -45,6 +45,7 @@ class SuspendControllerTest extends TestCase
     {
         $tagTeam = TagTeam::factory()->bookable()->create();
         $wrestler = $tagTeam->currentWrestlers()->first();
+        dd($tagTeam->status);
 
         $this->assertEquals(TagTeamStatus::bookable(), $tagTeam->status);
 

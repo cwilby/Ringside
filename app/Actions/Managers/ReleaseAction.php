@@ -16,7 +16,7 @@ class ReleaseAction extends BaseManagerAction
      */
     public function handle(Manager $manager)
     {
-        $releaseDate ??= now()->toDateTimeString();
+        $releaseDate ??= now();
 
         if ($manager->isSuspended()) {
             $this->managerRepository->reinstate($manager, $releaseDate);

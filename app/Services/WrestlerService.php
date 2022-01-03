@@ -36,8 +36,8 @@ class WrestlerService
     {
         $wrestler = $this->wrestlerRepository->create($wrestlerData);
 
-        if (isset($wrestler->start_date)) {
-            $this->wrestlerRepository->employ($wrestler, $wrestler->start_date);
+        if (isset($wrestlerData->start_date)) {
+            $this->wrestlerRepository->employ($wrestler, $wrestlerData->start_date);
         }
 
         return $wrestler;

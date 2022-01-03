@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Titles;
 
+use App\DataTransferObjects\TitleData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Titles\StoreRequest;
 use App\Http\Requests\Titles\UpdateRequest;
@@ -52,11 +53,12 @@ class TitlesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\Titles\StoreRequest  $request
+     * @param  \App\DataTransferObjects\TitleData $titleData
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, TitleData $titleData)
     {
-        $this->titleService->create($request->validated());
+        $this->titleService->create($titleData->fromStoreRequest($request));
 
         return redirect()->route('titles.index');
     }
@@ -95,11 +97,12 @@ class TitlesController extends Controller
      *
      * @param  \App\Http\Requests\Titles\UpdateRequest  $request
      * @param  \App\Models\Title  $title
+     * @param  \App\DataTransferObjects\TitleData $titleData
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Title $title)
+    public function update(UpdateRequest $request, Title $title, TitleData $titleData)
     {
-        $this->titleService->update($title, $request->validated());
+        $this->titleService->update($title, $titleData->fromUpdateRequest($request));
 
         return redirect()->route('titles.index');
     }

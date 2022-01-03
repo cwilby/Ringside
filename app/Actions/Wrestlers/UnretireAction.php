@@ -17,7 +17,7 @@ class UnretireAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler): void
     {
-        $unretiredDate = now()->toDateTimeString();
+        $unretiredDate = now();
 
         $this->wrestlerRepository->unretire($wrestler, $unretiredDate);
         $this->wrestlerRepository->employ($wrestler, $unretiredDate);

@@ -17,7 +17,7 @@ class RetireAction extends BaseTitleAction
      */
     public function handle(Title $title): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate = now();
 
         $this->titleRepository->deactivate($title, $retirementDate);
         $this->titleRepository->retire($title, $retirementDate);

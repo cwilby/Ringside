@@ -20,7 +20,7 @@ class StableData
         $dto = new self;
 
         $dto->name = $request->input('name');
-        $dto->start_date = $request->input('started_at');
+        $dto->start_date = $request->date('started_at');
         $dto->tagTeams = TagTeam::findMany($request->input('tag_teams'));
         $dto->wrestlers = Wrestler::findMany($request->input('wrestlers'));
 
@@ -32,7 +32,7 @@ class StableData
         $dto = new self;
 
         $dto->name = $request->input('name');
-        $dto->start_date = $request->input('started_at');
+        $dto->start_date = $request->date('started_at');
         $dto->tagTeams = TagTeam::findMany($request->input('tag_teams'));
         $dto->wrestlers = Wrestler::findMany($request->input('wrestlers'));
 

@@ -17,9 +17,7 @@ class ClearInjuryAction extends BaseManagerAction
      */
     public function handle(Manager $manager): void
     {
-        $recoveryDate = now()->toDateTimeString();
-
-        $this->managerRepository->clearInjury($manager, $recoveryDate);
+        $this->managerRepository->clearInjury($manager, now());
         $manager->save();
     }
 }

@@ -17,7 +17,7 @@ class ActivateAction extends BaseStableAction
      */
     public function handle(Stable $stable): void
     {
-        $activationDate = now()->toDateTimeString();
+        $activationDate = now();
 
         if ($stable->currentWrestlers->isNotEmpty()) {
             foreach ($stable->currentWrestlers as $wrestler) {

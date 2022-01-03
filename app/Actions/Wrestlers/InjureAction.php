@@ -17,7 +17,7 @@ class InjureAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler): void
     {
-        $injureDate = now()->toDateTimeString();
+        $injureDate = now();
 
         $this->wrestlerRepository->injure($wrestler, $injureDate);
         $wrestler->save();

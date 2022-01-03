@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Managers;
 
+use App\DataTransferObjects\ManagerData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Managers\StoreRequest;
 use App\Http\Requests\Managers\UpdateRequest;
@@ -53,11 +54,12 @@ class ManagersController extends Controller
      * Create a new manager.
      *
      * @param  \App\Http\Requests\Managers\StoreRequest  $request
+     * @param  \App\DataTransferObjects\ManagerData $managerData
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, ManagerData $managerData)
     {
-        $this->managerService->create($request->validated());
+        $this->managerService->create($managerData->fromStoreRequest($request));
 
         return redirect()->route('managers.index');
     }
@@ -97,11 +99,12 @@ class ManagersController extends Controller
      *
      * @param  \App\Http\Requests\Managers\UpdateRequest  $request
      * @param  \App\Models\Manager  $manager
+     * @param  \App\DataTransferObjects\ManagerData  $managerData
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Manager $manager)
+    public function update(UpdateRequest $request, Manager $manager, ManagerData $managerData)
     {
-        $this->managerService->update($manager, $request->validated());
+        $this->managerService->update($manager, $managerData->fromUpdateRequest($request));
 
         return redirect()->route('managers.index');
     }

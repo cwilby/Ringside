@@ -131,7 +131,8 @@ namespace App\Models{
      * @property string|null $preview
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $competitors
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Competitor[] $competitors
+     * @property-read int|null $competitors_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Referee[] $referees
      * @property-read int|null $referees_count
      * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Title[] $titles
@@ -448,6 +449,8 @@ namespace App\Models{
      * @property-read int|null $activations_count
      * @property-read \App\Models\Activation|null $currentActivation
      * @property-read \App\Models\Retirement|null $currentRetirement
+     * @property-read \Illuminate\Database\Eloquent\Collection<\App\Models\Wrestler>|\App\Models\Wrestler[] $currentWrestlers
+     * @property-read int|null $current_wrestlers_count
      * @property-read \App\Models\Activation|null $firstActivation
      * @property-read \App\Models\Activation|null $futureActivation
      * @property-read string|null $activated_at

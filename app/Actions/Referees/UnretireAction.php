@@ -17,7 +17,7 @@ class UnretireAction extends BaseRefereeAction
      */
     public function handle(Referee $referee): void
     {
-        $unretiredDate = now()->toDateTimeString();
+        $unretiredDate = now();
 
         $this->refereeRepository->unretire($referee, $unretiredDate);
         $this->refereeRepository->employ($referee, $unretiredDate);

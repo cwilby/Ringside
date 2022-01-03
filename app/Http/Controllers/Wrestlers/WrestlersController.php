@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Wrestlers;
 
+use App\DataTransferObjects\WrestlerData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Wrestlers\StoreRequest;
 use App\Http\Requests\Wrestlers\UpdateRequest;
@@ -52,13 +53,12 @@ class WrestlersController extends Controller
      * Create a new wrestler.
      *
      * @param  \App\Http\Requests\Wrestlers\StoreRequest  $request
+     * @param  \App\DataTransferObjects\WrestlerData $wrestlerData
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, WrestlerData $wrestlerData)
     {
-        $this->wrestlerService->create(
-            $request->only('name', 'height', 'weight', 'hometown', 'signature_move', 'started_at')
-        );
+        $this->wrestlerService->create($wrestlerData->fromStoreRequest($request));
 
         return redirect()->route('wrestlers.index');
     }
@@ -98,14 +98,12 @@ class WrestlersController extends Controller
      *
      * @param  \App\Http\Requests\Wrestlers\UpdateRequest  $request
      * @param  \App\Models\Wrestler  $wrestler
+     * @param  \App\DataTransferObjects\WrestlerData $wrestlerData
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, Wrestler $wrestler)
+    public function update(UpdateRequest $request, Wrestler $wrestler, WrestlerData $wrestlerData)
     {
-        $this->wrestlerService->update(
-            $wrestler,
-            $request->only('name', 'height', 'weight', 'hometown', 'signature_move', 'started_at')
-        );
+        $this->wrestlerService->update($wrestler, $wrestlerData->fromUpdateRequest($request));
 
         return redirect()->route('wrestlers.index');
     }

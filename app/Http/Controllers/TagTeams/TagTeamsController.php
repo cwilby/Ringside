@@ -58,9 +58,9 @@ class TagTeamsController extends Controller
      * @param  \App\Http\Requests\TagTeams\StoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, TagTeamData $tagTeamData)
     {
-        $this->tagTeamService->create($request->only(['name', 'signature_move', 'started_at', 'wrestlers']));
+        $this->tagTeamService->create($tagTeamData->fromStoreRequest($request));
 
         return redirect()->route('tag-teams.index');
     }
@@ -105,11 +105,11 @@ class TagTeamsController extends Controller
      * @param  \App\Models\TagTeam  $tagTeam
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, TagTeam $tagTeam)
+    public function update(UpdateRequest $request, TagTeam $tagTeam, TagTeamData $tagTeamData)
     {
         $this->tagTeamService->update(
             $tagTeam,
-            $request->only(['name', 'signature_move', 'started_at', 'wrestlers'])
+            $tagTeamData->fromUpdateRequest($request)
         );
 
         return redirect()->route('tag-teams.index');

@@ -17,7 +17,7 @@ class EmployAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam): void
     {
-        $employmentDate = now()->toDateTimeString();
+        $employmentDate = now();
 
         $this->tagTeamRepository->employ($tagTeam, $employmentDate);
 

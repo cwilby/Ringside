@@ -17,7 +17,7 @@ class UnretireAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam): void
     {
-        $unretiredDate = now()->toDateTimeString();
+        $unretiredDate = now();
 
         $this->tagTeamRepository->unretire($tagTeam, $unretiredDate);
 

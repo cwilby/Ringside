@@ -18,7 +18,7 @@ class TagTeamObserver
         $tagTeam->status = match (true) {
             $tagTeam->isCurrentlyEmployed() => match (true) {
                 $tagTeam->isSuspended() => TagTeamStatus::suspended(),
-                $tagTeam->isUnbookable() => TagTeamStatus::UNbookable(),
+                $tagTeam->isUnbookable() => TagTeamStatus::unbookable(),
                 $tagTeam->isBookable() => TagTeamStatus::bookable(),
             },
             $tagTeam->hasFutureEmployment() => TagTeamStatus::future_employment(),

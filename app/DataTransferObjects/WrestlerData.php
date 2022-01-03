@@ -22,8 +22,9 @@ class WrestlerData
         $dto->name = $request->input('name');
         $dto->height = $request->input('height');
         $dto->weight = $request->input('weight');
+        $dto->hometown = $request->input('hometown');
         $dto->signature_move = $request->input('signature_move');
-        $dto->start_date = $request->input('started_at');
+        $dto->start_date = $request->date('started_at');
 
         return $dto;
     }
@@ -35,8 +36,9 @@ class WrestlerData
         $dto->name = $request->input('name');
         $dto->height = $request->input('height');
         $dto->weight = $request->input('weight');
+        $dto->hometown = $request->input('hometown');
         $dto->signature_move = $request->input('signature_move');
-        $dto->start_date = $request->input('started_at');
+        $dto->start_date = $request->date('started_at');
 
         return $dto;
     }

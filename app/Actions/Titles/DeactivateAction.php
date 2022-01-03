@@ -17,7 +17,7 @@ class DeactivateAction extends BaseTitleAction
      */
     public function handle(Title $title): void
     {
-        $deactivationDate = now()->toDateTimeString();
+        $deactivationDate = now();
 
         $this->titleRepository->deactivate($title, $deactivationDate);
         $title->save();

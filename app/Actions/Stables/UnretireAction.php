@@ -17,7 +17,7 @@ class UnretireAction extends BaseStableAction
      */
     public function handle(Stable $stable): void
     {
-        $unretiredDate = now()->toDateTimeString();
+        $unretiredDate = now();
 
         $this->stableRepository->unretire($stable, $unretiredDate);
         $this->stableRepository->activate($stable, $unretiredDate);

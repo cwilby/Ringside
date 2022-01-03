@@ -17,7 +17,7 @@ class ReinstateAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam): void
     {
-        $reinstatementDate = now()->toDateTimeString();
+        $reinstatementDate = now();
 
         foreach ($tagTeam->currentWrestlers as $wrestler) {
             $this->wrestlerRepository->reinstate($wrestler, $reinstatementDate);

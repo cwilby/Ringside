@@ -17,7 +17,7 @@ class RetireAction extends BaseTagTeamAction
      */
     public function handle(TagTeam $tagTeam): void
     {
-        $retirementDate = now()->toDateTimeString();
+        $retirementDate = now();
 
         if ($tagTeam->isSuspended()) {
             $this->tagTeamRepository->reinstate($tagTeam, $retirementDate);

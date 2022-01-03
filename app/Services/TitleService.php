@@ -36,8 +36,8 @@ class TitleService
     {
         $title = $this->titleRepository->create($titleData);
 
-        if (isset($titleData->activated_at)) {
-            $this->titleRepository->activate($title, $titleData->activated_at);
+        if (isset($titleData->activation_date)) {
+            $this->titleRepository->activate($title, $titleData->activation_date);
         }
 
         return $title;
@@ -54,8 +54,8 @@ class TitleService
     {
         $this->titleRepository->update($title, $titleData);
 
-        if ($title->canHaveActivationStartDateChanged() && isset($titleData->activated_at)) {
-            $this->activateOrUpdateActivation($title, $titleData->activated_at);
+        if ($title->canHaveActivationStartDateChanged() && isset($titleData->activation_date)) {
+            $this->activateOrUpdateActivation($title, $titleData->activation_date);
         }
 
         return $title;

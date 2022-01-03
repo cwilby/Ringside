@@ -17,7 +17,7 @@ class EmployAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler): void
     {
-        $employmentDate = now()->toDateTimeString();
+        $employmentDate = now();
 
         $this->wrestlerRepository->employ($wrestler, $employmentDate);
         $wrestler->save();

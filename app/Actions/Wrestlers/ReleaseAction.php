@@ -17,7 +17,7 @@ class ReleaseAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler): void
     {
-        $releaseDate ??= now()->toDateTimeString();
+        $releaseDate ??= now();
 
         if ($wrestler->isSuspended()) {
             $this->wrestlerRepository->reinstate($wrestler, $releaseDate);

@@ -17,7 +17,7 @@ class ActivateAction extends BaseTitleAction
      */
     public function handle(Title $title): void
     {
-        $activationDate = now()->toDateTimeString();
+        $activationDate = now();
 
         $this->titleRepository->activate($title, $activationDate);
         $title->save();

@@ -18,7 +18,7 @@ class ManagerData
 
         $dto->first_name = $request->input('first_name');
         $dto->last_name = $request->input('last_name');
-        $dto->start_date = $request->input('started_at');
+        $dto->start_date = $request->date('started_at');
 
         return $dto;
     }
@@ -29,7 +29,7 @@ class ManagerData
 
         $dto->first_name = $request->input('first_name');
         $dto->last_name = $request->input('last_name');
-        $dto->start_date = $request->input('started_at');
+        $dto->start_date = $request->date('started_at');
 
         return $dto;
     }

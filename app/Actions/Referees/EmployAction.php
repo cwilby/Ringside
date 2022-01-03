@@ -17,9 +17,7 @@ class EmployAction extends BaseRefereeAction
      */
     public function handle(Referee $referee): void
     {
-        $employmentDate = now()->toDateTimeString();
-
-        $this->refereeRepository->employ($referee, $employmentDate);
+        $this->refereeRepository->employ($referee, now());
         $referee->save();
     }
 }

@@ -17,7 +17,7 @@ class ClearInjuryAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler): void
     {
-        $recoveryDate = now()->toDateTimeString();
+        $recoveryDate = now();
 
         $this->wrestlerRepository->clearInjury($wrestler, $recoveryDate);
         $wrestler->save();

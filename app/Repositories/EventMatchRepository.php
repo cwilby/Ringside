@@ -27,12 +27,12 @@ class EventMatchRepository
      * Create a new event with the given data.
      *
      * @param  \App\Models\EventMatch $match
-     * @param  int $titleId
+     * @param  \App\Models\Title $title
      * @return \App\Models\EventMatch $match
      */
-    public function addTitleToMatch(EventMatch $match, int $titleId)
+    public function addTitleToMatch(EventMatch $match, Title $title)
     {
-        $match->titles()->attach($titleId);
+        $match->titles()->attach($title);
 
         return $match;
     }
@@ -41,12 +41,12 @@ class EventMatchRepository
      * Create a new event with the given data.
      *
      * @param  \App\Models\EventMatch $match
-     * @param  int $refereeId
+     * @param  \App\Models\Referee $referee
      * @return \App\Models\EventMatch $match
      */
-    public function addRefereeToMatch(EventMatch $match, int $refereeId)
+    public function addRefereeToMatch(EventMatch $match, Referee $referee)
     {
-        $match->referees()->attach($refereeId);
+        $match->referees()->attach($referee);
 
         return $match;
     }
@@ -55,12 +55,12 @@ class EventMatchRepository
      * Create a new event with the given data.
      *
      * @param  \App\Models\EventMatch $match
-     * @param  int $competitorId
+     * @param  \App\Models\Competitor $competitor
      * @return \App\Models\EventMatch $match
      */
-    public function addCompetitorToMatch(EventMatch $match, int $competitorId)
+    public function addCompetitorToMatch(EventMatch $match, Competitor $competitor)
     {
-        $match->competitors()->attach($competitorId);
+        $match->competitors()->attach($competitor);
 
         return $match;
     }

@@ -17,7 +17,7 @@ class DeactivateAction extends BaseStableAction
      */
     public function handle(Stable $stable): void
     {
-        $deactivationDate = now()->toDateTimeString();
+        $deactivationDate = now();
 
         $this->stableRepository->deactivate($stable, $deactivationDate);
         $this->stableRepository->disassemble($stable, $deactivationDate);
