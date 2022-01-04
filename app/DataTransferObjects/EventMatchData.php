@@ -8,6 +8,7 @@ use App\Models\Competitor;
 use App\Models\MatchType;
 use App\Models\Referee;
 use App\Models\Title;
+use Illuminate\Support\Collection;
 
 class EventMatchData
 {

@@ -28,12 +28,13 @@ class EventMatchControllerStoreMethodTest extends TestCase
     /**
      * @test
      */
-    public function store_creates_a_match_for_an_event_and_redirects()
+    public function store_creates_a_match_for_an_event_and_redirects(): void
     {
+        $this->withoutExceptionHandling();
         $event = Event::factory()->create();
-        $referee = Referee::factory()->create();
-        $wrestlerA = Wrestler::factory()->create();
-        $wrestlerB = Wrestler::factory()->create();
+        $referee = Referee::factory()->bookable()->create();
+        $wrestlerA = Wrestler::factory()->bookable()->create();
+        $wrestlerB = Wrestler::factory()->bookable()->create();
 
         $this
             ->actAs(Role::administrator())
@@ -44,13 +45,16 @@ class EventMatchControllerStoreMethodTest extends TestCase
                     'match_type_id' => 1,
                     'titles' => [],
                     'referees' => [$referee->id],
-                    'competitors' => [[$wrestlerA->id], [$wrestlerB->id]],
+                    'competitors' => [
+                        ['competitor_id' => $wrestlerA->id, 'competitor_type' => 'wrestler'],
+                        ['competitor_id' => $wrestlerB->id, 'competitor_type' => 'wrestler'],
+                    ],
                     'preview' => 'This is a general match preview.',
                 ])
             );
 
         $this->assertCount(1, $event->matches);
-        tap($event->matches->first(), function ($match) use ($referee) {
+        tap($event->matches->first(), function ($match) use ($referee): void {
             $this->assertEquals(1, $match->match_type_id);
             $this->assertCount(0, $match->titles);
             $this->assertCount(1, $match->referees);
@@ -62,7 +66,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
     /**
      * @test
      */
-    public function store_creates_a_title_match_for_an_event_and_redirects()
+    public function store_creates_a_title_match_for_an_event_and_redirects(): void
     {
         $event = Event::factory()->create();
         $referee = Referee::factory()->create();
@@ -83,7 +87,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
                 ])
             );
 
-        tap($event->matches->first(), function ($match) use ($title) {
+        tap($event->matches->first(), function ($match) use ($title): void {
             $this->assertCount(1, $match->titles);
             $this->assertCollectionHas($match->titles, $title);
         });
@@ -92,7 +96,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
     /**
      * @test
      */
-    public function a_basic_user_cannot_create_matches_for_an_event()
+    public function a_basic_user_cannot_create_matches_for_an_event(): void
     {
         $event = Event::factory()->create();
 
@@ -109,7 +113,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
     /**
      * @test
      */
-    public function a_guest_cannot_create_a_event()
+    public function a_guest_cannot_create_a_event(): void
     {
         $event = Event::factory()->create();
 
