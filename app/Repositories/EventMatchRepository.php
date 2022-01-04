@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\DataTransferObjects\EventMatchData;
 use App\Models\Event;
 use App\Models\EventMatch;
+use App\Models\Referee;
+use App\Models\Title;
 
 class EventMatchRepository
 {
@@ -55,12 +57,14 @@ class EventMatchRepository
      * Create a new event with the given data.
      *
      * @param  \App\Models\EventMatch $match
-     * @param  \App\Models\Competitor $competitor
+     * @param  mixed $competitor
      * @return \App\Models\EventMatch $match
      */
-    public function addCompetitorToMatch(EventMatch $match, Competitor $competitor)
+    public function addCompetitorToMatch(EventMatch $match, mixed $competitor)
     {
-        $match->competitors()->attach($competitor);
+        // dd($match->competitors());
+        // dd($competitor);
+        $match->competitors()->attach($competitor->id);
 
         return $match;
     }

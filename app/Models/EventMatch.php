@@ -14,7 +14,7 @@ class EventMatch extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['event_id', 'event_match_id', 'preview'];
+    protected $fillable = ['event_id', 'event_match_id', 'match_type_id', 'preview'];
 
     /**
      * Get the referees assigned to the match.
@@ -43,6 +43,6 @@ class EventMatch extends Model
      */
     public function competitors()
     {
-        return $this->morphToMany(Competitor::class, 'competitor', 'event_match_competitors');
+        return $this->morphToMany(EventMatchCompetitor::class, 'event_match_competitor');
     }
 }

@@ -30,12 +30,13 @@ class EventMatchControllerStoreMethodTest extends TestCase
      */
     public function store_creates_a_match_for_an_event_and_redirects()
     {
-        $event = Event::factory()->create();
-        $referee = Referee::factory()->create();
-        $wrestlerA = Wrestler::factory()->create();
-        $wrestlerB = Wrestler::factory()->create();
+        // $this->withoutExceptionHandling();
+        $event = Event::factory()->scheduled()->create();
+        $referee = Referee::factory()->bookable()->create();
+        $wrestlerA = Wrestler::factory()->bookable()->create();
+        $wrestlerB = Wrestler::factory()->bookable()->create();
 
-        $this
+        $response = $this
             ->actAs(Role::administrator())
             ->from(action([EventMatchesController::class, 'create'], $event))
             ->post(
@@ -44,11 +45,14 @@ class EventMatchControllerStoreMethodTest extends TestCase
                     'match_type_id' => 1,
                     'titles' => [],
                     'referees' => [$referee->id],
-                    'competitors' => [[$wrestlerA->id], [$wrestlerB->id]],
+                    'competitors' => [
+                        ['competitor_id' => $wrestlerA->id, 'competitor_type' => 'wrestler'],
+                        ['competitor_id' => $wrestlerB->id, 'competitor_type' => 'wrestler'],
+                    ],
                     'preview' => 'This is a general match preview.',
                 ])
             );
-
+        dd($response);
         $this->assertCount(1, $event->matches);
         tap($event->matches->first(), function ($match) use ($referee) {
             $this->assertEquals(1, $match->match_type_id);
@@ -64,11 +68,11 @@ class EventMatchControllerStoreMethodTest extends TestCase
      */
     public function store_creates_a_title_match_for_an_event_and_redirects()
     {
-        $event = Event::factory()->create();
-        $referee = Referee::factory()->create();
-        $title = Title::factory()->create();
-        $wrestlerA = Wrestler::factory()->create();
-        $wrestlerB = Wrestler::factory()->create();
+        $event = Event::factory()->schedule()->create();
+        $referee = Referee::factory()->bookable()->create();
+        $title = Title::factory()->active()->create();
+        $wrestlerA = Wrestler::factory()->bookable()->create();
+        $wrestlerB = Wrestler::factory()->bookable()->create();
 
         $this
             ->actAs(Role::administrator())
@@ -79,7 +83,10 @@ class EventMatchControllerStoreMethodTest extends TestCase
                     'match_type_id' => 1,
                     'titles' => [$title->id],
                     'referees' => [$referee->id],
-                    'competitors' => [[$wrestlerA->id], [$wrestlerB->id]],
+                    'competitors' => [
+                        ['competitor_id' => $wrestlerA->id, 'competitor_type' => 'wrestler'],
+                        ['competitor_id' => $wrestlerB->id, 'competitor_type' => 'wrestler'],
+                    ],
                 ])
             );
 

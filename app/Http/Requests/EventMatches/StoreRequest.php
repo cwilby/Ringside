@@ -3,6 +3,7 @@
 namespace App\Http\Requests\EventMatches;
 
 use App\Models\EventMatch;
+use App\Rules\CompetitorsAreValid;
 use App\Rules\CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -34,7 +35,8 @@ class StoreRequest extends FormRequest
             'titles.*' => ['integer', 'distinct', Rule::exists('titles', 'id')],
             'competitors' => ['required', 'array', 'min:2'],
             'competitors.*' => ['required', 'array'],
-            'competitors.*.*' => ['integer', 'distinct', Rule::exists('wrestlers', 'id')],
+            'competitors.*.competitor_id' => ['required', 'integer'],
+            'competitors.*.competitor_type' => ['required', Rule::in(['wrestler', 'tag_team'])],
             'preview' => ['nullable', 'string'],
         ];
     }
@@ -57,6 +59,15 @@ class StoreRequest extends FormRequest
                         CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class
                     );
                 }
+            }
+
+            $rule2 = new CompetitorsAreValid;
+
+            if (! $rule2->passes('competitors', $this->input('competitors'))) {
+                $validator->addFailure(
+                    'competitors',
+                    CompetitorsAreValid::class
+                );
             }
         });
     }

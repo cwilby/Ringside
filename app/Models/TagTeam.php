@@ -10,13 +10,14 @@ use App\Models\Concerns\CanJoinStables;
 use App\Models\Concerns\OwnedByUser;
 use App\Models\Contracts\Bookable;
 use App\Models\Contracts\CanBeAStableMember;
+use App\Models\Contracts\Competitor;
 use App\Observers\TagTeamObserver;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
 
-class TagTeam extends RosterMember implements Bookable, CanBeAStableMember
+class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Competitor
 {
     use HasFactory,
         HasMorphToOne,
