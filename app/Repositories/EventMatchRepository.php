@@ -62,8 +62,6 @@ class EventMatchRepository
      */
     public function addCompetitorToMatch(EventMatch $match, mixed $competitor)
     {
-        // dd($match->competitors());
-        // dd($competitor);
         $match->competitors()->attach($competitor->id);
 
         return $match;
