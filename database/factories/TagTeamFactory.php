@@ -63,7 +63,6 @@ class TagTeamFactory extends Factory
             ->hasAttached($wrestlers, ['joined_at' => $start])
             ->afterCreating(function (TagTeam $tagTeam) {
                 $tagTeam->save();
-                dd($tagTeam);
             });
     }
 

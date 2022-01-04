@@ -17,13 +17,11 @@ class SuspendAction extends BaseWrestlerAction
      */
     public function handle(Wrestler $wrestler): void
     {
-        dd('dafadsf');
         $suspensionDate = now();
 
         $this->wrestlerRepository->suspend($wrestler, $suspensionDate);
         $wrestler->save();
 
-        dd($wrestler->currentTagTeam);
         if (! is_null($wrestler->currentTagTeam) && $wrestler->currentTagTeam->exists()) {
             $wrestler->currentTagTeam->save();
         }
