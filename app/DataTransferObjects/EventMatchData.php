@@ -17,17 +17,36 @@ class EventMatchData
     public Collection $referees;
     public ?Collection $titles;
     public Collection $competitors;
+    public Collection $wrestlers;
+    public Collection $tagTeams;
     public ?string $preview;
 
     public static function fromStoreRequest(StoreRequest $request): self
     {
         $dto = new self;
+        // dd($request->input('competitors'));
 
         $dto->matchType = MatchType::find($request->input('match_type_id'));
         $dto->referees = Referee::findMany($request->input('referees'));
         $dto->titles = Title::findMany($request->input('titles'));
-        $dto->competitors = self::getCompetitors($request->input('competitors'));
+
+        $wrestlers = collect();
+        $tagTeams = collect();
+        $competitors = collect();
+        foreach ($request->input('competitors') as $competitor) {
+            if ($competitor['competitor_type'] == 'wrestler') {
+                $wrestler = Wrestler::find($competitor['competitor_id']);
+                $competitors['wrestlers'] = $wrestlers->push($wrestler);
+            }
+        }
+        // $competitors[]['wrestlers'] = $wrestlers;
+        dd($competitors);
+        // dd($wrestlers);
+        $dto->competitors = self::getWrestlers($request->input('competitors'));
+        $dto->competitors = self::getTagTeams($request->input('competitors'));
         $dto->preview = $request->input('preview');
+
+        dd($dto);
 
         return $dto;
     }
@@ -39,13 +58,14 @@ class EventMatchData
         $dto->matchType = MatchType::find($request->input('match_type_id'));
         $dto->referees = Referee::findMany($request->input('referees'));
         $dto->titles = Title::findMany($request->input('titles'));
-        $dto->competitors = self::getCompetitors($request->input('competitors'));
+        $dto->competitors->wrestlers = self::getWrestlers($request->input('competitors'));
+        $dto->competitors->tagTeams = self::getTagTeams($request->input('competitors'));
         $dto->preview = $request->input('preview');
 
         return $dto;
     }
 
-    public static function getCompetitors($competitors)
+    public static function getWrestlers($competitors)
     {
         $wrestlers = array_filter($competitors, static function ($contestant) {
             return $contestant['competitor_type'] === 'wrestler';
@@ -53,28 +73,17 @@ class EventMatchData
 
         $wrestler_ids = array_column($wrestlers, 'competitor_id');
 
-        $wrestlers = self::getWrestlers($wrestler_ids);
+        return Wrestler::findMany($wrestler_ids);
+    }
 
+    public static function getTagTeams($competitors)
+    {
         $tagTeams = array_filter($competitors, static function ($contestant) {
             return $contestant['competitor_type'] === 'tag_teams';
         });
 
         $tag_team_ids = array_column($tagTeams, 'competitor_id');
 
-        $tagTeams = self::getTagTeams($tag_team_ids);
-
-        $competitors = collect();
-
-        return $competitors->merge($wrestlers)->merge($tagTeams);
-    }
-
-    public static function getWrestlers($wrestlerIds)
-    {
-        return Wrestler::findMany($wrestlerIds);
-    }
-
-    public static function getTagTeams($tagTeamIds)
-    {
-        return TagTeam::findMany($tagTeamIds);
+        return TagTeam::findMany($tag_team_ids);
     }
 }

@@ -57,12 +57,26 @@ class EventMatchRepository
      * Create a new event with the given data.
      *
      * @param  \App\Models\EventMatch $match
-     * @param  mixed $competitor
+     * @param  \App\Models\Wrestler $wrestler
      * @return \App\Models\EventMatch $match
      */
-    public function addCompetitorToMatch(EventMatch $match, mixed $competitor)
+    public function addWrestlerToMatch(EventMatch $match, Wrestler $wrestler)
     {
-        $match->competitors()->attach($competitor->id);
+        $match->wrestlers()->attach($wrestler);
+
+        return $match;
+    }
+
+    /**
+     * Create a new event with the given data.
+     *
+     * @param  \App\Models\EventMatch $match
+     * @param  \App\Models\TagTeam $tagTeam
+     * @return \App\Models\EventMatch $match
+     */
+    public function addTagTeamToMatch(EventMatch $match, TagTeam $tagTeam)
+    {
+        $match->tagTeams()->attach($tagTeam);
 
         return $match;
     }

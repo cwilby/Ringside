@@ -38,8 +38,14 @@ class AddMatchForEvent
             fn (Referee $referee) => $this->eventMatchRepository->addRefereeToMatch($createdMatch, $referee)
         );
 
-        $eventMatchData->competitors->map(
-            fn ($competitor) => $this->eventMatchRepository->addCompetitorToMatch($createdMatch, $competitor)
+        dd($eventMatchData->competitors);
+
+        $eventMatchData->competitors->wrestlers->map(
+            fn (Wrestler $wrestler) => $this->eventMatchRepository->addWrestlerToMatch($createdMatch, $wrestler)
+        );
+
+        $eventMatchData->competitors->tagTeams->map(
+            fn (TagTeam $tagTeam) => $this->eventMatchRepository->addTagTeamToMatch($createdMatch, $tagTeam)
         );
 
         return $createdMatch;

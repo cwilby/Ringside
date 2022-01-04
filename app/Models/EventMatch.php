@@ -41,8 +41,18 @@ class EventMatch extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function competitors()
+    public function wrestlers()
     {
-        return $this->morphToMany(EventMatchCompetitor::class, 'event_match_competitor');
+        return $this->morphToMany(EventMatchCompetitor::class, 'competitors');
+    }
+
+    /**
+     * Get the competitors of the match.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function tagTeams()
+    {
+        return $this->morphToMany(EventMatchCompetitor::class, 'competitors');
     }
 }

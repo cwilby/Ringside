@@ -244,4 +244,9 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
 
         return true;
     }
+
+    public function eventMatches()
+    {
+        return $this->morphToMany(EventMatch::class, 'event_match_competitor');
+    }
 }
