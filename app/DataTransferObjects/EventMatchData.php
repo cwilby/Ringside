@@ -30,13 +30,12 @@ class EventMatchData
         $dto->referees = Referee::findMany($request->input('referees'));
         $dto->titles = Title::findMany($request->input('titles'));
 
-        $wrestlers = collect();
-        $tagTeams = collect();
         $competitors = collect();
+        $wrestlers = collect();
         foreach ($request->input('competitors') as $competitor) {
             if ($competitor['competitor_type'] == 'wrestler') {
                 $wrestler = Wrestler::find($competitor['competitor_id']);
-                $competitors['wrestlers'] = $wrestlers->push($wrestler);
+                $competitors->push(['wrestlers' => collect($wrestlers->push($wrestler))]);
             }
         }
         // $competitors[]['wrestlers'] = $wrestlers;
