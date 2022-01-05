@@ -253,9 +253,9 @@ class StoreRequestTest extends TestCase
             ->validate(EventMatchRequestDataFactory::new()->create([
                 'match_type_id' => MatchType::factory()->create(['number_of_sides' => 2])->id,
                 'competitors' => [
-                    [1],
-                    [2],
-                    [3],
+                    ['competitor_id' => 1, 'competitor_type' => 'wrestler'],
+                    ['competitor_id' => 2, 'competitor_type' => 'wrestler'],
+                    ['competitor_id' => 3, 'competitor_type' => 'wrestler'],
                 ],
             ]))->assertFailsValidation(['competitors' => 'app\rules\competitorsgroupedintocorrectnumberofsidesformatchtype']);
     }

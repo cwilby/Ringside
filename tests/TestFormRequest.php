@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Closure;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;

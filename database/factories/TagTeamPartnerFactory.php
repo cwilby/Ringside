@@ -43,11 +43,11 @@ class TagTeamPartnerFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['status' => WrestlerStatus::bookable()];
         })
-        ->has(Employment::factory()->started(Carbon::yesterday()))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-        });
+            ->has(Employment::factory()->started(Carbon::yesterday()))
+            ->afterCreating(function (Wrestler $wrestler) {
+                $wrestler->save();
+                $wrestler->load('employments');
+            });
     }
 
     public function withFutureEmployment()
@@ -55,11 +55,11 @@ class TagTeamPartnerFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['status' => WrestlerStatus::future_employment()];
         })
-        ->has(Employment::factory()->started(Carbon::tomorrow()))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-        });
+            ->has(Employment::factory()->started(Carbon::tomorrow()))
+            ->afterCreating(function (Wrestler $wrestler) {
+                $wrestler->save();
+                $wrestler->load('employments');
+            });
     }
 
     public function unemployed()
@@ -67,9 +67,9 @@ class TagTeamPartnerFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['status' => WrestlerStatus::unemployed()];
         })
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-        });
+            ->afterCreating(function (Wrestler $wrestler) {
+                $wrestler->save();
+            });
     }
 
     public function retired()
@@ -81,13 +81,13 @@ class TagTeamPartnerFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['status' => WrestlerStatus::retired()];
         })
-        ->has(Employment::factory()->started($start)->ended($end))
-        ->has(Retirement::factory()->started($end))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-            $wrestler->load('retirements');
-        });
+            ->has(Employment::factory()->started($start)->ended($end))
+            ->has(Retirement::factory()->started($end))
+            ->afterCreating(function (Wrestler $wrestler) {
+                $wrestler->save();
+                $wrestler->load('employments');
+                $wrestler->load('retirements');
+            });
     }
 
     public function released()
@@ -99,11 +99,11 @@ class TagTeamPartnerFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['status' => WrestlerStatus::released()];
         })
-        ->has(Employment::factory()->started($start)->ended($end))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-        });
+            ->has(Employment::factory()->started($start)->ended($end))
+            ->afterCreating(function (Wrestler $wrestler) {
+                $wrestler->save();
+                $wrestler->load('employments');
+            });
     }
 
     public function suspended()
@@ -115,13 +115,13 @@ class TagTeamPartnerFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['status' => WrestlerStatus::suspended()];
         })
-        ->has(Employment::factory()->started($start))
-        ->has(Suspension::factory()->started($end))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-            $wrestler->load('suspensions');
-        });
+            ->has(Employment::factory()->started($start))
+            ->has(Suspension::factory()->started($end))
+            ->afterCreating(function (Wrestler $wrestler) {
+                $wrestler->save();
+                $wrestler->load('employments');
+                $wrestler->load('suspensions');
+            });
     }
 
     public function injured()
@@ -132,13 +132,13 @@ class TagTeamPartnerFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['status' => WrestlerStatus::injured()];
         })
-        ->has(Employment::factory()->started($start))
-        ->has(Injury::factory()->started($now))
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-            $wrestler->load('employments');
-            $wrestler->load('injuries');
-        });
+            ->has(Employment::factory()->started($start))
+            ->has(Injury::factory()->started($now))
+            ->afterCreating(function (Wrestler $wrestler) {
+                $wrestler->save();
+                $wrestler->load('employments');
+                $wrestler->load('injuries');
+            });
     }
 
     public function softDeleted()
@@ -146,8 +146,8 @@ class TagTeamPartnerFactory extends Factory
         return $this->state(function (array $attributes) {
             return ['deleted_at' => now()];
         })
-        ->afterCreating(function (Wrestler $wrestler) {
-            $wrestler->save();
-        });
+            ->afterCreating(function (Wrestler $wrestler) {
+                $wrestler->save();
+            });
     }
 }

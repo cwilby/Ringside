@@ -37,10 +37,10 @@ class TitleFactory extends Factory
         $activationDate = Carbon::yesterday();
 
         return $this->state(fn (array $attributes) => ['status' => TitleStatus::active()])
-        ->has(Activation::factory()->started($activationDate))
-        ->afterCreating(function (Title $title) {
-            $title->save();
-        });
+            ->has(Activation::factory()->started($activationDate))
+            ->afterCreating(function (Title $title) {
+                $title->save();
+            });
     }
 
     public function inactive()
@@ -50,19 +50,19 @@ class TitleFactory extends Factory
         $end = $now->copy()->subDays(1);
 
         return $this->state(fn (array $attributes) => ['status' => TitleStatus::inactive()])
-        ->has(Activation::factory()->started($start)->ended($end))
-        ->afterCreating(function (Title $title) {
-            $title->save();
-        });
+            ->has(Activation::factory()->started($start)->ended($end))
+            ->afterCreating(function (Title $title) {
+                $title->save();
+            });
     }
 
     public function withFutureActivation()
     {
         return $this->state(fn (array $attributes) => ['status' => TitleStatus::future_activation()])
-        ->has(Activation::factory()->started(Carbon::tomorrow()))
-        ->afterCreating(function (Title $title) {
-            $title->save();
-        });
+            ->has(Activation::factory()->started(Carbon::tomorrow()))
+            ->afterCreating(function (Title $title) {
+                $title->save();
+            });
     }
 
     public function retired()
@@ -72,11 +72,11 @@ class TitleFactory extends Factory
         $end = $now->copy()->subDays(1);
 
         return $this->state(fn (array $attributes) => ['status' => TitleStatus::retired()])
-        ->has(Activation::factory()->started($start)->ended($end))
-        ->has(Retirement::factory()->started($end))
-        ->afterCreating(function (Title $title) {
-            $title->save();
-        });
+            ->has(Activation::factory()->started($start)->ended($end))
+            ->has(Retirement::factory()->started($end))
+            ->afterCreating(function (Title $title) {
+                $title->save();
+            });
     }
 
     public function unactivated()

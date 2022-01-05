@@ -59,15 +59,15 @@ class StoreRequest extends FormRequest
                         CompetitorsGroupedIntoCorrectNumberOfSidesForMatchType::class
                     );
                 }
-            }
 
-            $rule2 = new CompetitorsAreValid;
+                $rule2 = new CompetitorsAreValid;
 
-            if (! $rule2->passes('competitors', $this->input('competitors'))) {
-                $validator->addFailure(
-                    'competitors',
-                    CompetitorsAreValid::class
-                );
+                if (! $rule2->passes('competitors', $this->input('competitors'))) {
+                    $validator->addFailure(
+                        'competitors',
+                        CompetitorsAreValid::class
+                    );
+                }
             }
         });
     }

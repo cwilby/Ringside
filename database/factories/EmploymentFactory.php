@@ -32,6 +32,7 @@ class EmploymentFactory extends Factory
             'employable_id' => $employable::factory(),
             'employable_type' => $employable,
             'started_at' => now()->toDateTimeString(),
+            'ended_at' => null,
         ];
     }
 
