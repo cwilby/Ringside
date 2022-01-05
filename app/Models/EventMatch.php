@@ -37,22 +37,22 @@ class EventMatch extends Model
     }
 
     /**
-     * Get the competitors of the match.
+     * Get the wrestlers involved in the match.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function wrestlers()
     {
-        return $this->morphToMany(EventMatchCompetitor::class, 'competitors');
+        return $this->morphToMany(Wrestler::class, 'event_match_competitor', 'event_match_competitors', 'event_match_competitor_id');
     }
 
     /**
-     * Get the competitors of the match.
+     * Get the tag teams involved in the match.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function tagTeams()
     {
-        return $this->morphToMany(EventMatchCompetitor::class, 'competitors');
+        return $this->morphToMany(TagTeam::class, 'event_match_competitor', 'event_match_competitors', 'event_match_competitor_id');
     }
 }

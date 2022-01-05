@@ -38,15 +38,21 @@ class AddMatchForEvent
             fn (Referee $referee) => $this->eventMatchRepository->addRefereeToMatch($createdMatch, $referee)
         );
 
-        dd($eventMatchData->competitors);
-
-        $eventMatchData->competitors->wrestlers->map(
-            fn (Wrestler $wrestler) => $this->eventMatchRepository->addWrestlerToMatch($createdMatch, $wrestler)
-        );
-
-        $eventMatchData->competitors->tagTeams->map(
-            fn (TagTeam $tagTeam) => $this->eventMatchRepository->addTagTeamToMatch($createdMatch, $tagTeam)
-        );
+        foreach ($eventMatchData->competitors as $sideNumber => $sideCompetitors) {
+            if (array_key_exists('wrestlers', $sideCompetitors)) {
+                foreach ($sideCompetitors as $wrestlers) {
+                    foreach ($wrestlers as $wrestler) {
+                        $this->eventMatchRepository->addWrestlerToMatch($createdMatch, $wrestler, $sideNumber);
+                    }
+                }
+            } elseif (array_key_exists('tag_teams', $sideCompetitors)) {
+                foreach ($sideCompetitors as $tagTeams) {
+                    foreach ($tagTeams as $tagTeam) {
+                        $this->eventMatchRepository->addTagTeamToMatch($createdMatch, $tagTeam, $sideNumber);
+                    }
+                }
+            }
+        }
 
         return $createdMatch;
     }

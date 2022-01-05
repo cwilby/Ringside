@@ -6,7 +6,9 @@ use App\DataTransferObjects\EventMatchData;
 use App\Models\Event;
 use App\Models\EventMatch;
 use App\Models\Referee;
+use App\Models\TagTeam;
 use App\Models\Title;
+use App\Models\Wrestler;
 
 class EventMatchRepository
 {
@@ -72,11 +74,12 @@ class EventMatchRepository
      *
      * @param  \App\Models\EventMatch $match
      * @param  \App\Models\TagTeam $tagTeam
+     * @param  int $sideNumber
      * @return \App\Models\EventMatch $match
      */
-    public function addTagTeamToMatch(EventMatch $match, TagTeam $tagTeam)
+    public function addTagTeamToMatch(EventMatch $match, TagTeam $tagTeam, int $sideNumber)
     {
-        $match->tagTeams()->attach($tagTeam);
+        $match->tagTeams()->attach($tagTeam, ['side_number' => $sideNumber]);
 
         return $match;
     }

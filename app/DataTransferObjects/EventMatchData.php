@@ -24,28 +24,12 @@ class EventMatchData
     public static function fromStoreRequest(StoreRequest $request): self
     {
         $dto = new self;
-        // dd($request->input('competitors'));
 
         $dto->matchType = MatchType::find($request->input('match_type_id'));
         $dto->referees = Referee::findMany($request->input('referees'));
         $dto->titles = Title::findMany($request->input('titles'));
-
-        $competitors = collect();
-        $wrestlers = collect();
-        foreach ($request->input('competitors') as $competitor) {
-            if ($competitor['competitor_type'] == 'wrestler') {
-                $wrestler = Wrestler::find($competitor['competitor_id']);
-                $competitors->push(['wrestlers' => collect($wrestlers->push($wrestler))]);
-            }
-        }
-        // $competitors[]['wrestlers'] = $wrestlers;
-        dd($competitors);
-        // dd($wrestlers);
-        $dto->competitors = self::getWrestlers($request->input('competitors'));
-        $dto->competitors = self::getTagTeams($request->input('competitors'));
+        $dto->competitors = self::getCompetitors($request->input('competitors'));
         $dto->preview = $request->input('preview');
-
-        dd($dto);
 
         return $dto;
     }
@@ -62,6 +46,25 @@ class EventMatchData
         $dto->preview = $request->input('preview');
 
         return $dto;
+    }
+
+    public static function getCompetitors($competitors)
+    {
+        $formattedCompetitors = collect();
+
+        foreach ($competitors as $competitor) {
+            $wrestlers = collect();
+            $tagTeams = collect();
+            if ($competitor['competitor_type'] == 'wrestler') {
+                $wrestler = Wrestler::find($competitor['competitor_id']);
+                $formattedCompetitors->push(['wrestlers' => collect($wrestlers->push($wrestler))]);
+            } elseif ($competitor['competitor_type'] == 'tag_team') {
+                $tagTeam = TagTeam::find($competitor['competitor_id']);
+                $formattedCompetitors->push(['tag_teams' => collect($tagTeams->push($tagTeam))]);
+            }
+        }
+
+        return $formattedCompetitors;
     }
 
     public static function getWrestlers($competitors)

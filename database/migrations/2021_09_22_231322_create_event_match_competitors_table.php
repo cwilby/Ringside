@@ -16,6 +16,7 @@ class CreateEventMatchCompetitorsTable extends Migration
         Schema::create('event_match_competitors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('event_match_id')->constrained();
+            $table->tinyInteger('side_number');
             $table->morphs('event_match_competitor');
             $table->timestamps();
         });

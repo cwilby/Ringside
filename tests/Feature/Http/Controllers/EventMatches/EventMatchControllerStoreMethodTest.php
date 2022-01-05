@@ -52,7 +52,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
                     'preview' => 'This is a general match preview.',
                 ])
             );
-        dd($response);
+
         $this->assertCount(1, $event->matches);
         tap($event->matches->first(), function ($match) use ($referee) {
             $this->assertEquals(1, $match->match_type_id);
@@ -68,7 +68,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
      */
     public function store_creates_a_title_match_for_an_event_and_redirects()
     {
-        $event = Event::factory()->schedule()->create();
+        $event = Event::factory()->scheduled()->create();
         $referee = Referee::factory()->bookable()->create();
         $title = Title::factory()->active()->create();
         $wrestlerA = Wrestler::factory()->bookable()->create();
