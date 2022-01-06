@@ -34,8 +34,6 @@ class EventQueryBuilder extends Builder
      */
     public function past()
     {
-        return $this->where(function () {
-            $this->where('status', EventStatus::past())->where('date', '<', now()->toDateString());
-        });
+        return $this->where('status', EventStatus::past())->where('date', '<', now()->toDateString());
     }
 }
