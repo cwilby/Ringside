@@ -39,7 +39,7 @@ class RefereesController extends Controller
      * Show the form for creating a new referee.
      *
      * @param  \App\Models\Referee $referee
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Referee $referee)
     {
@@ -83,7 +83,7 @@ class RefereesController extends Controller
      * Show the form for editing a referee.
      *
      * @param  \App\Models\Referee  $referee
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Referee $referee)
     {

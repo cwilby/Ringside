@@ -38,7 +38,7 @@ class StablesController extends Controller
     /**
      * Show the form for creating a stable.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Stable $stable)
     {
@@ -67,7 +67,7 @@ class StablesController extends Controller
      * Show the profile of a tag team.
      *
      * @param  \App\Models\Stable  $stable
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Stable $stable)
     {
@@ -82,7 +82,7 @@ class StablesController extends Controller
      * Show the form for editing a stable.
      *
      * @param  \App\Models\Stable  $stable
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Stable $stable)
     {

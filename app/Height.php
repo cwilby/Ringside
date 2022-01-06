@@ -4,9 +4,15 @@ namespace App;
 
 class Height
 {
+    /**
+     * @var string
+     */
     public $height;
 
-    public function __construct($height)
+    /**
+     * @param string
+     */
+    public function __construct(string $height)
     {
         $this->height = $height;
     }

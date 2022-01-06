@@ -26,7 +26,7 @@ class VenuesController extends Controller
     /**
      * View a list of venues.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -38,7 +38,7 @@ class VenuesController extends Controller
     /**
      * Show the form for creating a venue.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Venue $venue)
     {
@@ -67,7 +67,7 @@ class VenuesController extends Controller
      * Show the venue.
      *
      * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Venue $venue)
     {
@@ -82,7 +82,7 @@ class VenuesController extends Controller
      * Show the form for editing a venue.
      *
      * @param  \App\Models\Venue  $venue
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Venue $venue)
     {

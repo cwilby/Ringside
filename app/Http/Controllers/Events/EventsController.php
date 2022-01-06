@@ -68,7 +68,7 @@ class EventsController extends Controller
      * Show the event.
      *
      * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Event $event)
     {
@@ -78,7 +78,7 @@ class EventsController extends Controller
             $event->load('venue');
         }
 
-        return response()->view('events.show', [
+        return view('events.show', [
             'event' => $event,
         ]);
     }
@@ -87,7 +87,7 @@ class EventsController extends Controller
      * Show the form for editing a given event.
      *
      * @param  \App\Models\Event $event
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Event $event)
     {

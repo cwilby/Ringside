@@ -60,11 +60,12 @@ class EventMatchRepository
      *
      * @param  \App\Models\EventMatch $match
      * @param  \App\Models\Wrestler $wrestler
+     * @param  int $sideNumber
      * @return \App\Models\EventMatch $match
      */
-    public function addWrestlerToMatch(EventMatch $match, Wrestler $wrestler)
+    public function addWrestlerToMatch(EventMatch $match, Wrestler $wrestler, int $sideNumber)
     {
-        $match->wrestlers()->attach($wrestler);
+        $match->wrestlers()->attach($wrestler, ['side_number' => $sideNumber]);
 
         return $match;
     }

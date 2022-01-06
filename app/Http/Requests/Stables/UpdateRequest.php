@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Stables;
 
+use App\Models\Stable;
 use App\Rules\ActivationStartDateCanBeChanged;
 use App\Rules\StableHasEnoughMembers;
 use App\Rules\TagTeamCanJoinStable;
@@ -19,10 +20,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        /** @var \App\Models\Stable */
-        $stable = $this->route('stable');
-
-        return $this->user()->can('update', $stable);
+        return $this->user()->can('update', Stable::class);
     }
 
     /**
@@ -37,14 +35,14 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
                 'min:3',
-                Rule::unique('stables')->ignore($this->route('stable')->id),
+                Rule::unique('stables')->ignore($this->route->param('stable')->id),
             ],
             'started_at' => [
                 'nullable',
-                Rule::requiredIf(fn () => ! $this->route('stable')->isUnactivated()),
+                Rule::requiredIf(fn () => ! $this->route->param('stable')->isUnactivated()),
                 'string',
                 'date',
-                new ActivationStartDateCanBeChanged($this->route('stable')),
+                new ActivationStartDateCanBeChanged($this->route->param('stable')),
             ],
             'wrestlers' => ['array'],
             'tag_teams' => ['array'],
@@ -53,14 +51,14 @@ class UpdateRequest extends FormRequest
                 'integer',
                 'distinct',
                 Rule::exists('wrestlers', 'id'),
-                new WrestlerCanJoinStable($this->route('stable')),
+                new WrestlerCanJoinStable($this->route->param('stable')),
             ],
             'tag_teams.*' => [
                 'bail',
                 'integer',
                 'distinct',
                 Rule::exists('tag_teams', 'id'),
-                new TagTeamCanJoinStable($this->route('stable')),
+                new TagTeamCanJoinStable($this->route->param('stable')),
             ],
         ];
     }

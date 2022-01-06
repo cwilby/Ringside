@@ -10,8 +10,16 @@ use App\Repositories\EventMatchRepository;
 
 class AddMatchForEvent
 {
-    private ?EventMatchRepository $eventMatchRepository = null;
+    /**
+     * @var \App\Repositories\EventMatchRepository
+     */
+    private EventMatchRepository $eventMatchRepository;
 
+    /**
+     * Undocumented function.
+     *
+     * @param \App\Repositories\EventMatchRepository $eventMatchRepository
+     */
     public function __construct(EventMatchRepository $eventMatchRepository)
     {
         $this->eventMatchRepository = $eventMatchRepository;
@@ -22,13 +30,13 @@ class AddMatchForEvent
      *
      * @param  \App\Models\Event $event
      * @param  \App\DataTransferObjects\EventMatchData $eventMatchData
-     * @return void
+     * @return \App\Models\EventMatch $cratedMatch
      */
     public function __invoke(Event $event, EventMatchData $eventMatchData)
     {
         $createdMatch = $this->eventMatchRepository->createForEvent($event, $eventMatchData);
 
-        if ($eventMatchData->titles->isNotEmpty()) {
+        if ($eventMatchData->titles) {
             $eventMatchData->titles->map(
                 fn (Title $title) => $this->eventMatchRepository->addTitleToMatch($createdMatch, $title)
             );

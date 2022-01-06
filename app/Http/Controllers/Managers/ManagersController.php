@@ -39,7 +39,7 @@ class ManagersController extends Controller
      * Show the form for creating a manager.
      *
      * @param  \App\Models\Manager $manager
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create(Manager $manager)
     {
@@ -68,7 +68,7 @@ class ManagersController extends Controller
      * Show the profile of a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Manager $manager)
     {
@@ -83,7 +83,7 @@ class ManagersController extends Controller
      * Show the form for editing a manager.
      *
      * @param  \App\Models\Manager  $manager
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Manager $manager)
     {
