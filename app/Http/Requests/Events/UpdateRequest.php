@@ -29,12 +29,12 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:3', Rule::unique('events')->ignore($this->route('event')->id)],
+            'name' => ['required', 'string', 'min:3', Rule::unique('events')->ignore($this->route->param('event')->id)],
             'date' => [
                 'nullable',
                 'string',
                 'date',
-                new EventDateCanBeChanged($this->route('event')),
+                new EventDateCanBeChanged($this->route->param('event')),
             ],
             'venue_id' => ['nullable', 'integer', Rule::exists('venues', 'id')],
             'preview' => ['nullable', 'string'],

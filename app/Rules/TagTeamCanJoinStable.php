@@ -52,23 +52,31 @@ class TagTeamCanJoinStable implements Rule
         }
 
         if ($tagTeam->currentStable && $tagTeam->currentStable->isNot($this->stable)) {
-            return $this->fail('This tag team is already a members of an active stable.');
+            $this->setMessage('This tag team is already a members of an active stable.');
+
+            return false;
         }
 
         if (is_string($this->startedAt)) {
             if ($tagTeam->futureEmployment && $tagTeam->futureEmployment->startedAfter($this->startedAt)) {
-                return $this->fail("This tag team's future employment starts after stable's start date.");
+                $this->setMessage("This tag team's future employment starts after stable's start date.");
+
+                return false;
             }
         }
 
         return true;
     }
 
-    protected function fail(string $message)
+    /**
+     * Set the message of the validation error.
+     *
+     * @param  string $message
+     * @return void
+     */
+    protected function setMessage(string $message)
     {
         $this->message = $message;
-
-        return false;
     }
 
     /**

@@ -39,6 +39,9 @@ class TagTeamMustBeEmployedBeforeStableStartDate implements Rule
             return true;
         }
 
+        if (is_null($tagTeam->futureEmployment)) {
+            return true;
+        }
 
         if ($tagTeam->futureEmployment->startedBefore($this->stableStartDate)) {
             return true;

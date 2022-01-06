@@ -10,8 +10,14 @@ class RetiredWrestlers extends Component
 {
     use WithPagination;
 
+    /**
+     * @var int
+     */
     public $perPage = 10;
 
+    /**
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         $retiredWrestlers = Wrestler::query()

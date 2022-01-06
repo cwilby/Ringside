@@ -10,8 +10,14 @@ class FutureEmployedAndUnemployedManagers extends Component
 {
     use WithPagination;
 
+    /**
+     * @var int
+     */
     public $perPage = 10;
 
+    /**
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         $futureEmployedAndUnemployedManagers = Manager::query()

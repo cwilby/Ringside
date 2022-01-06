@@ -7,6 +7,9 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CannotBeHindered implements Rule
 {
+    /**
+     * @var \App\Models\Wrestler
+     */
     protected $wrestler;
 
     /**

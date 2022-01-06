@@ -35,6 +35,10 @@ class WrestlerJoinedStableInTagTeam
 
         $wrestlerIdsAddedFromTagTeams = collect();
 
+        if (is_null($this->tagTeamIds) || count($this->tagTeamIds) == 0) {
+            return false;
+        }
+
         foreach ($this->tagTeamIds as $tagTeamId) {
             $tagTeam = TagTeam::with('currentWrestlers')->find($tagTeamId);
 

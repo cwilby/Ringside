@@ -7,7 +7,14 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CannotBeEmployedAfterDate implements Rule
 {
+    /**
+     * @var \App\Models\Wrestler
+     */
     protected $wrestler;
+
+    /**
+     * @var string|null
+     */
     protected ?string $startedAt;
 
     public function __construct(string $startedAt = null)

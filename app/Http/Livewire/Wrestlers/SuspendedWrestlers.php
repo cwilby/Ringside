@@ -10,13 +10,24 @@ class SuspendedWrestlers extends Component
 {
     use WithPagination;
 
+    /**
+     * @var int
+     */
     public $perPage = 10;
 
+    /**
+     * @return string
+     */
     public function paginationView()
     {
         return 'pagination.datatables';
     }
 
+    /**
+     * Undocumented function.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         $suspendedWrestlers = Wrestler::query()

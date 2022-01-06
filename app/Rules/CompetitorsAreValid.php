@@ -64,9 +64,15 @@ class CompetitorsAreValid implements Rule
         return true;
     }
 
+    /**
+     * Set the message of the validation rule.
+     *
+     * @param  string $message
+     * @return void
+     */
     public function setMessage(string $message)
     {
-        return $this->message = $message;
+        $this->message = $message;
     }
 
     /**

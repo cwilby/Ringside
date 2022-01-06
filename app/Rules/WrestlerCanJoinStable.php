@@ -52,23 +52,31 @@ class WrestlerCanJoinStable implements Rule
         }
 
         if ($wrestler->currentStable && $wrestler->currentStable->isNot($this->stable)) {
-            return $this->fail('This wrestler is already a member of an active stable.');
+            $this->setMessage('This wrestler is already a member of an active stable.');
+
+            return false;
         }
 
         if (is_string($this->startedAt)) {
             if ($wrestler->futureEmployment && $wrestler->futureEmployment->startedAfter($this->startedAt)) {
-                return $this->fail("This wrestler's future employment starts after stable's start date.");
+                $this->setMessage("This wrestler's future employment starts after stable's start date.");
+
+                return false;
             }
         }
 
         return true;
     }
 
-    protected function fail(string $message)
+    /**
+     * Set the message of the error message.
+     *
+     * @param  string $message
+     * @return void
+     */
+    protected function setMessage(string $message)
     {
         $this->message = $message;
-
-        return false;
     }
 
     /**
