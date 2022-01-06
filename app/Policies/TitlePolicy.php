@@ -82,7 +82,6 @@ class TitlePolicy
      * Determine whether the user can activate a title.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Title  $title
      * @return bool
      */
     public function activate(User $user)
@@ -94,7 +93,6 @@ class TitlePolicy
      * Determine whether the user can deactivate a title.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Title  $title
      * @return bool
      */
     public function deactivate(User $user)
