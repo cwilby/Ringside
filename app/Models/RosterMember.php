@@ -2,12 +2,24 @@
 
 namespace App\Models;
 
+use App\Builders\RosterMemberQueryBuilder;
 use App\Models\Contracts\Employable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class RosterMember extends Model implements Employable
 {
+    /**
+     * Create a new Eloquent query builder for the model.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return \App\Builders\RosterMemberQueryBuilder<\App\Models\RosterMember>
+     */
+    public function newEloquentBuilder($query)
+    {
+        return new RosterMemberQueryBuilder($query);
+    }
+
     /**
      * Get all of the employments of the model.
      *
