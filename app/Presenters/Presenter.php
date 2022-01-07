@@ -10,7 +10,7 @@ abstract class Presenter
     /**
      * The presentable model.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var \Illuminate\Database\Eloquent\Model $model
      */
     protected $model;
 
@@ -24,7 +24,14 @@ abstract class Presenter
         $this->model = $model;
     }
 
-    public function __get($property)
+    /**
+     * Undocumented function
+     *
+     * @param  string $property
+     * @return mixed
+     * @throws \Exception
+     */
+    public function __get(string $property)
     {
         if (method_exists($this, $property)) {
             return call_user_func([$this, $property]);

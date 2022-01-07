@@ -14,10 +14,10 @@ class EventMatchCompetitor extends MorphPivot
     protected $fillable = ['event_match_id', 'competitor_id', 'competitor_type'];
 
     /**
-     * @returns \Illuminate\Database\Eloquent\Relations\MorphTO
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function competitor()
     {
-        $this->morphTo();
+        return $this->morphTo();
     }
 }

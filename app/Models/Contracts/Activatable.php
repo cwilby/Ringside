@@ -84,9 +84,9 @@ interface Activatable
     /**
      * Retrieve the model's first activation date.
      *
-     * @return string
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function getActivatedAtAttribute();
+    public function activatedAt();
 
     /**
      * Check to see if the model is not in activation.

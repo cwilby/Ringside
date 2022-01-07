@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Rule;
 class CannotBeHindered implements Rule
 {
     /**
-     * @var \App\Models\Wrestler
+     * @var \App\Models\Wrestler $wrestler
      */
     protected $wrestler;
 
@@ -21,7 +21,7 @@ class CannotBeHindered implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->wrestler = Wrestler::find($value);
+        $this->wrestler = Wrestler::findOrFail($value);
 
         if ($this->wrestler->isUnemployed() || $this->wrestler->isBookable()) {
             return true;

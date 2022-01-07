@@ -4,12 +4,17 @@ namespace App\Rules;
 
 class StableHasEnoughMembers
 {
+    /** @var int[]|null $tagTeamIds */
     private ?array $tagTeamIds = [];
+
+    /** @var int[]|null $wrestlerIds */
     private ?array $wrestlerIds = [];
 
     /**
      * Create a new rule instance.
      *
+     * @param  int[]|null $tagTeamIds
+     * @param  int[]|null $wrestlerIds
      * @return void
      */
     public function __construct(?array $tagTeamIds, ?array $wrestlerIds)

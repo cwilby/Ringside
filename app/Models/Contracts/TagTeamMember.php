@@ -14,7 +14,7 @@ interface TagTeamMember
     /**
      * Get the current tag team the member belongs to.
      *
-     * @return \Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep
+     * @return \Staudenmeir\EloquentHasManyDeep\HasOneDeep
      */
     public function currentTagTeam();
 

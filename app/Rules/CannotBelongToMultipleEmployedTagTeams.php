@@ -8,10 +8,20 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CannotBelongToMultipleEmployedTagTeams implements Rule
 {
-    private $wrestler;
-    private $tagTeam;
+    /**
+     * @var \App\Models\Wrestler $wrestler
+     */
+    private Wrestler $wrestler;
 
-    public function __construct(TagTeam $tagTeam = null)
+    /**
+     * @var \App\Models\TagTeam $tagTeam
+     */
+    private TagTeam $tagTeam;
+
+    /**
+     * @param \App\Models\TagTeam $tagTeam
+     */
+    public function __construct(TagTeam $tagTeam)
     {
         $this->tagTeam = $tagTeam;
     }
@@ -25,9 +35,9 @@ class CannotBelongToMultipleEmployedTagTeams implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->wrestler = Wrestler::find($value);
+        $this->wrestler = Wrestler::with('currentTagTeam')->findOrFail($value);
 
-        if ($this->wrestler->currentTagTeam()->doesntExist()) {
+        if (! $this->wrestler->currentTagTeam) {
             return true;
         }
 

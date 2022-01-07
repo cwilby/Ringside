@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use App\Models\Activation;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait Activations
 {
@@ -24,9 +25,9 @@ trait Activations
     public function currentActivation()
     {
         return $this->morphOne(Activation::class, 'activatable')
-                        ->where('started_at', '<=', now())
-                        ->where('ended_at', '=', null)
-                        ->latestOfMany();
+                    ->where('started_at', '<=', now())
+                    ->where('ended_at', '=', null)
+                    ->latestOfMany();
     }
 
     /**
@@ -139,11 +140,13 @@ trait Activations
     /**
      * Retrieve the model's first activation date.
      *
-     * @return string|null
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function getActivatedAtAttribute()
+    public function activatedAt(): Attribute
     {
-        return $this->activations->first()?->started_at;
+        return new Attribute(
+            get: fn ($value, $attribute) => $this->activations->first()->started_at
+        );
     }
 
     /**

@@ -6,12 +6,17 @@ use App\Models\TagTeam;
 
 class WrestlerJoinedStableInTagTeam
 {
+    /** @var int[]|null */
     private ?array $tagTeamIds = [];
+
+    /** @var int[]|null */
     private ?array $wrestlerIds = [];
 
     /**
      * Create a new rule instance.
      *
+     * @param  int[]|null $tagTeamIds
+     * @param  int[]|null $wrestlerIds
      * @return void
      */
     public function __construct(?array $tagTeamIds, ?array $wrestlerIds)

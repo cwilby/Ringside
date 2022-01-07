@@ -9,17 +9,17 @@ use Illuminate\Contracts\Validation\Rule;
 class WrestlerCanJoinStable implements Rule
 {
     /**
-     * @var string
+     * @var string $message
      */
     protected string $message;
 
     /**
-     * @var \App\Models\Stable
+     * @var \App\Models\Stable $stable
      */
-    protected $stable;
+    protected Stable $stable;
 
     /**
-     * @var string|null
+     * @var string|null $startedAt
      */
     protected ?string $startedAt;
 
@@ -45,7 +45,7 @@ class WrestlerCanJoinStable implements Rule
      */
     public function passes($attribute, $value)
     {
-        $wrestler = Wrestler::with('currentStable', 'futureEmployment')->find($value);
+        $wrestler = Wrestler::with(['currentStable', 'futureEmployment'])->find($value);
 
         if (! $wrestler) {
             return false;

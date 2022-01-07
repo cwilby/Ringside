@@ -11,7 +11,7 @@ trait HasMembers
     /**
      * Get the wrestlers belonging to the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function wrestlers()
     {
@@ -23,7 +23,7 @@ trait HasMembers
     /**
      * Get all current wrestlers that are members of the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function currentWrestlers()
     {
@@ -36,17 +36,20 @@ trait HasMembers
     /**
      * Get all previous wrestlers that were members of the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousWrestlers()
     {
-        return $this->wrestlers()->whereNotNull('left_at');
+        return $this->morphedByMany(Wrestler::class, 'member', 'stable_members')
+                    ->using(StableMember::class)
+                    ->withPivot(['joined_at', 'left_at'])
+                    ->whereNotNull('left_at');
     }
 
     /**
      * Get the tag teams belonging to the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function tagTeams()
     {
@@ -58,7 +61,7 @@ trait HasMembers
     /**
      * Get all current tag teams that are members of the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function currentTagTeams()
     {
@@ -71,7 +74,7 @@ trait HasMembers
     /**
      * Get all previous tag teams that were members of the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousTagTeams()
     {
@@ -99,7 +102,7 @@ trait HasMembers
     /**
      * Get all current members of the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function currentMembers()
     {
@@ -109,7 +112,7 @@ trait HasMembers
     /**
      * Get all previous members of the stable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphByMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function previousMembers()
     {

@@ -66,6 +66,11 @@ class Wrestler extends SingleRosterMember implements Bookable, Manageable, CanBe
         return new WrestlerQueryBuilder($query);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function eventMatches()
     {
         return $this->morphToMany(EventMatch::class, 'event_match_competitor');

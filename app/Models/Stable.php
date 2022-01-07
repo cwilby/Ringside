@@ -94,7 +94,7 @@ class Stable extends Model implements Activatable, Deactivatable, Retirable
      */
     public function previousRetirements()
     {
-        return $this->retirements()
+        return $this->morphMany(Retirement::class, 'retiree')
                     ->whereNotNull('ended_at');
     }
 

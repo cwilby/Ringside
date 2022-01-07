@@ -23,7 +23,8 @@ trait HasManagers
      */
     public function currentManagers()
     {
-        return $this->belongsToMany(Manager::class)->wherePivotNull('left_at');
+        return $this->belongsToMany(Manager::class)
+                    ->wherePivotNull('left_at');
     }
 
     /**
@@ -33,6 +34,7 @@ trait HasManagers
      */
     public function previousManagers()
     {
-        return $this->belongsToMany(Manager::class)->wherePivotNotNull('left_at');
+        return $this->belongsToMany(Manager::class)
+                    ->wherePivotNotNull('left_at');
     }
 }

@@ -16,7 +16,7 @@ class TagTeamCanJoinStable implements Rule
     /**
      * @var \App\Models\Stable
      */
-    protected $stable;
+    protected Stable $stable;
 
     /**
      * @var string|null
@@ -26,8 +26,8 @@ class TagTeamCanJoinStable implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param \App\Models\Stable $stable
-     * @param string|null $startedAt
+     * @param  \App\Models\Stable $stable
+     * @param  string|null $startedAt
      * @return void
      */
     public function __construct(Stable $stable, string $startedAt = null)

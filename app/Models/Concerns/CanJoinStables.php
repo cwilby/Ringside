@@ -16,13 +16,13 @@ trait CanJoinStables
      */
     public function stables()
     {
-        return $this->morphToMany(Stable::class, 'member', 'stable_members');
+        return $this->morphMany(Stable::class, 'member', 'stable_members');
     }
 
     /**
      * Get the current stable the member belongs to.
      *
-     * @return \Staudenmeir\EloquentHasManyDeep\HasRelationships\HasOneDeep
+     * @return \Staudenmeir\EloquentHasManyDeep\HasOneDeep
      */
     public function currentStable()
     {

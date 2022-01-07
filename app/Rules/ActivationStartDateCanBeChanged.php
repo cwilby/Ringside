@@ -2,18 +2,32 @@
 
 namespace App\Rules;
 
+use App\Models\Contracts\Activatable;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivationStartDateCanBeChanged implements Rule
 {
+    /**
+     * @var \App\Models\Contracts\Activatable $model
+     */
     protected $model;
 
-    public function __construct(Model $activatable)
+    /**
+     * @param \App\Models\Contracts\Activatable $activatable
+     */
+    public function __construct(Activatable $activatable)
     {
         $this->model = $activatable;
     }
 
+    /**
+     * Determine if the validation rule passes.
+     *
+     * @param  string  $attribute
+     * @param  array  $value
+     * @return bool
+     */
     public function passes($attribute, $value)
     {
         if ($this->model->isUnactivated()) {
