@@ -62,7 +62,10 @@ trait HasMembers
      */
     public function currentTagTeams()
     {
-        return $this->tagTeams()->whereNull('left_at');
+        return $this->morphedByMany(TagTeam::class, 'member', 'stable_members')
+                    ->using(StableMember::class)
+                    ->withPivot(['joined_at', 'left_at'])
+                    ->whereNull('left_at');
     }
 
     /**
@@ -72,7 +75,10 @@ trait HasMembers
      */
     public function previousTagTeams()
     {
-        return $this->tagTeams()->whereNotNull('left_at');
+        return $this->morphedByMany(TagTeam::class, 'member', 'stable_members')
+                    ->using(StableMember::class)
+                    ->withPivot(['joined_at', 'left_at'])
+                    ->whereNotNull('left_at');
     }
 
     /**

@@ -6,13 +6,16 @@ use Exception;
 
 class CannotBeReleasedException extends Exception
 {
+    /**
+     * @var string
+     */
     protected $message = 'This entity cannot be released. This entity does not have an active employment.';
 
     /**
      * Render the exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function render($request)
     {

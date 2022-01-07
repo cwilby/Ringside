@@ -7,12 +7,16 @@ use App\Models\Retirement;
 use App\Models\Suspension;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModelClass of \App\Models\RosterMember
+ * @extends Builder<TModelClass>
+ */
 class RosterMemberQueryBuilder extends Builder
 {
     /**
      * Scope a query to include suspended models.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function suspended()
     {
@@ -22,7 +26,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to include current suspension date.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function withCurrentSuspendedAtDate()
     {
@@ -38,7 +42,7 @@ class RosterMemberQueryBuilder extends Builder
      * Scope a query to order by the model's current suspension date.
      *
      * @param  string  $direction
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function orderByCurrentSuspendedAtDate(string $direction = 'asc')
     {
@@ -48,7 +52,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to only include retired models.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function retired()
     {
@@ -58,7 +62,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to include current retirement date.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function withCurrentRetiredAtDate()
     {
@@ -74,7 +78,7 @@ class RosterMemberQueryBuilder extends Builder
      * Scope a query to order by the model's current retirement date.
      *
      * @param  string  $direction
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function orderByCurrentRetiredAtDate(string $direction = 'asc')
     {
@@ -84,7 +88,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to include released models.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function released()
     {
@@ -96,7 +100,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to include released date.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function withReleasedAtDate()
     {
@@ -112,7 +116,7 @@ class RosterMemberQueryBuilder extends Builder
      * Scope a query to order by the model's current released date.
      *
      * @param  string  $direction
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function orderByCurrentReleasedAtDate(string $direction = 'asc')
     {
@@ -122,7 +126,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to include employed models.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function employed()
     {
@@ -132,7 +136,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to only include future employed models.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function futureEmployed()
     {
@@ -142,7 +146,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to include unemployed models.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function unemployed()
     {
@@ -153,7 +157,7 @@ class RosterMemberQueryBuilder extends Builder
     /**
      * Scope a query to include first employment date.
      *
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function withFirstEmployedAtDate()
     {
@@ -169,7 +173,7 @@ class RosterMemberQueryBuilder extends Builder
      * Scope a query to order by the model's first employment date.
      *
      * @param  string $direction
-     * @return $this
+     * @return \App\Builders\RosterMemberQueryBuilder
      */
     public function orderByFirstEmployedAtDate(string $direction = 'asc')
     {

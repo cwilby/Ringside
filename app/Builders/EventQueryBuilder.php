@@ -5,12 +5,16 @@ namespace App\Builders;
 use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModelClass of \App\Models\Event
+ * @extends Builder<TModelClass>
+ */
 class EventQueryBuilder extends Builder
 {
     /**
      * Scope a query to include scheduled events.
      *
-     * @return $this
+     * @return \App\Builders\EventQueryBuilder
      */
     public function scheduled()
     {
@@ -20,7 +24,7 @@ class EventQueryBuilder extends Builder
     /**
      * Scope a query to include unscheduled events.
      *
-     * @return $this
+     * @return \App\Builders\EventQueryBuilder
      */
     public function unscheduled()
     {
@@ -30,7 +34,7 @@ class EventQueryBuilder extends Builder
     /**
      * Scope a query to include past events.
      *
-     * @return $this
+     * @return \App\Builders\EventQueryBuilder
      */
     public function past()
     {

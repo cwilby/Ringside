@@ -4,12 +4,16 @@ namespace App\Builders;
 
 use App\Models\Injury;
 
+/**
+ * @template TModelClass of \App\Models\SingleRosterMember
+ * @extends RosterMemberQueryBuilder<TModelClass>
+ */
 class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
 {
     /**
      * Scope a query to only include injured models.
      *
-     * @return $this
+     * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
     public function injured()
     {
@@ -19,7 +23,7 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
     /**
      * Scope a query to include current injured date.
      *
-     * @return $this
+     * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
     public function withCurrentInjuredAtDate()
     {
@@ -35,7 +39,7 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
      * Scope a query to order by the model's current injured date.
      *
      * @param  string  $direction
-     * @return $this
+     * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
     public function orderByCurrentInjuredAtDate(string $direction = 'asc')
     {
@@ -45,7 +49,7 @@ class SingleRosterMemberQueryBuilder extends RosterMemberQueryBuilder
     /**
      * Scope a query to only include bookable models.
      *
-     * @return $this
+     * @return \App\Builders\SingleRosterMemberQueryBuilder
      */
     public function bookable()
     {

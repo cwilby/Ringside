@@ -2,12 +2,16 @@
 
 namespace App\Builders;
 
+/**
+ * @template TModelClass of \App\Models\Wrestler
+ * @extends SingleRosterMemberQueryBuilder<TModelClass>
+ */
 class WrestlerQueryBuilder extends SingleRosterMemberQueryBuilder
 {
     /**
-     * Scope a query to only include bookable models.
+     * Scope a query to only include bookable wrestlers.
      *
-     * @return $this
+     * @return \App\Builders\WrestlerQueryBuilder
      */
     public function bookable()
     {

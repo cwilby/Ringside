@@ -46,7 +46,7 @@ class Event extends Model
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return \App\Builders\EventQueryBuilder<\App\Models\Event>
      */
     public function newEloquentBuilder($query)
     {

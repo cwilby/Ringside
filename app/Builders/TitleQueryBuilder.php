@@ -2,16 +2,21 @@
 
 namespace App\Builders;
 
+use App\Enums\TitleStatus;
 use App\Models\Activation;
 use App\Models\Retirement;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModelClass of \App\Models\Title
+ * @extends Builder<TModelClass>
+ */
 class TitleQueryBuilder extends Builder
 {
     /**
      * Scope a query to only include retired models.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function retired()
     {
@@ -21,7 +26,7 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to include current retirement date.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function withCurrentRetiredAtDate()
     {
@@ -37,7 +42,7 @@ class TitleQueryBuilder extends Builder
      * Scope a query to order by the model's current retirement date.
      *
      * @param  string $direction
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function orderByCurrentRetiredAtDate($direction = 'asc')
     {
@@ -47,7 +52,7 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to only include unactivated models.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function deactivated()
     {
@@ -58,7 +63,7 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to include current deactivation date.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function withLastDeactivationDate()
     {
@@ -74,7 +79,7 @@ class TitleQueryBuilder extends Builder
      * Scope a query to order by the models current deactivation date.
      *
      * @param  string $direction
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function orderByLastDeactivationDate(string $direction = 'asc')
     {
@@ -84,7 +89,7 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to only include active models.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function active()
     {
@@ -94,7 +99,7 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to only include future activated models.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function withFutureActivation()
     {
@@ -104,9 +109,9 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to only include inactive models.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
-    public function inactive()
+    public function static()
     {
         return $this->whereHas('previousActivation')
                     ->whereDoesntHave('futureActivation')
@@ -117,7 +122,7 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to only include inactive models.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function unactivated()
     {
@@ -127,7 +132,7 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to include current activation date.
      *
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function withFirstActivatedAtDate()
     {
@@ -143,7 +148,7 @@ class TitleQueryBuilder extends Builder
      * Scope a query to order by the models first activation date.
      *
      * @param  string $direction
-     * @return $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function orderByFirstActivatedAtDate(string $direction = 'asc')
     {
@@ -153,7 +158,7 @@ class TitleQueryBuilder extends Builder
     /**
      * Scope a query to only include competable models.
      *
-     * @param  $this
+     * @return \App\Builders\TitleQueryBuilder
      */
     public function competable()
     {

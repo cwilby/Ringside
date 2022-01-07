@@ -6,13 +6,16 @@ use Exception;
 
 class CannotBeUnretiredException extends Exception
 {
+    /**
+     * @var string
+     */
     protected $message = 'This entity cannot be unretired. This entity has a current employment.';
 
     /**
      * Render the exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function render($request)
     {

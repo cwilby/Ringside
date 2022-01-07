@@ -6,12 +6,16 @@ use App\Models\Activation;
 use App\Models\Retirement;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @template TModelClass of \App\Models\Stable
+ * @extends Builder<TModelClass>
+ */
 class StableQueryBuilder extends Builder
 {
     /**
      * Scope a query to only include retired models.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function retired()
     {
@@ -21,7 +25,7 @@ class StableQueryBuilder extends Builder
     /**
      * Scope a query to include current retirement date.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function withCurrentRetiredAtDate()
     {
@@ -37,7 +41,7 @@ class StableQueryBuilder extends Builder
      * Scope a query to order by the model's current retirement date.
      *
      * @param  string $direction
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function orderByCurrentRetiredAtDate($direction = 'asc')
     {
@@ -47,7 +51,7 @@ class StableQueryBuilder extends Builder
     /**
      * Scope a query to only include unactivated models.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function deactivated()
     {
@@ -58,7 +62,7 @@ class StableQueryBuilder extends Builder
     /**
      * Scope a query to include current deactivation date.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function withLastDeactivationDate()
     {
@@ -74,7 +78,7 @@ class StableQueryBuilder extends Builder
      * Scope a query to order by the models current deactivation date.
      *
      * @param  string $direction
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function orderByLastDeactivationDate(string $direction = 'asc')
     {
@@ -84,7 +88,7 @@ class StableQueryBuilder extends Builder
     /**
      * Scope a query to only include active models.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function active()
     {
@@ -94,7 +98,7 @@ class StableQueryBuilder extends Builder
     /**
      * Scope a query to only include future activated models.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function withFutureActivation()
     {
@@ -104,7 +108,7 @@ class StableQueryBuilder extends Builder
     /**
      * Scope a query to only include inactive models.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function inactive()
     {
@@ -117,7 +121,7 @@ class StableQueryBuilder extends Builder
     /**
      * Scope a query to only include inactive models.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function unactivated()
     {
@@ -127,7 +131,7 @@ class StableQueryBuilder extends Builder
     /**
      * Scope a query to include current activation date.
      *
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function withFirstActivatedAtDate()
     {
@@ -143,7 +147,7 @@ class StableQueryBuilder extends Builder
      * Scope a query to order by the models first activation date.
      *
      * @param  string $direction
-     * @return $this
+     * @return \App\Builders\StableQueryBuilder
      */
     public function orderByFirstActivatedAtDate(string $direction = 'asc')
     {

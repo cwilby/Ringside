@@ -13,10 +13,11 @@ class ReleaseAction extends BaseManagerAction
      * Release a manager.
      *
      * @param  \App\Models\Manager  $manager
+     * @return void
      */
-    public function handle(Manager $manager)
+    public function handle(Manager $manager): void
     {
-        $releaseDate ??= now();
+        $releaseDate = now();
 
         if ($manager->isSuspended()) {
             $this->managerRepository->reinstate($manager, $releaseDate);

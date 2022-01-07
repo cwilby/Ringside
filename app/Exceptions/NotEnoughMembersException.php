@@ -6,16 +6,19 @@ use Exception;
 
 class NotEnoughMembersException extends Exception
 {
+    /**
+     * @return self
+     */
     public static function forTagTeam()
     {
-        return new static('Tag team does not contain enough wrestlers.');
+        return new self('Tag team does not contain enough wrestlers.');
     }
 
     /**
      * Render the exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function render($request)
     {

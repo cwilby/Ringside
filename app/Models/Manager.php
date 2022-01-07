@@ -54,7 +54,7 @@ class Manager extends SingleRosterMember implements CanBeAStableMember
      * Create a new Eloquent query builder for the model.
      *
      * @param  \Illuminate\Database\Query\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return \App\Builders\ManagerQueryBuilder<\App\Models\Manager>
      */
     public function newEloquentBuilder($query)
     {

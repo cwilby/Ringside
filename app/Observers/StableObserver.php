@@ -10,7 +10,7 @@ class StableObserver
     /**
      * Handle the Stable "saved" event.
      *
-     * @param  App\Models\Stable $stable
+     * @param  \App\Models\Stable $stable
      * @return void
      */
     public function saving(Stable $stable)
