@@ -87,13 +87,14 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     }
 
     /**
-     * Get current tag team partners of the tag team.
+     * Get current wrestlers of the tag team.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function currentWrestlers()
     {
-        return $this->wrestlers()
+        return $this->belongsToMany(Wrestler::class, 'tag_team_wrestler')
+                    ->withPivot('joined_at', 'left_at')
                     ->wherePivot('joined_at', '<=', now())
                     ->wherePivot('left_at', '=', null)
                     ->limit(2);
@@ -106,7 +107,8 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      */
     public function previousWrestlers()
     {
-        return $this->wrestlers()
+        return $this->belongsToMany(Wrestler::class, 'tag_team_wrestler')
+                    ->withPivot('joined_at', 'left_at')
                     ->whereNotNull('left_at');
     }
 
