@@ -26,7 +26,7 @@ trait Activations
     {
         return $this->morphOne(Activation::class, 'activatable')
                     ->where('started_at', '<=', now())
-                    ->where('ended_at', '=', null)
+                    ->whereNull('ended_at')
                     ->latestOfMany();
     }
 

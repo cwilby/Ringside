@@ -4,17 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class EventMatch extends Model
 {
-    use HasFactory;
+    use HasFactory,
+        HasRelationships;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var string[]
      */
-    protected $fillable = ['event_id', 'event_match_id', 'match_type_id', 'preview'];
+    protected $fillable = ['event_id', 'match_type_id', 'preview'];
 
     /**
      * Get the referees assigned to the match.
@@ -39,20 +41,22 @@ class EventMatch extends Model
     /**
      * Get the wrestlers involved in the match.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphedByMany
      */
     public function wrestlers()
     {
-        return $this->morphToMany(Wrestler::class, 'event_match_competitor', 'event_match_competitors', 'event_match_competitor_id');
+        return $this->morphedByMany(Wrestler::class, 'event_match_competitor', 'event_match_competitors')
+                    ->using(EventMatchCompetitor::class);
     }
 
     /**
      * Get the tag teams involved in the match.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphedByMany
      */
     public function tagTeams()
     {
-        return $this->morphToMany(TagTeam::class, 'event_match_competitor', 'event_match_competitors', 'event_match_competitor_id');
+        return $this->morphedByMany(Wrestler::class, 'event_match_competitor', 'event_match_competitors')
+                    ->using(EventMatchCompetitor::class);
     }
 }

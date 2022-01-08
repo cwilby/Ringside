@@ -33,7 +33,7 @@ trait CanJoinStables
                 ['id', ['member_type', 'member_id'], 'id'],
                 [null, null, 'stable_id']
             )
-            ->whereNull('left_at');
+            ->wherePivotNull('left_at');
     }
 
     /**
@@ -45,6 +45,6 @@ trait CanJoinStables
     {
         return $this->morphMany(Stable::class, 'members')
                     ->wherePivot('joined_at', '<', now())
-                    ->wherePivot('left_at', '!=', null);
+                    ->wherePivotNotNull('left_at');
     }
 }

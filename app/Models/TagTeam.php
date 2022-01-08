@@ -15,6 +15,7 @@ use App\Models\Contracts\Competitor;
 use App\Models\Contracts\Manageable;
 use App\Observers\TagTeamObserver;
 use Fidum\EloquentMorphToOne\HasMorphToOne;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Staudenmeir\EloquentHasManyDeep\HasTableAlias;
@@ -117,9 +118,9 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
      *
      * @return int
      */
-    public function getCombinedWeightAttribute()
+    public function combinedWeight(): Attribute
     {
-        return $this->currentWrestlers->sum('weight');
+        return Attribute::get($this->currentWrestlers->sum('weight'));
     }
 
     /**
@@ -251,7 +252,7 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */

@@ -11,7 +11,7 @@ class EventMatchCompetitor extends MorphPivot
      *
      * @var string[]
      */
-    protected $fillable = ['event_match_id', 'competitor_id', 'competitor_type'];
+    protected $fillable = ['event_match_id', 'event_match_competitor_id', 'event_match_competitor_type', 'side_number'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo

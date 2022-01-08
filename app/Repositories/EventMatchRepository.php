@@ -80,7 +80,7 @@ class EventMatchRepository
      */
     public function addTagTeamToMatch(EventMatch $match, TagTeam $tagTeam, int $sideNumber)
     {
-        $match->tagTeams()->attach($tagTeam, ['side_number' => $sideNumber]);
+        $match->competitors()->attach($tagTeam, ['side_number' => $sideNumber]);
 
         return $match;
     }

@@ -30,13 +30,13 @@ class EventMatchControllerStoreMethodTest extends TestCase
      */
     public function store_creates_a_match_for_an_event_and_redirects()
     {
-        // $this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
         $event = Event::factory()->scheduled()->create();
         $referee = Referee::factory()->bookable()->create();
         $wrestlerA = Wrestler::factory()->bookable()->create();
         $wrestlerB = Wrestler::factory()->bookable()->create();
 
-        $response = $this
+        $this
             ->actAs(Role::administrator())
             ->from(action([EventMatchesController::class, 'create'], $event))
             ->post(

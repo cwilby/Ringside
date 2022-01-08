@@ -17,7 +17,8 @@ trait CanJoinTagTeams
      */
     public function tagTeams()
     {
-        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler')->withPivot(['joined_at', 'left_at']);
+        return $this->belongsToMany(TagTeam::class, 'tag_team_wrestler')
+                    ->withPivot(['joined_at', 'left_at']);
     }
 
     /**
@@ -28,7 +29,7 @@ trait CanJoinTagTeams
     public function currentTagTeam(): HasOneDeep
     {
         return $this->hasOneDeep(TagTeam::class, ['tag_team_wrestler'])
-                ->whereNull('tag_team_wrestler.left_at');
+                    ->wherePivotNull('left_at');
     }
 
     /**

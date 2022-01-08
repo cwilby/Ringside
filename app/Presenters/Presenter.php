@@ -10,7 +10,7 @@ abstract class Presenter
     /**
      * The presentable model.
      *
-     * @var \Illuminate\Database\Eloquent\Model $model
+     * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
 
@@ -25,7 +25,7 @@ abstract class Presenter
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @param  string $property
      * @return mixed
@@ -33,8 +33,10 @@ abstract class Presenter
      */
     public function __get(string $property)
     {
-        if (method_exists($this, $property)) {
-            return call_user_func([$this, $property]);
+        $callable = [$this, $property];
+
+        if (is_callable($callable)) {
+            return call_user_func($callable);
         }
 
         $message = '%s does not respond to the "%s" property or method.';

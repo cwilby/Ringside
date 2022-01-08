@@ -16,7 +16,7 @@ class UpdateRequest extends FormRequest
     public function authorize()
     {
         /** @var \App\Models\Event */
-        $event = $this->route('event');
+        $event = $this->route()->parameter('event');
 
         return $this->user()->can('update', $event);
     }
@@ -29,12 +29,12 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:3', Rule::unique('events')->ignore($this->route->param('event')->id)],
+            'name' => ['required', 'string', 'min:3', Rule::unique('events')->ignore($this->route()->parameter('event')->id)],
             'date' => [
                 'nullable',
                 'string',
                 'date',
-                new EventDateCanBeChanged($this->route->param('event')),
+                new EventDateCanBeChanged($this->route()->parameter('event')),
             ],
             'venue_id' => ['nullable', 'integer', Rule::exists('venues', 'id')],
             'preview' => ['nullable', 'string'],

@@ -9,7 +9,7 @@ use App\Models\Referee;
 use App\Models\TagTeam;
 use App\Models\Title;
 use App\Models\Wrestler;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class EventMatchData
 {
