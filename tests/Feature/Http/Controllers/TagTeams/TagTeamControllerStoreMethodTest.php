@@ -95,17 +95,17 @@ class TagTeamControllerStoreMethodTest extends TestCase
             ->post(
                 action([TagTeamsController::class, 'store']),
                 TagTeamRequestDataFactory::new()->create([
-                    'started_at' => $startDate->toDateString(),
+                    'started_at' => $startDate->toDateTimeString(),
                     'wrestlers' => $wrestlers->pluck('id')->toArray(),
                 ])
             );
 
         tap(TagTeam::first(), function ($tagTeam) use ($startDate) {
             $this->assertCount(1, $tagTeam->employments);
-            $this->assertEquals($startDate->toDateString(), $tagTeam->employments->first()->started_at->toDateString());
+            $this->assertEquals($startDate->toDateTimeString(), $tagTeam->employments->first()->started_at->toDateTimeString());
 
             foreach ($tagTeam->wrestlers as $wrestler) {
-                $this->assertSame($startDate->toDateString(), $wrestler->pivot->joined_at);
+                $this->assertSame($startDate->toDateTimeString(), $wrestler->pivot->joined_at);
                 $this->assertInstanceOf(Wrestler::class, $wrestler);
                 $this->assertCount(1, $wrestler->employments);
             }
@@ -129,7 +129,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             ->post(
                 action([TagTeamsController::class, 'store']),
                 TagTeamRequestDataFactory::new()->create([
-                    'started_at' => $startDate->toDateString(),
+                    'started_at' => $startDate->toDateTimeString(),
                     'wrestlers' => $wrestlers->pluck('id')->toArray(),
                 ])
             );
@@ -138,7 +138,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             $this->assertCount(1, $tagTeam->employments);
 
             foreach ($tagTeam->wrestlers as $wrestler) {
-                $this->assertSame($startDate->toDateString(), $wrestler->pivot->joined_at);
+                $this->assertSame($startDate->toDateTimeString(), $wrestler->pivot->joined_at);
                 $this->assertInstanceOf(Wrestler::class, $wrestler);
                 $this->assertCount(1, $wrestler->employments);
             }
@@ -170,7 +170,7 @@ class TagTeamControllerStoreMethodTest extends TestCase
             $this->assertCount(0, $tagTeam->employments);
 
             foreach ($tagTeam->wrestlers as $wrestler) {
-                $this->assertSame($startDate->toDateString(), $wrestler->pivot->joined_at);
+                $this->assertSame($startDate->toDateTimeString(), $wrestler->pivot->joined_at);
                 $this->assertInstanceOf(Wrestler::class, $wrestler);
             }
         });

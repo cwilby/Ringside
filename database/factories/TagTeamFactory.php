@@ -58,7 +58,6 @@ class TagTeamFactory extends Factory
 
         $wrestlers = Wrestler::factory()
             ->has(Employment::factory()->started($start))
-            ->bookable()
             ->count(2)
             ->create();
 

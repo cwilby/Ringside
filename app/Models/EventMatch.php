@@ -38,6 +38,11 @@ class EventMatch extends Model
         return $this->belongsToMany(Title::class);
     }
 
+    public function competitors()
+    {
+        return $this->hasMany(EventMatchCompetitor::class);
+    }
+
     /**
      * Get the wrestlers involved in the match.
      *

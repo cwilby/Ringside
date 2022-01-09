@@ -116,11 +116,13 @@ class TagTeam extends RosterMember implements Bookable, CanBeAStableMember, Comp
     /**
      * Get the combined weight of both tag team partners in a tag team.
      *
-     * @return int
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     public function combinedWeight(): Attribute
     {
-        return Attribute::get($this->currentWrestlers->sum('weight'));
+        return new Attribute(
+            get: fn ($value, $attributes) => $this->currentWrestlers->sum('weight')
+        );
     }
 
     /**

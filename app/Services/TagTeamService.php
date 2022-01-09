@@ -145,7 +145,7 @@ class TagTeamService
                 $this->tagTeamRepository->addWrestlers($tagTeam, $wrestlers);
             }
         } else {
-            $currentTagTeamPartners = collect($tagTeam->currentWrestlers->pluck('id'));
+            $currentTagTeamPartners = $tagTeam->currentWrestlers->pluck('id');
             $formerTagTeamPartners = $currentTagTeamPartners->diff($wrestlers);
             $newTagTeamPartners = $wrestlers->diff($currentTagTeamPartners);
 

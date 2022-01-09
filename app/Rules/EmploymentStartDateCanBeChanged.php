@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Rule;
 class EmploymentStartDateCanBeChanged implements Rule
 {
     /**
-     * @var \App\Models\Contracts\Employable $model
+     * @var \App\Models\Contracts\Employable
      */
     protected Employable $model;
 

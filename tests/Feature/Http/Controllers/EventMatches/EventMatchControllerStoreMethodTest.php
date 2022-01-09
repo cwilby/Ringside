@@ -9,6 +9,7 @@ use App\Models\Referee;
 use App\Models\Title;
 use App\Models\Wrestler;
 use Database\Seeders\MatchTypesTableSeeder;
+use Illuminate\Database\Eloquent\Collection;
 use Tests\Factories\EventMatchRequestDataFactory;
 use Tests\TestCase;
 
@@ -28,9 +29,8 @@ class EventMatchControllerStoreMethodTest extends TestCase
     /**
      * @test
      */
-    public function store_creates_a_match_for_an_event_and_redirects()
+    public function store_creates_a_non_title_match_for_an_event_and_redirects()
     {
-        $this->withoutExceptionHandling();
         $event = Event::factory()->scheduled()->create();
         $referee = Referee::factory()->bookable()->create();
         $wrestlerA = Wrestler::factory()->bookable()->create();
@@ -54,11 +54,20 @@ class EventMatchControllerStoreMethodTest extends TestCase
             );
 
         $this->assertCount(1, $event->matches);
-        tap($event->matches->first(), function ($match) use ($referee) {
+        tap($event->matches->first(), function ($match) use ($referee, $wrestlerA, $wrestlerB) {
             $this->assertEquals(1, $match->match_type_id);
             $this->assertCount(0, $match->titles);
             $this->assertCount(1, $match->referees);
             $this->assertCollectionHas($match->referees, $referee);
+            $this->assertInstanceOf(Collection::class, $match->competitors);
+            $this->assertCount(2, $match->competitors->groupBySide());
+            $this->assertCount(1, $match->competitors->groupBySide()[0]->groupByType());
+            $this->assertCollectionHas($wrestlerA, $match->competitors->groupBySide()[0]->groupByType());
+            $this->assertCount(1, $match->competitors[1]->wrestlers);
+            $this->assertCollectionHas($wrestlerB, $match->competitors[1]->wrestlers);
+            $this->assertCount(2, $match->wrestlers);
+            $this->assertCollectionHas($match->wrestlers, $wrestlerA);
+            $this->assertCollectionHas($match->wrestlers, $wrestlerB);
             $this->assertEquals('This is a general match preview.', $match->preview);
         });
     }
@@ -69,10 +78,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
     public function store_creates_a_title_match_for_an_event_and_redirects()
     {
         $event = Event::factory()->scheduled()->create();
-        $referee = Referee::factory()->bookable()->create();
         $title = Title::factory()->active()->create();
-        $wrestlerA = Wrestler::factory()->bookable()->create();
-        $wrestlerB = Wrestler::factory()->bookable()->create();
 
         $this
             ->actAs(Role::administrator())
@@ -80,13 +86,7 @@ class EventMatchControllerStoreMethodTest extends TestCase
             ->post(
                 action([EventMatchesController::class, 'store'], $event),
                 EventMatchRequestDataFactory::new()->create([
-                    'match_type_id' => 1,
                     'titles' => [$title->id],
-                    'referees' => [$referee->id],
-                    'competitors' => [
-                        ['competitor_id' => $wrestlerA->id, 'competitor_type' => 'wrestler'],
-                        ['competitor_id' => $wrestlerB->id, 'competitor_type' => 'wrestler'],
-                    ],
                 ])
             );
 

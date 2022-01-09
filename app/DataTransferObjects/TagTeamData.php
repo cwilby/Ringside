@@ -4,8 +4,9 @@ namespace App\DataTransferObjects;
 
 use App\Http\Requests\TagTeams\StoreRequest;
 use App\Http\Requests\TagTeams\UpdateRequest;
+use App\Models\Wrestler;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class TagTeamData
 {

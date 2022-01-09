@@ -145,7 +145,7 @@ trait Activations
     public function activatedAt(): Attribute
     {
         return new Attribute(
-            get: fn ($value, $attribute) => $this->activations->first()->started_at
+            get: fn ($value, $attribute) => $this->activations->first()?->started_at
         );
     }
 
